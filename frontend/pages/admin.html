@@ -1,0 +1,2703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Nucleri Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #0057FF; --blue-bright: #1A6FFF; --blue-deep: #0041CC;
+  --blue-dark: #00277A; --bg: #020810; --bg2: #040A1A; --bg3: #060D20;
+  --surface: #081226; --surface2: #0A1630; --surface3: #0D1C3C;
+  --border: rgba(0,87,255,0.15); --border-bright: rgba(0,87,255,0.35);
+  --text: #E8EEFF; --text-muted: #7A90C0; --text-dim: #4A5E90;
+  --accent: #00D4FF; --accent2: #FFB800; --green: #00C968; --red: #FF4444;
+  --white: #FFFFFF;
+  --font-display: 'Outfit', sans-serif; --font-body: 'Inter', sans-serif;
+  --sidebar-w: 260px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; display: flex; min-height: 100vh; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* ══════════════════════ SIDEBAR ══════════════════════ */
+.sidebar {
+  width: var(--sidebar-w); min-height: 100vh; background: var(--bg2);
+  border-right: 1px solid var(--border); position: fixed; top: 0; left: 0;
+  z-index: 200; display: flex; flex-direction: column;
+  transition: transform 0.3s;
+}
+.sidebar-logo {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.sidebar-logo-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--blue); display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 900; color: white; font-family: var(--font-display);
+  box-shadow: 0 0 20px rgba(0,87,255,0.4);
+}
+.sidebar-logo-text { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+.sidebar-logo-text span { color: var(--blue); }
+.sidebar-logo-badge { font-size: 0.62rem; background: rgba(0,87,255,0.15); color: var(--accent); border: 1px solid rgba(0,87,255,0.25); border-radius: 5px; padding: 0.1rem 0.45rem; font-weight: 700; letter-spacing: 0.05em; margin-left: auto; }
+
+.sidebar-nav { flex: 1; padding: 1rem 0.75rem; overflow-y: auto; }
+.nav-section-label { font-size: 0.65rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 0.6rem 0.4rem; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.85rem;
+  border-radius: 10px; cursor: pointer; color: var(--text-muted);
+  font-size: 0.875rem; font-weight: 500; transition: all 0.15s;
+  margin-bottom: 0.1rem; text-decoration: none; position: relative;
+}
+.nav-item:hover { background: var(--surface); color: var(--text); }
+.nav-item.active { background: rgba(0,87,255,0.12); color: var(--white); }
+.nav-item.active::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 3px; background: var(--blue); border-radius: 0 3px 3px 0; }
+.nav-icon { width: 20px; text-align: center; font-size: 1rem; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--blue); color: white; font-size: 0.65rem; font-weight: 700; border-radius: 100px; padding: 0.1rem 0.5rem; min-width: 18px; text-align: center; }
+.nav-badge.green { background: var(--green); }
+.nav-badge.orange { background: var(--accent2); color: #000; }
+
+.sidebar-footer { padding: 1rem 0.75rem; border-top: 1px solid var(--border); }
+.sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.85rem; border-radius: 10px; background: var(--surface); }
+.sidebar-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; flex-shrink: 0; }
+.sidebar-user-info p { font-size: 0.82rem; font-weight: 600; color: var(--white); }
+.sidebar-user-info span { font-size: 0.72rem; color: var(--text-dim); }
+.sidebar-user-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-left: auto; box-shadow: 0 0 8px var(--green); }
+
+/* ══════════════════════ MAIN ══════════════════════ */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100; background: rgba(2,8,16,0.92);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1rem; padding: 0 2rem; height: 64px;
+}
+.topbar-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--white); flex: 1; }
+.topbar-breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-dim); margin-top: 0.15rem; }
+.topbar-breadcrumb span { color: var(--text-muted); }
+.topbar-title-wrap { display: flex; flex-direction: column; }
+.topbar-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+.btn-sm { padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.2s; border: none; display: inline-flex; align-items: center; gap: 0.4rem; }
+.btn-primary-sm { background: var(--blue); color: white; box-shadow: 0 0 16px rgba(0,87,255,0.3); }
+.btn-primary-sm:hover { background: var(--blue-bright); box-shadow: 0 0 24px rgba(0,87,255,0.5); transform: translateY(-1px); }
+.btn-ghost-sm { background: transparent; border: 1px solid var(--border-bright); color: var(--text-muted); }
+.btn-ghost-sm:hover { border-color: var(--blue); color: var(--white); background: var(--surface); }
+.btn-danger-sm { background: rgba(255,68,68,0.12); border: 1px solid rgba(255,68,68,0.3); color: #ff6b6b; }
+.btn-danger-sm:hover { background: rgba(255,68,68,0.2); border-color: var(--red); }
+.btn-success-sm { background: rgba(0,201,104,0.12); border: 1px solid rgba(0,201,104,0.3); color: var(--green); }
+.btn-success-sm:hover { background: rgba(0,201,104,0.2); }
+
+/* ── CONTENT AREA ── */
+.content { flex: 1; padding: 2rem; }
+
+/* ══════════════════════ PAGES ══════════════════════ */
+.page { display: none; animation: pageFadeIn 0.25s ease; }
+.page.active { display: block; }
+@keyframes pageFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── STAT CARDS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 1.25rem 1.5rem; position: relative; overflow: hidden; transition: all 0.2s;
+}
+.stat-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--accent)); opacity: 0; transition: opacity 0.2s; }
+.stat-card:hover::before { opacity: 1; }
+.stat-card-label { font-size: 0.72rem; color: var(--text-dim); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.stat-card-value { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; }
+.stat-card-value span { color: var(--blue); }
+.stat-card-sub { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.3rem; }
+.stat-card-icon { position: absolute; top: 1rem; right: 1.25rem; font-size: 1.8rem; opacity: 0.15; }
+
+/* ── TABLE ── */
+.table-container { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.table-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); gap: 1rem; flex-wrap: wrap; }
+.table-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--white); }
+.table-actions { display: flex; gap: 0.5rem; align-items: center; }
+.search-inline { padding: 0.45rem 0.85rem 0.45rem 2rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s; }
+.search-inline:focus { border-color: var(--blue); }
+.search-inline::placeholder { color: var(--text-dim); }
+.search-wrap { position: relative; }
+.search-wrap::before { content: '🔍'; position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; pointer-events: none; }
+
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 0.75rem 1rem; text-align: left; font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; background: var(--surface2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface2); }
+td { padding: 0.9rem 1rem; font-size: 0.855rem; color: var(--text-muted); vertical-align: middle; }
+td.td-main { color: var(--white); font-weight: 600; }
+
+.badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; }
+.badge-active { background: rgba(0,201,104,0.12); color: var(--green); border: 1px solid rgba(0,201,104,0.25); }
+.badge-inactive { background: rgba(255,68,68,0.1); color: #ff6b6b; border: 1px solid rgba(255,68,68,0.2); }
+.badge-hot { background: rgba(255,77,0,0.12); color: #ff7733; border: 1px solid rgba(255,77,0,0.25); }
+.badge-pro { background: rgba(255,184,0,0.12); color: var(--accent2); border: 1px solid rgba(255,184,0,0.25); }
+.badge-new { background: rgba(0,87,255,0.12); color: var(--accent); border: 1px solid rgba(0,87,255,0.25); }
+.badge-none { background: var(--surface3); color: var(--text-dim); border: 1px solid var(--border); }
+
+.row-actions { display: flex; gap: 0.35rem; }
+.icon-btn { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: all 0.15s; }
+.icon-btn:hover { border-color: var(--blue); color: var(--white); background: var(--surface2); }
+.icon-btn.delete:hover { border-color: var(--red); color: var(--red); background: rgba(255,68,68,0.08); }
+
+/* ── COURSE THUMB in table ── */
+.course-thumb-mini { width: 48px; height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
+.course-thumb-mini img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+.course-info { display: flex; align-items: center; gap: 0.75rem; }
+
+/* ══════════════════════ MODAL DRAWER ══════════════════════ */
+.drawer-overlay { position: fixed; inset: 0; background: rgba(2,8,16,0.8); backdrop-filter: blur(8px); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+.drawer-overlay.open { opacity: 1; visibility: visible; }
+.drawer { position: fixed; right: 0; top: 0; bottom: 0; width: 640px; max-width: 95vw; background: var(--bg3); border-left: 1px solid var(--border-bright); z-index: 1001; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); overflow: hidden; }
+.drawer-overlay.open .drawer { transform: translateX(0); }
+
+.drawer-header { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.drawer-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; flex: 1; }
+.drawer-close { width: 32px; height: 32px; border-radius: 50%; background: var(--surface3); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: all 0.15s; }
+.drawer-close:hover { background: rgba(255,68,68,0.15); border-color: var(--red); color: var(--red); }
+
+.drawer-body { flex: 1; overflow-y: auto; padding: 1.5rem; }
+.drawer-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; background: var(--bg3); }
+
+/* ── FORM ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-grid.cols-1 { grid-template-columns: 1fr; }
+.form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group.full { grid-column: 1/-1; }
+.form-label { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+.form-label .req { color: var(--accent); margin-left: 2px; }
+.form-input, .form-select, .form-textarea {
+  padding: 0.65rem 0.9rem; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 9px; color: var(--text); font-family: var(--font-body); font-size: 0.875rem;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,87,255,0.12); }
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-dim); }
+.form-select option { background: var(--surface2); }
+.form-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+/* ── IMAGE UPLOAD ── */
+.img-upload-box {
+  border: 2px dashed var(--border); border-radius: 12px; padding: 1.5rem;
+  text-align: center; cursor: pointer; transition: all 0.2s; position: relative;
+  background: var(--surface); min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.img-upload-box:hover { border-color: var(--blue); background: rgba(0,87,255,0.04); }
+.img-upload-box.has-img { border-style: solid; border-color: var(--border-bright); padding: 0; overflow: hidden; }
+.img-upload-box.has-img img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.img-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.img-upload-icon { font-size: 2rem; }
+.img-upload-text { font-size: 0.82rem; color: var(--text-dim); }
+.img-upload-text strong { color: var(--text-muted); display: block; font-size: 0.875rem; }
+.img-upload-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; opacity: 0; transition: opacity 0.2s; border-radius: 10px; }
+.img-upload-box.has-img:hover .img-upload-overlay { opacity: 1; }
+.img-upload-overlay span { font-size: 1.5rem; }
+.img-upload-overlay p { font-size: 0.78rem; color: white; }
+
+/* ── SECTION DIVIDER ── */
+.form-section { margin-bottom: 1.5rem; }
+.form-section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); }
+.form-section-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--blue); border-radius: 2px; }
+
+/* ── TAGS INPUT ── */
+.tags-input-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.5rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; cursor: text; min-height: 44px; align-items: center; transition: border-color 0.2s; }
+.tags-input-wrap:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,87,255,0.12); }
+.tag-chip { display: flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.6rem; background: rgba(0,87,255,0.15); border: 1px solid rgba(0,87,255,0.3); border-radius: 100px; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+.tag-chip button { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 0.8rem; padding: 0; line-height: 1; opacity: 0.7; }
+.tag-chip button:hover { opacity: 1; }
+.tags-real-input { background: none; border: none; outline: none; color: var(--text); font-size: 0.82rem; font-family: var(--font-body); min-width: 80px; flex: 1; padding: 0.1rem 0.2rem; }
+.tags-real-input::placeholder { color: var(--text-dim); }
+
+/* ── ARRAY LIST (learns/requires) ── */
+.array-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.array-item { display: flex; align-items: center; gap: 0.5rem; }
+.array-item input { flex: 1; }
+.array-item .remove-btn { width: 28px; height: 28px; border-radius: 7px; border: 1px solid rgba(255,68,68,0.25); background: transparent; color: #ff6b6b; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; transition: all 0.15s; }
+.array-item .remove-btn:hover { background: rgba(255,68,68,0.12); }
+.add-item-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; background: transparent; border: 1px dashed var(--border); border-radius: 8px; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-family: var(--font-body); margin-top: 0.25rem; }
+.add-item-btn:hover { border-color: var(--blue); color: var(--text); }
+
+/* ── CURRICULUM BUILDER ── */
+.curriculum-builder { display: flex; flex-direction: column; gap: 0.75rem; }
+.module-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.module-block-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: var(--surface2); border-bottom: 1px solid var(--border); }
+.module-block-header input { flex: 1; background: transparent; border: none; outline: none; color: var(--white); font-size: 0.9rem; font-weight: 600; font-family: var(--font-body); }
+.module-block-header input::placeholder { color: var(--text-dim); font-weight: 400; }
+.module-drag { cursor: grab; color: var(--text-dim); font-size: 0.85rem; }
+.module-remove { width: 26px; height: 26px; border-radius: 6px; border: 1px solid rgba(255,68,68,0.2); background: transparent; color: #ff6b6b; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: all 0.15s; }
+.module-remove:hover { background: rgba(255,68,68,0.12); }
+.module-block-lessons { padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.lesson-row { display: grid; grid-template-columns: 1fr 120px 28px; gap: 0.4rem; align-items: center; }
+.lesson-row input { background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; padding: 0.45rem 0.7rem; color: var(--text); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.15s; }
+.lesson-row input:focus { border-color: var(--blue); }
+.lesson-row input::placeholder { color: var(--text-dim); }
+
+/* ══════════════════════ BLOG PAGE ══════════════════════ */
+.post-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+.post-admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.2s; }
+.post-admin-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+.post-admin-banner { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; }
+.post-admin-body { padding: 1rem 1.25rem; }
+.post-admin-cat { font-size: 0.68rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+.post-admin-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--white); line-height: 1.3; margin-bottom: 0.5rem; }
+.post-admin-meta { font-size: 0.75rem; color: var(--text-dim); display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+.post-admin-actions { display: flex; gap: 0.4rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+/* ══════════════════════ INSTRUCTORS PAGE ══════════════════════ */
+.instructors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.instructor-admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.2s; }
+.instructor-admin-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+.instructor-banner { height: 80px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: white; font-family: var(--font-display); letter-spacing: -0.02em; position: relative; overflow: hidden; }
+.instructor-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.instructor-banner .initials { position: relative; z-index: 1; }
+.instructor-admin-body { padding: 1rem 1.25rem; }
+.instructor-admin-body h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+.instructor-role-text { font-size: 0.78rem; color: var(--accent); margin-bottom: 0.5rem; }
+.instructor-bio-preview { font-size: 0.8rem; color: var(--text-dim); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.75rem; }
+.instructor-admin-actions { display: flex; gap: 0.4rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+/* ══════════════════════ SITE SETTINGS ══════════════════════ */
+.settings-tabs { display: flex; gap: 0.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px; margin-bottom: 1.5rem; overflow-x: auto; }
+.settings-tab { flex-shrink: 0; padding: 0.5rem 1rem; border-radius: 9px; font-size: 0.82rem; font-weight: 600; color: var(--text-dim); cursor: pointer; transition: all 0.15s; border: none; background: transparent; font-family: var(--font-body); }
+.settings-tab.active { background: var(--blue); color: white; box-shadow: 0 4px 16px rgba(0,87,255,0.3); }
+.settings-panel { display: none; }
+.settings-panel.active { display: block; }
+
+.settings-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem; }
+.settings-card-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+
+/* ── TOAST ── */
+.toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9000; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+.toast { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.25rem; border-radius: 12px; font-size: 0.85rem; font-weight: 500; color: white; box-shadow: 0 8px 30px rgba(0,0,0,0.4); pointer-events: all; animation: toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1); max-width: 360px; }
+.toast.success { background: linear-gradient(135deg, #006b35, #00a352); border: 1px solid rgba(0,201,104,0.3); }
+.toast.error { background: linear-gradient(135deg, #6b0000, #c00000); border: 1px solid rgba(255,68,68,0.3); }
+.toast.info { background: linear-gradient(135deg, #003080, #0057FF); border: 1px solid rgba(0,87,255,0.4); }
+@keyframes toastIn { from { opacity:0; transform:translateX(20px) scale(0.95); } to { opacity:1; transform:translateX(0) scale(1); } }
+.toast-out { animation: toastOut 0.25s ease forwards; }
+@keyframes toastOut { to { opacity:0; transform:translateX(20px) scale(0.9); } }
+
+/* ── CONFIRM DIALOG ── */
+.confirm-overlay { position: fixed; inset: 0; background: rgba(2,8,16,0.85); backdrop-filter: blur(8px); z-index: 9001; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; }
+.confirm-overlay.open { opacity: 1; visibility: visible; }
+.confirm-box { background: var(--bg2); border: 1px solid var(--border-bright); border-radius: 20px; padding: 2rem; max-width: 380px; width: 90%; text-align: center; transform: scale(0.95); transition: transform 0.25s; }
+.confirm-overlay.open .confirm-box { transform: scale(1); }
+.confirm-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.confirm-box h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
+.confirm-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+.confirm-actions { display: flex; gap: 0.75rem; justify-content: center; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 4rem 2rem; }
+.empty-state-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+.empty-state h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; }
+.empty-state p { font-size: 0.85rem; color: var(--text-dim); }
+
+/* ── RICH TEXT EDITOR ── */
+.editor-toolbar { display: flex; gap: 0.25rem; padding: 0.5rem; background: var(--surface3); border: 1px solid var(--border); border-bottom: none; border-radius: 9px 9px 0 0; flex-wrap: wrap; }
+.editor-btn { width: 28px; height: 28px; border-radius: 5px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; transition: all 0.15s; font-family: var(--font-body); }
+.editor-btn:hover { background: var(--surface2); color: var(--white); }
+.editor-btn.active { background: rgba(0,87,255,0.2); color: var(--accent); }
+.editor-sep { width: 1px; height: 20px; background: var(--border); margin: 4px 2px; align-self: center; }
+.editor-content { min-height: 200px; padding: 1rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 0 0 9px 9px; color: var(--text); font-size: 0.875rem; line-height: 1.7; outline: none; }
+.editor-content:focus { border-color: var(--blue); }
+.editor-content h1, .editor-content h2, .editor-content h3 { color: var(--white); font-family: var(--font-display); margin: 0.75rem 0 0.4rem; }
+.editor-content blockquote { border-left: 3px solid var(--blue); padding-left: 1rem; color: var(--text-muted); font-style: italic; margin: 0.75rem 0; }
+.editor-content ul, .editor-content ol { padding-left: 1.5rem; }
+.editor-content a { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .drawer { width: 100%; max-width: 100%; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── COLOR PICKER INPUT ── */
+.color-row { display: flex; align-items: center; gap: 0.75rem; }
+.color-preview { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; cursor: pointer; }
+input[type="color"] { opacity: 0; position: absolute; width: 0; height: 0; }
+
+/* ── PROGRESS BAR ── */
+.progress-bar { height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; margin-top: 0.35rem; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--accent)); border-radius: 2px; transition: width 0.3s; }
+
+/* ── DIFFICULTY SELECTOR ── */
+.diff-selector { display: flex; gap: 0.4rem; }
+.diff-option { flex: 1; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); color: var(--text-dim); font-size: 0.78rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; }
+.diff-option.active { border-color: var(--blue); background: rgba(0,87,255,0.12); color: var(--white); }
+
+/* ── API STATUS ── */
+.api-indicator { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--text-dim); padding: 0.3rem 0.7rem; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; }
+.api-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+.api-dot.offline { background: var(--red); box-shadow: 0 0 6px var(--red); animation: none; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── PAGE HEADER ── */
+.page-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap; }
+.page-header-row h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--white); letter-spacing: -0.025em; }
+.page-header-row p { font-size: 0.85rem; color: var(--text-dim); margin-top: 0.2rem; }
+</style>
+</head>
+<body>
+
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-mark">N</div>
+    <div>
+      <div class="sidebar-logo-text">Nucleri <span>Admin</span></div>
+    </div>
+    <span class="sidebar-logo-badge">PANEL</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a class="nav-item active" onclick="showPage('dashboard', this)">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+
+    <div class="nav-section-label">Contenido</div>
+    <a class="nav-item" onclick="showPage('courses', this)">
+      <span class="nav-icon">🎓</span> Cursos
+      <span class="nav-badge" id="badge-courses">0</span>
+    </a>
+    <a class="nav-item" onclick="showPage('instructors', this)">
+      <span class="nav-icon">👤</span> Instructores
+      <span class="nav-badge green" id="badge-instructors">0</span>
+    </a>
+    <a class="nav-item" onclick="showPage('blog', this)">
+      <span class="nav-icon">📝</span> Blog
+      <span class="nav-badge orange" id="badge-blog">0</span>
+    </a>
+    <a class="nav-item" onclick="showPage('users', this)">
+      <span class="nav-icon">👥</span> Usuarios
+      <span class="nav-badge" id="badge-users">0</span>
+    </a>
+
+    <div class="nav-section-label">Sitio Web</div>
+    <a class="nav-item" onclick="showPage('homepage', this)">
+      <span class="nav-icon">🏠</span> Página de Inicio
+    </a>
+    <a class="nav-item" onclick="showPage('about', this)">
+      <span class="nav-icon">🏢</span> Sobre Nosotros
+    </a>
+    <a class="nav-item" onclick="showPage('settings', this)">
+      <span class="nav-icon">⚙️</span> Configuración
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar">A</div>
+      <div class="sidebar-user-info">
+        <p>Administrador</p>
+        <span>nucleri.com</span>
+      </div>
+      <div class="sidebar-user-dot"></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-title-wrap">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-breadcrumb">Admin <span>›</span> <span id="topbar-section">Inicio</span></div>
+    </div>
+    <div class="topbar-actions">
+      <div class="api-indicator" id="apiIndicator">
+        <span class="api-dot" id="apiDot"></span>
+        <span id="apiStatus">API Conectada</span>
+      </div>
+      <a href="/" class="btn-sm btn-ghost-sm" style="text-decoration:none">🌐 Ver sitio</a>
+      <button class="btn-sm btn-ghost-sm" onclick="adminLogout()" style="cursor:pointer">🚪 Cerrar sesión</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ════════════════ DASHBOARD PAGE ════════════════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header-row">
+        <div>
+          <h2>Bienvenido al Panel 👋</h2>
+          <p>Gestiona todos los contenidos de Nucleri Academy desde aquí.</p>
+        </div>
+        <button class="btn-sm btn-primary-sm" onclick="loadAllData()">↻ Sincronizar todo</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Cursos activos</div>
+          <div class="stat-card-value" id="stat-courses">—</div>
+          <div class="stat-card-sub" id="stat-courses-sub">Cargando...</div>
+          <div class="stat-card-icon">🎓</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Instructores</div>
+          <div class="stat-card-value" id="stat-instructors">—</div>
+          <div class="stat-card-sub" id="stat-instructors-sub">Cargando...</div>
+          <div class="stat-card-icon">👥</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Artículos del blog</div>
+          <div class="stat-card-value" id="stat-blog">—</div>
+          <div class="stat-card-sub">Total publicados</div>
+          <div class="stat-card-icon">📝</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Backend</div>
+          <div class="stat-card-value" id="stat-api"><span>—</span></div>
+          <div class="stat-card-sub" id="stat-api-sub">Verificando conexión...</div>
+          <div class="stat-card-icon">🔌</div>
+        </div>
+      </div>
+
+      <!-- Quick access -->
+      <div class="table-container">
+        <div class="table-header">
+          <div class="table-title">Acciones rápidas</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;padding:1.5rem;">
+          <button class="btn-sm btn-primary-sm" style="justify-content:center;padding:1rem;" onclick="showPage('courses'); openCourseDrawer()">+ Nuevo curso</button>
+          <button class="btn-sm btn-primary-sm" style="justify-content:center;padding:1rem;background:var(--surface3);box-shadow:none;" onclick="showPage('instructors'); openInstructorDrawer()">+ Nuevo instructor</button>
+          <button class="btn-sm btn-primary-sm" style="justify-content:center;padding:1rem;background:var(--surface3);box-shadow:none;" onclick="showPage('blog'); openPostDrawer()">+ Nuevo artículo</button>
+          <button class="btn-sm btn-ghost-sm" style="justify-content:center;padding:1rem;" onclick="showPage('settings')">⚙️ Configuración</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ COURSES PAGE ════════════════ -->
+    <div class="page" id="page-courses">
+      <div class="page-header-row">
+        <div><h2>Cursos <span style="color:var(--text-dim);font-size:1rem;font-weight:400;" id="courses-count-label"></span></h2><p>Gestiona el catálogo completo de cursos</p></div>
+        <button class="btn-sm btn-primary-sm" onclick="openCourseDrawer()">+ Nuevo curso</button>
+      </div>
+      <div class="table-container">
+        <div class="table-header">
+          <div class="table-title">Todos los cursos</div>
+          <div class="table-actions">
+            <div class="search-wrap"><input class="search-inline" placeholder="Buscar curso..." id="course-search" oninput="filterTable('course-search','courses-table')"></div>
+            <select class="form-select" style="font-size:0.82rem;padding:0.45rem 0.75rem;" onchange="filterByCategory(this.value)">
+              <option value="">Todas las categorías</option>
+              <option value="marketing">Marketing</option>
+              <option value="finanzas">Finanzas</option>
+              <option value="lactea">Láctea</option>
+              <option value="alimentos">Alimentos</option>
+              <option value="branding">Branding</option>
+              <option value="estrategia">Estrategia</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table id="courses-table">
+            <thead>
+              <tr>
+                <th>Curso</th><th>Categoría</th><th>Precio</th><th>Horas</th><th>Rating</th><th>Badge</th><th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="courses-tbody">
+              <tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">⏳</div><h3>Cargando cursos...</h3></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ INSTRUCTORS PAGE ════════════════ -->
+    <div class="page" id="page-instructors">
+      <div class="page-header-row">
+        <div><h2>Instructores</h2><p>Perfiles del equipo docente y colaboradores</p></div>
+        <button class="btn-sm btn-primary-sm" onclick="openInstructorDrawer()">+ Nuevo instructor</button>
+      </div>
+      <div class="instructors-grid" id="instructors-grid">
+        <div class="empty-state"><div class="empty-state-icon">⏳</div><h3>Cargando...</h3></div>
+      </div>
+    </div>
+
+    <!-- ════════════════ BLOG PAGE ════════════════ -->
+    <div class="page" id="page-blog">
+      <div class="page-header-row">
+        <div><h2>Blog <span style="color:var(--text-dim);font-size:1rem;font-weight:400;" id="blog-count-label"></span></h2><p>Artículos y contenido editorial</p></div>
+        <button class="btn-sm btn-primary-sm" onclick="openPostDrawer()">+ Nuevo artículo</button>
+      </div>
+      <div class="post-cards" id="posts-grid">
+        <div class="empty-state"><div class="empty-state-icon">⏳</div><h3>Cargando artículos...</h3></div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════ USERS PAGE ════════════════ -->
+    <div class="page" id="page-users">
+      <div class="page-header-row">
+        <div><h2>Usuarios <span style="color:var(--text-dim);font-size:1rem;font-weight:400" id="users-count-label"></span></h2><p>Base de datos completa de usuarios registrados</p></div>
+        <button class="btn-sm btn-primary-sm" onclick="openUserDrawer()">+ Nuevo usuario</button>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.5rem" id="users-stats-row">
+        <div class="stat-card"><div class="stat-card-label">Total usuarios</div><div class="stat-card-value" id="usr-stat-total">—</div><div class="stat-card-icon">👥</div></div>
+        <div class="stat-card"><div class="stat-card-label">Estudiantes</div><div class="stat-card-value" id="usr-stat-students">—</div><div class="stat-card-icon">🎓</div></div>
+        <div class="stat-card"><div class="stat-card-label">Administradores</div><div class="stat-card-value" id="usr-stat-admins">—</div><div class="stat-card-icon">🔑</div></div>
+        <div class="stat-card"><div class="stat-card-label">Inscripciones</div><div class="stat-card-value" id="usr-stat-enroll">—</div><div class="stat-card-icon">📋</div></div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <div class="table-title">Todos los usuarios</div>
+          <div class="table-actions">
+            <div class="search-wrap">
+              <input class="search-inline" placeholder="Buscar por nombre o email..." id="user-search" oninput="filterTable('user-search','users-table')">
+            </div>
+            <select class="form-select" style="font-size:.82rem;padding:.45rem .75rem" onchange="filterUsersByRole(this.value)">
+              <option value="">Todos los roles</option>
+              <option value="student">Estudiantes</option>
+              <option value="admin">Administradores</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="users-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Cursos</th>
+                <th>Registrado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">⏳</div><h3>Cargando usuarios...</h3></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+        <!-- ════════════════ HOMEPAGE PAGE ════════════════ -->
+    <div class="page" id="page-homepage">
+      <div class="page-header-row"><div><h2>Página de Inicio</h2><p>Textos e imágenes del hero y secciones principales</p></div><button class="btn-sm btn-primary-sm" onclick="saveHomepage()">💾 Guardar cambios</button></div>
+      <div class="settings-tabs">
+        <button class="settings-tab active" onclick="switchSettingsTab('hp-hero',this)">Hero</button>
+        <button class="settings-tab" onclick="switchSettingsTab('hp-stats',this)">Estadísticas</button>
+        <button class="settings-tab" onclick="switchSettingsTab('hp-cta',this)">CTA / Banners</button>
+        <button class="settings-tab" onclick="switchSettingsTab('hp-footer',this)">Footer</button>
+      </div>
+      <!-- Hero -->
+      <div class="settings-panel active" id="hp-hero">
+        <div class="settings-card">
+          <div class="settings-card-title">🦸 Hero Principal</div>
+          <div class="form-grid">
+            <div class="form-group full"><label class="form-label">Badge de anuncio <span class="req">*</span></label><input class="form-input" id="hp-hero-badge" placeholder="ej: 🎯 Nuevo · Plan de negocios para PYMES disponible"></div>
+            <div class="form-group full"><label class="form-label">Título principal <span class="req">*</span></label><input class="form-input" id="hp-hero-title" placeholder="ej: Aprende. Crece. Lidera."></div>
+            <div class="form-group full"><label class="form-label">Subtítulo <em>(la palabra en color azul)</em></label><input class="form-input" id="hp-hero-subtitle-em" placeholder="ej: Tu negocio"></div>
+            <div class="form-group full"><label class="form-label">Descripción del hero</label><textarea class="form-textarea" id="hp-hero-desc" rows="3" placeholder="Texto descriptivo debajo del título..."></textarea></div>
+            <div class="form-group"><label class="form-label">Texto botón primario</label><input class="form-input" id="hp-btn1" placeholder="ej: Explorar cursos →"></div>
+            <div class="form-group"><label class="form-label">Texto botón secundario</label><input class="form-input" id="hp-btn2" placeholder="ej: Conocer más"></div>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title">🖼️ Imagen Hero (fondo / banner)</div>
+          <div class="form-group">
+            <div class="img-upload-box" id="hp-hero-img-box" onclick="triggerImgUpload('hp-hero-img-file','hp-hero-img-box','hp-hero-img-preview')">
+              <input type="file" id="hp-hero-img-file" accept="image/*" onchange="handleImgUpload(this,'hp-hero-img-box','hp-hero-img-preview')">
+              <div class="img-upload-icon">🖼️</div>
+              <div class="img-upload-text"><strong>Haz clic para subir</strong>Imagen de fondo del hero (recomendado: 1920×900px)</div>
+              <img id="hp-hero-img-preview" style="display:none;">
+              <div class="img-upload-overlay"><span>✏️</span><p>Cambiar imagen</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Stats -->
+      <div class="settings-panel" id="hp-stats">
+        <div class="settings-card">
+          <div class="settings-card-title">📊 Estadísticas del Hero</div>
+          <div class="form-grid cols-3">
+            <div class="form-group"><label class="form-label">Stat 1 — Número</label><input class="form-input" id="hp-stat1-val" placeholder="12K+"></div>
+            <div class="form-group"><label class="form-label">Stat 1 — Etiqueta</label><input class="form-input" id="hp-stat1-label" placeholder="Estudiantes"></div>
+            <div class="form-group"><label class="form-label">Stat 1 — Icono</label><input class="form-input" id="hp-stat1-icon" placeholder="👥"></div>
+            <div class="form-group"><label class="form-label">Stat 2 — Número</label><input class="form-input" id="hp-stat2-val" placeholder="45+"></div>
+            <div class="form-group"><label class="form-label">Stat 2 — Etiqueta</label><input class="form-input" id="hp-stat2-label" placeholder="Cursos"></div>
+            <div class="form-group"><label class="form-label">Stat 2 — Icono</label><input class="form-input" id="hp-stat2-icon" placeholder="🎓"></div>
+            <div class="form-group"><label class="form-label">Stat 3 — Número</label><input class="form-input" id="hp-stat3-val" placeholder="4.9★"></div>
+            <div class="form-group"><label class="form-label">Stat 3 — Etiqueta</label><input class="form-input" id="hp-stat3-label" placeholder="Calificación"></div>
+            <div class="form-group"><label class="form-label">Stat 3 — Icono</label><input class="form-input" id="hp-stat3-icon" placeholder="⭐"></div>
+          </div>
+        </div>
+      </div>
+      <!-- CTA -->
+      <div class="settings-panel" id="hp-cta">
+        <div class="settings-card">
+          <div class="settings-card-title">📣 Banda CTA inferior</div>
+          <div class="form-grid">
+            <div class="form-group full"><label class="form-label">Título del CTA</label><input class="form-input" id="hp-cta-title" placeholder="¿Listo para impulsar tu negocio?"></div>
+            <div class="form-group full"><label class="form-label">Descripción</label><textarea class="form-textarea" id="hp-cta-desc" rows="2"></textarea></div>
+            <div class="form-group"><label class="form-label">Botón primario</label><input class="form-input" id="hp-cta-btn1" placeholder="Ver cursos →"></div>
+            <div class="form-group"><label class="form-label">Botón secundario</label><input class="form-input" id="hp-cta-btn2" placeholder="Solicitar consultoría"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <div class="settings-panel" id="hp-footer">
+        <div class="settings-card">
+          <div class="settings-card-title">🔻 Footer</div>
+          <div class="form-grid">
+            <div class="form-group full"><label class="form-label">Texto descriptivo del footer</label><textarea class="form-textarea" id="hp-footer-desc" rows="2"></textarea></div>
+            <div class="form-group"><label class="form-label">LinkedIn URL</label><input class="form-input" id="hp-social-li" placeholder="https://linkedin.com/company/nucleri"></div>
+            <div class="form-group"><label class="form-label">Instagram URL</label><input class="form-input" id="hp-social-ig" placeholder="https://instagram.com/nucleri"></div>
+            <div class="form-group"><label class="form-label">YouTube URL</label><input class="form-input" id="hp-social-yt" placeholder="https://youtube.com/@nucleri"></div>
+            <div class="form-group"><label class="form-label">X (Twitter) URL</label><input class="form-input" id="hp-social-tw" placeholder="https://x.com/nucleri"></div>
+            <div class="form-group full"><label class="form-label">Texto copyright</label><input class="form-input" id="hp-copyright" placeholder="© 2025 Nucleri. Todos los derechos reservados."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ ABOUT PAGE ════════════════ -->
+    <div class="page" id="page-about">
+      <div class="page-header-row"><div><h2>Sobre Nosotros</h2><p>Misión, visión, valores e historia de Nucleri</p></div><button class="btn-sm btn-primary-sm" onclick="saveAbout()">💾 Guardar cambios</button></div>
+      <div class="settings-tabs">
+        <button class="settings-tab active" onclick="switchSettingsTab('ab-hero',this)">Hero</button>
+        <button class="settings-tab" onclick="switchSettingsTab('ab-mission',this)">Misión & Visión</button>
+        <button class="settings-tab" onclick="switchSettingsTab('ab-values',this)">Valores</button>
+        <button class="settings-tab" onclick="switchSettingsTab('ab-why',this)">¿Por qué Nucleri?</button>
+      </div>
+      <div class="settings-panel active" id="ab-hero">
+        <div class="settings-card">
+          <div class="settings-card-title">🏢 Encabezado de la página</div>
+          <div class="form-grid">
+            <div class="form-group full"><label class="form-label">Título</label><input class="form-input" id="ab-title" placeholder="Somos Nucleri Academy"></div>
+            <div class="form-group full"><label class="form-label">Subtítulo / Descripción</label><textarea class="form-textarea" id="ab-desc" rows="3"></textarea></div>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title">🖼️ Imagen / Banner sobre nosotros</div>
+          <div class="img-upload-box" id="ab-img-box" onclick="triggerImgUpload('ab-img-file','ab-img-box','ab-img-preview')">
+            <input type="file" id="ab-img-file" accept="image/*" onchange="handleImgUpload(this,'ab-img-box','ab-img-preview')">
+            <div class="img-upload-icon">📷</div>
+            <div class="img-upload-text"><strong>Subir imagen del equipo</strong>Foto grupal u oficina (recomendado: 1200×600px)</div>
+            <img id="ab-img-preview" style="display:none;">
+            <div class="img-upload-overlay"><span>✏️</span><p>Cambiar imagen</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-panel" id="ab-mission">
+        <div class="settings-card">
+          <div class="settings-card-title">🎯 Misión</div>
+          <div class="form-group"><textarea class="form-textarea" id="ab-mission-text" rows="4" placeholder="Nuestra misión es..."></textarea></div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title">🔭 Visión</div>
+          <div class="form-group"><textarea class="form-textarea" id="ab-vision-text" rows="4" placeholder="Nuestra visión es..."></textarea></div>
+        </div>
+      </div>
+      <div class="settings-panel" id="ab-values">
+        <div class="settings-card">
+          <div class="settings-card-title">💎 Valores corporativos</div>
+          <div class="form-grid cols-1" id="values-list"></div>
+          <button class="add-item-btn" onclick="addValueItem()">+ Agregar valor</button>
+        </div>
+      </div>
+      <div class="settings-panel" id="ab-why">
+        <div class="settings-card">
+          <div class="settings-card-title">✅ Razones — ¿Por qué Nucleri?</div>
+          <div class="form-grid cols-1" id="why-list"></div>
+          <button class="add-item-btn" onclick="addWhyItem()">+ Agregar razón</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SETTINGS PAGE ════════════════ -->
+    <div class="page" id="page-settings">
+      <div class="page-header-row"><div><h2>Configuración general</h2><p>Ajustes globales de la plataforma</p></div></div>
+      <div class="settings-tabs">
+        <button class="settings-tab active" onclick="switchSettingsTab('cfg-api',this)">API & Backend</button>
+        <button class="settings-tab" onclick="switchSettingsTab('cfg-branding',this)">Marca</button>
+        <button class="settings-tab" onclick="switchSettingsTab('cfg-seo',this)">SEO</button>
+        <button class="settings-tab" onclick="switchSettingsTab('cfg-whatsapp',this)">📱 WhatsApp</button>
+      </div>
+      <div class="settings-panel active" id="cfg-api">
+        <div class="settings-card">
+          <div class="settings-card-title">🔌 Conexión al Backend NestJS</div>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label class="form-label">URL base de la API <span class="req">*</span></label>
+              <input class="form-input" id="cfg-api-url" value="http://localhost:3000/api/v1" placeholder="http://localhost:3000/api/v1">
+            </div>
+          </div>
+          <div style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;">
+            <button class="btn-sm btn-primary-sm" onclick="testApiConnection()">🔍 Probar conexión</button>
+            <button class="btn-sm btn-success-sm" onclick="saveApiConfig()">💾 Guardar URL</button>
+            <span id="api-test-result" style="font-size:0.8rem;color:var(--text-dim);"></span>
+          </div>
+        </div>
+      </div>
+      <div class="settings-panel" id="cfg-branding">
+        <div class="settings-card">
+          <div class="settings-card-title">🎨 Identidad de marca</div>
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Nombre del sitio</label><input class="form-input" id="cfg-site-name" placeholder="Nucleri Academy"></div>
+            <div class="form-group"><label class="form-label">Tagline</label><input class="form-input" id="cfg-tagline" placeholder="Aprende. Crece. Lidera."></div>
+            <div class="form-group full">
+              <label class="form-label">Logo (subir archivo)</label>
+              <div class="img-upload-box" style="min-height:80px;" id="cfg-logo-box" onclick="triggerImgUpload('cfg-logo-file','cfg-logo-box','cfg-logo-preview')">
+                <input type="file" id="cfg-logo-file" accept="image/*" onchange="handleImgUpload(this,'cfg-logo-box','cfg-logo-preview')">
+                <div class="img-upload-text"><strong>Subir logo</strong>SVG o PNG con fondo transparente</div>
+                <img id="cfg-logo-preview" style="display:none;max-height:60px;object-fit:contain;">
+                <div class="img-upload-overlay"><span>✏️</span><p>Cambiar logo</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-panel" id="cfg-seo">
+        <div class="settings-card">
+          <div class="settings-card-title">🔍 SEO Global</div>
+          <div class="form-grid cols-1">
+            <div class="form-group"><label class="form-label">Meta título por defecto</label><input class="form-input" id="cfg-meta-title" placeholder="Nucleri Academy — Formación para emprendedores LATAM"></div>
+            <div class="form-group"><label class="form-label">Meta descripción</label><textarea class="form-textarea" id="cfg-meta-desc" rows="2" placeholder="Cursos de marketing, finanzas e industria alimentaria..."></textarea></div>
+            <div class="form-group"><label class="form-label">OG Image (URL o subir)</label><input class="form-input" id="cfg-og-image" placeholder="https://nucleri.com/og-image.png"></div>
+          </div>
+        </div>
+      </div>
+      <!-- ── WHATSAPP ── -->
+      <div class="settings-panel" id="cfg-whatsapp">
+        <div class="settings-card">
+          <div class="settings-card-title">📱 WhatsApp para compra de cursos</div>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.25rem">Cuando un usuario quiera adquirir un curso, se le redirigirá a este número de WhatsApp con un mensaje personalizado.</p>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Número WhatsApp <span class="req">*</span></label>
+              <input class="form-input" id="cfg-wa-number" placeholder="51999999999" style="font-family:var(--font-body)">
+              <div style="font-size:0.72rem;color:var(--text-dim);margin-top:.3rem">Solo dígitos con código de país. Ej: 51999999999 (Perú)</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Texto del botón</label>
+              <input class="form-input" id="cfg-wa-btn-text" placeholder="Adquirir vía WhatsApp">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Mensaje predeterminado</label>
+              <textarea class="form-textarea" id="cfg-wa-message" rows="3" placeholder="Hola! Me interesa el curso: {curso}. ¿Pueden darme más información y el precio?"></textarea>
+              <div style="font-size:0.72rem;color:var(--text-dim);margin-top:.3rem">Usa <code style="background:var(--surface3);padding:.1rem .4rem;border-radius:4px;font-size:.75rem">{curso}</code> para insertar el nombre del curso automáticamente.</div>
+            </div>
+          </div>
+          <div style="margin-top:1.25rem;padding:1rem;background:rgba(37,211,102,0.06);border:1px solid rgba(37,211,102,0.2);border-radius:12px">
+            <div style="font-size:.75rem;font-weight:700;color:#25D366;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem">Vista previa del botón en la web</div>
+            <a id="wa-preview-link" href="#" onclick="return false" target="_blank" style="display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1.25rem;background:#25D366;border-radius:10px;color:white;text-decoration:none;font-size:.875rem;font-weight:700;box-shadow:0 0 16px rgba(37,211,102,0.3)">
+              <svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.535 5.857L0 24l6.335-1.508A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 01-5.007-1.371l-.36-.213-3.731.889.932-3.617-.235-.372A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+              <span id="wa-preview-text">Adquirir vía WhatsApp</span>
+            </a>
+          </div>
+          <div style="margin-top:1.25rem;display:flex;gap:.75rem">
+            <button class="btn-sm btn-primary-sm" onclick="saveWhatsAppConfig()">💾 Guardar configuración</button>
+            <button class="btn-sm btn-ghost-sm" onclick="loadWhatsAppConfig()">↻ Recargar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+
+<!-- ══════════════════════ DRAWERS ══════════════════════ -->
+
+<!-- COURSE DRAWER -->
+<div class="drawer-overlay" id="courseDrawer" onclick="if(event.target===this)closeDrawer('courseDrawer')">
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3 id="courseDrawerTitle">➕ Nuevo Curso</h3>
+      <button class="drawer-close" onclick="closeDrawer('courseDrawer')">✕</button>
+    </div>
+    <div class="drawer-body">
+      <input type="hidden" id="course-id">
+
+      <div class="form-section">
+        <div class="form-section-title">Imágenes del curso</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Foto / Thumbnail del curso</label>
+            <div class="img-upload-box" id="course-thumb-box" onclick="triggerImgUpload('course-thumb-file','course-thumb-box','course-thumb-preview')">
+              <input type="file" id="course-thumb-file" accept="image/*" onchange="handleImgUpload(this,'course-thumb-box','course-thumb-preview')">
+              <div class="img-upload-icon">📸</div>
+              <div class="img-upload-text"><strong>Subir thumbnail</strong>600×340px recomendado</div>
+              <img id="course-thumb-preview" style="display:none;">
+              <div class="img-upload-overlay"><span>✏️</span><p>Cambiar imagen</p></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Banner / Imagen modal</label>
+            <div class="img-upload-box" id="course-banner-box" onclick="triggerImgUpload('course-banner-file','course-banner-box','course-banner-preview')">
+              <input type="file" id="course-banner-file" accept="image/*" onchange="handleImgUpload(this,'course-banner-box','course-banner-preview')">
+              <div class="img-upload-icon">🖼️</div>
+              <div class="img-upload-text"><strong>Subir banner</strong>1200×400px recomendado</div>
+              <img id="course-banner-preview" style="display:none;">
+              <div class="img-upload-overlay"><span>✏️</span><p>Cambiar banner</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Información principal</div>
+        <div class="form-grid">
+          <div class="form-group full"><label class="form-label">Título del curso <span class="req">*</span></label><input class="form-input" id="course-title" placeholder="Ej: Growth Marketing: Escala tu negocio"></div>
+          <div class="form-group">
+            <label class="form-label">Categoría <span class="req">*</span></label>
+            <select class="form-select" id="course-category-key" onchange="syncCategoryName()">
+              <option value="marketing">Marketing Digital</option>
+              <option value="finanzas">Finanzas</option>
+              <option value="lactea">Industria Láctea</option>
+              <option value="alimentos">Alimentos Naturales</option>
+              <option value="branding">Branding</option>
+              <option value="estrategia">Estrategia</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Nombre categoría (display)</label><input class="form-input" id="course-category" placeholder="Marketing Digital"></div>
+          
+          <div class="form-group">
+            <label class="form-label">Badge</label>
+            <select class="form-select" id="course-badge">
+              <option value="none">Sin badge</option>
+              <option value="badge-hot">🔥 Hot</option>
+              <option value="badge-new">🆕 Nuevo</option>
+              <option value="badge-pro">⭐ PRO</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Gradient CSS (banner color)</label><input class="form-input" id="course-gradient" placeholder="linear-gradient(135deg, #001a7a, #0057FF)"></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Instructor</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Nombre completo <span class="req">*</span></label><input class="form-input" id="course-instructor" placeholder="Carlos Mendoza"></div>
+          <div class="form-group"><label class="form-label">Rol / Título</label><input class="form-input" id="course-instructor-role" placeholder="Especialista en Growth"></div>
+          <div class="form-group"><label class="form-label">Iniciales avatar</label><input class="form-input" id="course-avatar-initials" placeholder="CM" maxlength="3"></div>
+          <div class="form-group"><label class="form-label">Avatar gradient</label><input class="form-input" id="course-avatar-gradient" placeholder="linear-gradient(135deg, #0057FF, #00D4FF)"></div>
+          <div class="form-group full">
+            <label class="form-label">Foto del instructor</label>
+            <div class="img-upload-box" style="min-height:100px;" id="course-instructor-img-box" onclick="triggerImgUpload('course-instructor-img-file','course-instructor-img-box','course-instructor-img-preview')">
+              <input type="file" id="course-instructor-img-file" accept="image/*" onchange="handleImgUpload(this,'course-instructor-img-box','course-instructor-img-preview')">
+              <div class="img-upload-icon">👤</div>
+              <div class="img-upload-text"><strong>Foto del instructor</strong>Cuadrada, mín. 200×200px</div>
+              <img id="course-instructor-img-preview" style="display:none;max-height:80px;border-radius:50%;width:80px;object-fit:cover;">
+              <div class="img-upload-overlay"><span>✏️</span><p>Cambiar foto</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Precio y duración</div>
+        <div class="form-grid cols-3">
+          <div class="form-group"><label class="form-label">Precio actual ($) <span class="req">*</span></label><input class="form-input" id="course-price" type="number" min="0" placeholder="79"></div>
+          <div class="form-group"><label class="form-label">Precio original ($)</label><input class="form-input" id="course-price-old" placeholder="$120"></div>
+          <div class="form-group"><label class="form-label">Rating (0-5)</label><input class="form-input" id="course-rating" type="number" min="0" max="5" step="0.1" placeholder="4.9"></div>
+          <div class="form-group"><label class="form-label">Horas (texto)</label><input class="form-input" id="course-hours" placeholder="18 horas"></div>
+          <div class="form-group"><label class="form-label">Horas (número)</label><input class="form-input" id="course-hours-num" type="number" min="1" placeholder="18"></div>
+          <div class="form-group"><label class="form-label">Lecciones</label><input class="form-input" id="course-lessons" placeholder="42 lecciones"></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Dificultad</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <div class="diff-selector" id="diff-selector">
+              <div class="diff-option" onclick="setDifficulty(1,this)">Básico</div>
+              <div class="diff-option active" onclick="setDifficulty(2,this)">Intermedio</div>
+              <div class="diff-option" onclick="setDifficulty(3,this)">Avanzado</div>
+              <div class="diff-option" onclick="setDifficulty(4,this)">Experto</div>
+            </div>
+            <input type="hidden" id="course-difficulty" value="2">
+          </div>
+          <div class="form-group"><label class="form-label">Etiqueta dificultad</label><input class="form-input" id="course-diff-label" placeholder="Intermedio"></div>
+          <div class="form-group full"><label class="form-label">Descripción del nivel</label><textarea class="form-textarea" id="course-diff-desc" rows="2" placeholder="Ideal para emprendedores..."></textarea></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">¿Qué aprenderás?</div>
+        <div class="array-list" id="learns-list"></div>
+        <button class="add-item-btn" onclick="addArrayItem('learns-list','Punto de aprendizaje')">+ Agregar punto</button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Requisitos previos</div>
+        <div class="array-list" id="requires-list"></div>
+        <button class="add-item-btn" onclick="addArrayItem('requires-list','Requisito')">+ Agregar requisito</button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Etiquetas (Tags)</div>
+        <div class="form-group">
+          <div class="tags-input-wrap" id="tags-wrap" onclick="document.getElementById('tags-input').focus()">
+            <input class="tags-real-input" id="tags-input" placeholder="Escribe y presiona Enter..." onkeydown="handleTagInput(event)">
+          </div>
+          <input type="hidden" id="course-tags">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Temario del curso</div>
+        <div class="curriculum-builder" id="curriculum-builder"></div>
+        <button class="add-item-btn" onclick="addCurriculumModule()">+ Agregar módulo</button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Visibilidad</div>
+        <div class="form-group">
+          <label class="form-label">Estado del curso</label>
+          <select class="form-select" id="course-active">
+            <option value="true">✅ Activo (visible en el sitio)</option>
+            <option value="false">⏸️ Inactivo (oculto)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-sm btn-ghost-sm" onclick="closeDrawer('courseDrawer')">Cancelar</button>
+      <button class="btn-sm btn-primary-sm" onclick="saveCourse()">💾 Guardar curso</button>
+    </div>
+  </div>
+</div>
+
+<!-- INSTRUCTOR DRAWER -->
+<div class="drawer-overlay" id="instructorDrawer" onclick="if(event.target===this)closeDrawer('instructorDrawer')">
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3 id="instructorDrawerTitle">➕ Nuevo Instructor</h3>
+      <button class="drawer-close" onclick="closeDrawer('instructorDrawer')">✕</button>
+    </div>
+    <div class="drawer-body">
+      <input type="hidden" id="instructor-id">
+      <div class="form-section">
+        <div class="form-section-title">Foto de perfil</div>
+        <div class="img-upload-box" style="max-width:240px;margin:0 auto;" id="instr-photo-box" onclick="triggerImgUpload('instr-photo-file','instr-photo-box','instr-photo-preview')">
+          <input type="file" id="instr-photo-file" accept="image/*" onchange="handleImgUpload(this,'instr-photo-box','instr-photo-preview')">
+          <div class="img-upload-icon">👤</div>
+          <div class="img-upload-text"><strong>Foto del instructor</strong>Cuadrada, 400×400px</div>
+          <img id="instr-photo-preview" style="display:none;width:100%;height:180px;object-fit:cover;">
+          <div class="img-upload-overlay"><span>✏️</span><p>Cambiar foto</p></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Información personal</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Nombre completo <span class="req">*</span></label><input class="form-input" id="instr-name" placeholder="Daniel Marín"></div>
+          <div class="form-group"><label class="form-label">Rol / Especialidad</label><input class="form-input" id="instr-role" placeholder="Growth Marketing Expert"></div>
+          <div class="form-group"><label class="form-label">Iniciales avatar</label><input class="form-input" id="instr-initials" placeholder="DM" maxlength="3"></div>
+          <div class="form-group"><label class="form-label">Gradient del banner</label><input class="form-input" id="instr-gradient" placeholder="linear-gradient(135deg,#001a7a,#0057FF)"></div>
+          <div class="form-group full"><label class="form-label">Biografía</label><textarea class="form-textarea" id="instr-bio" rows="4" placeholder="Especialista en..."></textarea></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Estadísticas</div>
+        <div class="form-grid cols-3">
+          <div class="form-group"><label class="form-label">Nº de cursos</label><input class="form-input" id="instr-courses-count" type="number" placeholder="4"></div>
+          <div class="form-group"><label class="form-label">Alumnos (texto)</label><input class="form-input" id="instr-students" placeholder="3.2K"></div>
+          <div class="form-group"><label class="form-label">Rating</label><input class="form-input" id="instr-rating" placeholder="4.9★"></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Especialidades (Tags)</div>
+        <div class="form-group">
+          <div class="tags-input-wrap" id="instr-tags-wrap" onclick="document.getElementById('instr-tags-input').focus()">
+            <input class="tags-real-input" id="instr-tags-input" placeholder="Ej: Growth Marketing, SEO..." onkeydown="handleTagInputGeneric(event,'instr-tags-wrap','instr-tags-input','instr-tags')">
+          </div>
+          <input type="hidden" id="instr-tags">
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Redes sociales</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">LinkedIn</label><input class="form-input" id="instr-linkedin" placeholder="https://linkedin.com/in/..."></div>
+          <div class="form-group"><label class="form-label">Instagram</label><input class="form-input" id="instr-instagram" placeholder="https://instagram.com/..."></div>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-sm btn-ghost-sm" onclick="closeDrawer('instructorDrawer')">Cancelar</button>
+      <button class="btn-sm btn-primary-sm" onclick="saveInstructor()">💾 Guardar instructor</button>
+    </div>
+  </div>
+</div>
+
+<!-- POST DRAWER -->
+<div class="drawer-overlay" id="postDrawer" onclick="if(event.target===this)closeDrawer('postDrawer')">
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3 id="postDrawerTitle">📝 Nuevo Artículo</h3>
+      <button class="drawer-close" onclick="closeDrawer('postDrawer')">✕</button>
+    </div>
+    <div class="drawer-body">
+      <input type="hidden" id="post-id">
+      <div class="form-section">
+        <div class="form-section-title">Imagen de portada</div>
+        <div class="img-upload-box" id="post-img-box" onclick="triggerImgUpload('post-img-file','post-img-box','post-img-preview')">
+          <input type="file" id="post-img-file" accept="image/*" onchange="handleImgUpload(this,'post-img-box','post-img-preview')">
+          <div class="img-upload-icon">📰</div>
+          <div class="img-upload-text"><strong>Imagen del artículo</strong>1200×630px (formato OG recomendado)</div>
+          <img id="post-img-preview" style="display:none;">
+          <div class="img-upload-overlay"><span>✏️</span><p>Cambiar imagen</p></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Información del artículo</div>
+        <div class="form-grid">
+          <div class="form-group full"><label class="form-label">Título <span class="req">*</span></label><input class="form-input" id="post-title" placeholder="Las 7 estrategias de Growth Marketing para 2025"></div>
+          <div class="form-group">
+            <label class="form-label">Categoría</label>
+            <select class="form-select" id="post-category">
+              <option value="Marketing">Marketing</option>
+              <option value="Finanzas">Finanzas</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Branding">Branding</option>
+              <option value="Estrategia">Estrategia</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Emoji</label><input class="form-input" id="post-emoji" placeholder="📈" maxlength="4"></div>
+          <div class="form-group"><label class="form-label">Autor</label><input class="form-input" id="post-author" placeholder="Daniel Marín"></div>
+          <div class="form-group"><label class="form-label">Iniciales autor</label><input class="form-input" id="post-author-initials" placeholder="DM" maxlength="3"></div>
+          <div class="form-group"><label class="form-label">Tiempo de lectura</label><input class="form-input" id="post-read-time" placeholder="8 min"></div>
+          <div class="form-group"><label class="form-label">Fecha de publicación</label><input class="form-input" id="post-date" type="date"></div>
+          <div class="form-group"><label class="form-label">Gradient del banner</label><input class="form-input" id="post-gradient" placeholder="linear-gradient(135deg,#001a7a,#0057FF)"></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Contenido del artículo</div>
+        <div class="editor-toolbar">
+          <button class="editor-btn" onclick="execCmd('bold')" title="Negrita"><b>B</b></button>
+          <button class="editor-btn" onclick="execCmd('italic')" title="Cursiva"><i>I</i></button>
+          <button class="editor-btn" onclick="execCmd('underline')" title="Subrayado"><u>U</u></button>
+          <div class="editor-sep"></div>
+          <button class="editor-btn" onclick="execCmd('formatBlock','h2')" title="Título H2">H2</button>
+          <button class="editor-btn" onclick="execCmd('formatBlock','h3')" title="Título H3">H3</button>
+          <button class="editor-btn" onclick="execCmd('formatBlock','p')" title="Párrafo">¶</button>
+          <div class="editor-sep"></div>
+          <button class="editor-btn" onclick="execCmd('insertUnorderedList')" title="Lista">• —</button>
+          <button class="editor-btn" onclick="execCmd('insertOrderedList')" title="Lista numerada">1.</button>
+          <button class="editor-btn" onclick="execCmd('formatBlock','blockquote')" title="Cita">❝</button>
+          <div class="editor-sep"></div>
+          <button class="editor-btn" onclick="execCmd('createLink',prompt('URL:'))" title="Enlace">🔗</button>
+        </div>
+        <div class="editor-content" id="post-content-editor" contenteditable="true" placeholder="Escribe el contenido del artículo aquí..."></div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-sm btn-ghost-sm" onclick="closeDrawer('postDrawer')">Cancelar</button>
+      <button class="btn-sm btn-primary-sm" onclick="savePost()">💾 Publicar artículo</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- USER DRAWER -->
+<div class="drawer-overlay" id="userDrawer" onclick="if(event.target===this)closeDrawer('userDrawer')">
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3 id="userDrawerTitle">➕ Nuevo Usuario</h3>
+      <button class="drawer-close" onclick="closeDrawer('userDrawer')">✕</button>
+    </div>
+    <div class="drawer-body">
+      <input type="hidden" id="user-id">
+      <div class="form-section">
+        <div class="form-section-title">Información personal</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Nombre completo <span class="req">*</span></label><input class="form-input" id="usr-name" placeholder="María García"></div>
+          <div class="form-group"><label class="form-label">Teléfono / WhatsApp</label><input class="form-input" id="usr-phone" placeholder="+51 999 999 999"></div>
+          <div class="form-group full"><label class="form-label">Email <span class="req">*</span></label><input class="form-input" id="usr-email" type="email" placeholder="correo@email.com" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Acceso y seguridad</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Rol</label>
+            <select class="form-select" id="usr-role">
+              <option value="student">Estudiante</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña <span id="usr-pass-hint" style="font-weight:400;color:var(--text-dim)">(nueva)</span></label>
+            <input class="form-input" id="usr-pass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-sm btn-ghost-sm" onclick="closeDrawer('userDrawer')">Cancelar</button>
+      <button class="btn-sm btn-primary-sm" onclick="saveUser()">💾 Guardar usuario</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST CONTAINER ── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ── CONFIRM DIALOG ── -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">⚠️</div>
+    <h3 id="confirmTitle">¿Estás seguro?</h3>
+    <p id="confirmMsg">Esta acción no se puede deshacer.</p>
+    <div class="confirm-actions">
+      <button class="btn-sm btn-ghost-sm" onclick="closeConfirm()">Cancelar</button>
+      <button class="btn-sm btn-danger-sm" id="confirmBtn" onclick="execConfirm()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  NUCLERI ADMIN PANEL — JavaScript
+// ════════════════════════════════════════════════════════
+
+// ── CONFIG ──────────────────────────────────────────────
+let API_BASE = '/api';
+
+// ── LOCAL DATA STORES ────────────────────────────────────
+let DB = {
+  courses: [],
+  instructors: JSON.parse(localStorage.getItem('nucleri_instructors') || '[]'),
+  posts: JSON.parse(localStorage.getItem('nucleri_posts') || '[]'),
+  homepage: JSON.parse(localStorage.getItem('nucleri_homepage') || '{}'),
+  about: JSON.parse(localStorage.getItem('nucleri_about') || '{}'),
+};
+
+// ── DEFAULT DATA ─────────────────────────────────────────
+if (!DB.instructors.length) {
+  DB.instructors = [
+    { id: 1, name: 'Daniel Marín', role: 'Growth Marketing Expert', initials: 'DM', gradient: 'linear-gradient(135deg,#001a7a,#0057FF,#00aeff)', bio: 'Especialista en estrategias de crecimiento digital, posicionamiento de marca y marketing basado en datos.', coursesCount: 4, students: '3.2K', rating: '4.9★', tags: ['Growth Marketing','Analytics','Branding','SEO / SEM'], linkedin: '', instagram: '', photo: null },
+    { id: 2, name: 'Luis Portilla', role: 'Ing. Alimentario', initials: 'LP', gradient: 'linear-gradient(135deg,#001830,#0041CC,#1A6FFF)', bio: 'Con más de 5 años de experiencia en el rubro alimentario. Referente en la industria láctea y fermentados.', coursesCount: 5, students: '4.1K', rating: '4.9★', tags: ['Industria Láctea','HACCP','Calidad','Fermentación'], linkedin: '', instagram: '', photo: null },
+    { id: 3, name: 'Fabrizio Rodríguez', role: 'Ing. Industrial · Consultor', initials: 'FR', gradient: 'linear-gradient(135deg,#001440,#003BBA,#0057FF)', bio: 'Más de 5 años de experiencia en consultoría industrial. Especialista en eficiencia operativa.', coursesCount: 3, students: '2.8K', rating: '4.8★', tags: ['Consultoría','Ing. Industrial','Procesos','Lean'], linkedin: '', instagram: '', photo: null },
+  ];
+  saveLocal('instructors');
+}
+
+if (!DB.posts.length) {
+  DB.posts = [
+    { id: 1, title: 'Las 7 estrategias de Growth Marketing para 2025', category: 'Marketing', emoji: '📈', gradient: 'linear-gradient(135deg,#001a7a,#0057FF,#00aeff)', author: 'Daniel Marín', authorInitials: 'DM', date: '2025-05-15', readTime: '8 min', content: '<p>El Growth Marketing ha evolucionado enormemente...</p><h3>1. Marketing basado en datos</h3><p>Ya no basta con crear contenido bonito...</p>', image: null },
+    { id: 2, title: '5 errores en producción de yogurt artesanal', category: 'Industrial', emoji: '🥛', gradient: 'linear-gradient(135deg,#001830,#0041CC,#1A6FFF)', author: 'Luis Portilla', authorInitials: 'LP', date: '2025-05-08', readTime: '6 min', content: '<p>La producción de yogurt artesanal parece simple...</p>', image: null },
+    { id: 3, title: 'Flujo de caja: la métrica más ignorada', category: 'Finanzas', emoji: '💰', gradient: 'linear-gradient(135deg,#001440,#003BBA,#0057FF)', author: 'Fabrizio Rodríguez', authorInitials: 'FR', date: '2025-05-01', readTime: '5 min', content: '<p>La mayoría de los negocios no quiebran por falta de clientes...</p>', image: null },
+  ];
+  saveLocal('posts');
+}
+
+if (!Object.keys(DB.homepage).length) {
+  DB.homepage = {
+    heroBadge: '🎯 Nuevo · Plan de negocios para PYMES disponible',
+    heroTitle: 'Aprende. Crece. Lidera.',
+    heroSubtitleEm: 'Tu negocio',
+    heroDesc: 'Plataforma de formación y consultoría especializada en marketing digital, industria alimentaria y finanzas empresariales.',
+    heroBtn1: 'Explorar cursos →', heroBtn2: 'Conocer más',
+    stat1Val: '12K+', stat1Label: 'Estudiantes', stat1Icon: '👥',
+    stat2Val: '45+', stat2Label: 'Cursos', stat2Icon: '🎓',
+    stat3Val: '4.9★', stat3Label: 'Calificación', stat3Icon: '⭐',
+    ctaTitle: '¿Listo para impulsar tu negocio?',
+    ctaDesc: 'Explora nuestros cursos, solicita una consultoría o contáctanos directamente.',
+    ctaBtn1: 'Ver cursos →', ctaBtn2: 'Solicitar consultoría',
+    footerDesc: 'Plataforma líder de formación empresarial en LATAM.',
+    copyright: '© 2025 Nucleri. Todos los derechos reservados.',
+    socialLi: '', socialIg: '', socialYt: '', socialTw: '',
+  };
+  saveLocal('homepage');
+}
+
+if (!Object.keys(DB.about).length) {
+  DB.about = {
+    title: 'Somos Nucleri Academy',
+    desc: 'Nacimos para democratizar el conocimiento empresarial de calidad en América Latina.',
+    mission: 'Empoderar a emprendedores y profesionales de LATAM con formación práctica y accesible.',
+    vision: 'Ser la plataforma de referencia para el desarrollo empresarial en América Latina.',
+    values: [
+      { icon: '🎯', title: 'Excelencia', desc: 'Contenido de máxima calidad, sin compromisos.' },
+      { icon: '🌎', title: 'Comunidad', desc: 'Red de profesionales activos en toda la región.' },
+      { icon: '💡', title: 'Innovación', desc: 'Metodologías actualizadas y prácticas reales.' },
+    ],
+    whyUs: [
+      { icon: '🎓', title: 'Formación práctica', desc: 'Contenido aplicable desde el primer día.' },
+      { icon: '🏭', title: 'Expertos del sector', desc: 'Instructores con experiencia real en industrias.' },
+      { icon: '🤝', title: 'Acompañamiento real', desc: 'Consultoría directa con los expertos.' },
+    ],
+  };
+  saveLocal('about');
+}
+
+// ── HELPERS ──────────────────────────────────────────────
+function saveLocal(key) {
+  localStorage.setItem('nucleri_' + key, JSON.stringify(DB[key]));
+}
+
+function toast(msg, type = 'success') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  t.innerHTML = `<span>${icons[type]||'✅'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => { t.classList.add('toast-out'); setTimeout(() => t.remove(), 260); }, 3200);
+}
+
+let confirmCallback = null;
+function confirm(title, msg, cb, btnLabel = 'Eliminar') {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  document.getElementById('confirmBtn').textContent = btnLabel;
+  confirmCallback = cb;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); confirmCallback = null; }
+function execConfirm() { if (confirmCallback) confirmCallback(); closeConfirm(); }
+
+// ── NAVIGATION ───────────────────────────────────────────
+const pageTitles = { dashboard: 'Dashboard', courses: 'Cursos', instructors: 'Instructores', blog: 'Blog', homepage: 'Página de Inicio', about: 'Sobre Nosotros', settings: 'Configuración' };
+
+function showPage(pageId, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + pageId);
+  if (page) page.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  else document.querySelectorAll('.nav-item').forEach(n => { if (n.textContent.trim().toLowerCase().includes(pageId.toLowerCase().slice(0,5))) n.classList.add('active'); });
+  document.getElementById('topbar-title').textContent = pageTitles[pageId] || pageId;
+  document.getElementById('topbar-section').textContent = pageTitles[pageId] || pageId;
+  if (pageId === 'homepage') loadHomepageForm();
+  if (pageId === 'about') loadAboutForm();
+  if (pageId === 'settings') document.getElementById('cfg-api-url').value = API_BASE;
+}
+
+// ── SETTINGS TAB ─────────────────────────────────────────
+function switchSettingsTab(panelId, btn) {
+  const parent = btn.closest('.settings-tabs').nextElementSibling;
+  const allPanels = btn.closest('.settings-tabs').parentElement.querySelectorAll('.settings-panel');
+  allPanels.forEach(p => p.classList.remove('active'));
+  btn.closest('.settings-tabs').querySelectorAll('.settings-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── DRAWER ───────────────────────────────────────────────
+function openDrawer(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeDrawer(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.drawer-overlay.open').forEach(d => d.classList.remove('open')); closeConfirm(); document.body.style.overflow = ''; } });
+
+// ── IMAGE UPLOAD ──────────────────────────────────────────
+function triggerImgUpload(fileInputId, boxId, previewId) {
+  document.getElementById(fileInputId).click();
+}
+function handleImgUpload(input, boxId, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const box = document.getElementById(boxId);
+    const prev = document.getElementById(previewId);
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    box.classList.add('has-img');
+    input._base64 = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function getImgData(fileInputId) {
+  const el = document.getElementById(fileInputId);
+  return el._base64 || null;
+}
+
+// ── TABLE SEARCH/FILTER ───────────────────────────────────
+function filterTable(searchId, tableId) {
+  const q = document.getElementById(searchId).value.toLowerCase();
+  document.querySelectorAll(`#${tableId} tbody tr`).forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+function filterByCategory(val) {
+  document.querySelectorAll('#courses-table tbody tr').forEach(tr => {
+    if (!val) { tr.style.display = ''; return; }
+    tr.style.display = tr.dataset.category === val ? '' : 'none';
+  });
+}
+
+// ── TAGS INPUT ────────────────────────────────────────────
+let courseTags = [];
+function handleTagInput(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/, '');
+    if (val && !courseTags.includes(val)) addTag(val, 'tags-wrap', 'tags-input', 'course-tags', courseTags);
+    e.target.value = '';
+  } else if (e.key === 'Backspace' && !e.target.value && courseTags.length) {
+    removeTag(courseTags[courseTags.length-1], 'tags-wrap', 'course-tags', courseTags);
+  }
+}
+function addTag(val, wrapId, inputId, hiddenId, arr) {
+  arr.push(val);
+  const wrap = document.getElementById(wrapId);
+  const inputEl = document.getElementById(inputId);
+  const chip = document.createElement('span');
+  chip.className = 'tag-chip';
+  chip.innerHTML = `${val}<button onclick="removeTag('${val.replace(/'/g,"\\'")}','${wrapId}','${hiddenId}',${JSON.stringify(arr).replace(/"/g,"'")})" type="button">×</button>`;
+  wrap.insertBefore(chip, inputEl);
+  document.getElementById(hiddenId).value = JSON.stringify(arr);
+}
+function removeTag(val, wrapId, hiddenId, arr) {
+  const idx = arr.indexOf(val); if (idx > -1) arr.splice(idx, 1);
+  renderTags(arr, wrapId, hiddenId);
+}
+function renderTagsFromArray(arr, wrapId, inputId, hiddenId, arrRef) {
+  const wrap = document.getElementById(wrapId);
+  const inputEl = document.getElementById(inputId);
+  wrap.querySelectorAll('.tag-chip').forEach(c => c.remove());
+  arr.forEach(val => {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.dataset.val = val;
+    chip.innerHTML = `${val}<button type="button" onclick="removeTagFrom('${val.replace(/'/g,"\\'")}','${wrapId}','${inputId}','${hiddenId}')">×</button>`;
+    wrap.insertBefore(chip, inputEl);
+  });
+  document.getElementById(hiddenId).value = JSON.stringify(arr);
+}
+function removeTagFrom(val, wrapId, inputId, hiddenId) {
+  const wrap = document.getElementById(wrapId);
+  wrap.querySelectorAll('.tag-chip').forEach(c => { if (c.dataset.val === val) c.remove(); });
+  const chips = Array.from(wrap.querySelectorAll('.tag-chip')).map(c => c.dataset.val);
+  document.getElementById(hiddenId).value = JSON.stringify(chips);
+  if (wrapId === 'tags-wrap') courseTags = chips;
+  else instrTags = chips;
+}
+function handleTagInputGeneric(e, wrapId, inputId, hiddenId) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/, '');
+    const currentTags = JSON.parse(document.getElementById(hiddenId).value || '[]');
+    if (val && !currentTags.includes(val)) {
+      currentTags.push(val);
+      renderTagsFromArray(currentTags, wrapId, inputId, hiddenId, currentTags);
+    }
+    e.target.value = '';
+  }
+}
+function renderTags(arr, wrapId, hiddenId) {
+  const wrap = document.getElementById(wrapId);
+  wrap.querySelectorAll('.tag-chip').forEach(c => c.remove());
+  const inputEl = wrap.querySelector('.tags-real-input');
+  arr.forEach(val => {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.dataset.val = val;
+    chip.innerHTML = `${val}<button type="button" onclick="removeTagFrom('${val.replace(/'/g,"\\'")}','${wrapId}','tags-input','${hiddenId}')">×</button>`;
+    wrap.insertBefore(chip, inputEl);
+  });
+  document.getElementById(hiddenId).value = JSON.stringify(arr);
+}
+
+// ── ARRAY LIST (learns / requires) ───────────────────────
+function addArrayItem(listId, placeholder) {
+  const list = document.getElementById(listId);
+  const row = document.createElement('div');
+  row.className = 'array-item';
+  row.innerHTML = `<input class="form-input" placeholder="${placeholder}..."><button class="remove-btn" onclick="this.parentElement.remove()" title="Eliminar">×</button>`;
+  list.appendChild(row);
+  row.querySelector('input').focus();
+}
+function getArrayValues(listId) {
+  return Array.from(document.querySelectorAll(`#${listId} .array-item input`)).map(i => i.value.trim()).filter(Boolean);
+}
+function setArrayValues(listId, arr, placeholder) {
+  const list = document.getElementById(listId);
+  list.innerHTML = '';
+  (arr || []).forEach(val => {
+    const row = document.createElement('div');
+    row.className = 'array-item';
+    row.innerHTML = `<input class="form-input" value="${val.replace(/"/g,'&quot;')}" placeholder="${placeholder}..."><button class="remove-btn" onclick="this.parentElement.remove()">×</button>`;
+    list.appendChild(row);
+  });
+}
+
+// ── CURRICULUM BUILDER ────────────────────────────────────
+let moduleCount = 0;
+function addCurriculumModule(data) {
+  const id = 'mod-' + (++moduleCount);
+  const builder = document.getElementById('curriculum-builder');
+  const block = document.createElement('div');
+  block.className = 'module-block'; block.id = id;
+  const lessons = data ? data.lessons : [];
+  const lessonsHTML = lessons.length ? lessons.map(l => lessonRowHTML(l.title, l.duration)).join('') : lessonRowHTML('','');
+  block.innerHTML = `
+    <div class="module-block-header">
+      <span class="module-drag">⠿</span>
+      <input value="${(data&&data.title)||''}" placeholder="Nombre del módulo (ej: Fundamentos de Growth)">
+      <button class="module-remove" onclick="document.getElementById('${id}').remove()" title="Eliminar módulo">✕</button>
+    </div>
+    <div class="module-block-lessons" id="${id}-lessons">
+      ${lessonsHTML}
+    </div>
+    <div style="padding:0.5rem 1rem 0.75rem;">
+      <button class="add-item-btn" onclick="addLesson('${id}-lessons')" style="width:100%;">+ Agregar lección</button>
+    </div>`;
+  builder.appendChild(block);
+}
+function lessonRowHTML(title, duration) {
+  return `<div class="lesson-row">
+    <input placeholder="Título de la lección" value="${(title||'').replace(/"/g,'&quot;')}">
+    <input placeholder="Duración (8m 30s)" value="${(duration||'').replace(/"/g,'&quot;')}">
+    <button style="width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,68,68,0.25);background:transparent;color:#ff6b6b;cursor:pointer;font-size:0.75rem;" onclick="this.closest('.lesson-row').remove()">×</button>
+  </div>`;
+}
+function addLesson(lessonContainerId) {
+  const c = document.getElementById(lessonContainerId);
+  const row = document.createElement('div');
+  row.innerHTML = lessonRowHTML('','');
+  c.appendChild(row.firstElementChild);
+  c.lastElementChild.querySelector('input').focus();
+}
+function getCurriculumData() {
+  return Array.from(document.querySelectorAll('#curriculum-builder .module-block')).map((block, i) => {
+    const title = block.querySelector('.module-block-header input').value.trim();
+    const lessonRows = block.querySelectorAll('.lesson-row');
+    const lessons = Array.from(lessonRows).map(row => {
+      const inputs = row.querySelectorAll('input');
+      return { title: inputs[0].value.trim(), duration: inputs[1].value.trim() };
+    }).filter(l => l.title);
+    return { title, lessons, sortOrder: i };
+  }).filter(m => m.title);
+}
+function clearCurriculum() { document.getElementById('curriculum-builder').innerHTML = ''; moduleCount = 0; }
+
+// ── DIFFICULTY ────────────────────────────────────────────
+function setDifficulty(val, el) {
+  document.querySelectorAll('#diff-selector .diff-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('course-difficulty').value = val;
+  const labels = { 1: 'Básico', 2: 'Intermedio', 3: 'Avanzado', 4: 'Experto' };
+  document.getElementById('course-diff-label').value = labels[val] || '';
+}
+function syncCategoryName() {
+  const map = { marketing: 'Marketing Digital', finanzas: 'Finanzas', lactea: 'Industria Láctea', alimentos: 'Alimentos Naturales', branding: 'Branding', estrategia: 'Estrategia' };
+  const key = document.getElementById('course-category-key').value;
+  document.getElementById('course-category').value = map[key] || '';
+}
+
+// ── API ───────────────────────────────────────────────────
+async function apiFetch(path, method = 'GET', body = null) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API_BASE + path, opts);
+  if (res.status === 401) { window.location.href = '/'; return null; }
+  if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error || `HTTP ${res.status}`); }
+  return res.json();
+}
+
+async function checkApiStatus() {
+  try {
+    const data = await apiFetch('/courses/stats');
+    document.getElementById('apiDot').classList.remove('offline');
+    document.getElementById('apiStatus').textContent = 'API Conectada';
+    document.getElementById('stat-api').innerHTML = '<span style="color:var(--green)">Online</span>';
+    document.getElementById('stat-api-sub').textContent = `${data.total} cursos en base de datos`;
+    return true;
+  } catch {
+    document.getElementById('apiDot').classList.add('offline');
+    document.getElementById('apiStatus').textContent = 'API Sin conexión';
+    document.getElementById('stat-api').innerHTML = '<span style="color:var(--red)">Offline</span>';
+    document.getElementById('stat-api-sub').textContent = 'Verifica el backend NestJS';
+    return false;
+  }
+}
+
+async function testApiConnection() {
+  const result = document.getElementById('api-test-result');
+  result.textContent = '⏳ Probando...'; result.style.color = 'var(--text-dim)';
+  try {
+    await apiFetch('/courses/stats');
+    result.textContent = '✅ Conexión exitosa'; result.style.color = 'var(--green)';
+    toast('API conectada correctamente', 'success');
+  } catch (e) {
+    result.textContent = '❌ Sin respuesta — verifica que el backend esté corriendo'; result.style.color = 'var(--red)';
+    toast('No se pudo conectar a la API', 'error');
+  }
+}
+
+function saveApiConfig() {
+  API_BASE = document.getElementById('cfg-api-url').value.trim().replace(/\/$/, '');
+  localStorage.setItem('nucleri_api_base', API_BASE);
+  toast('URL de API guardada', 'success');
+  checkApiStatus();
+}
+
+// ════════════════════════════════════════════════════════
+//  COURSES CRUD
+// ════════════════════════════════════════════════════════
+async function loadCourses() {
+  try {
+    DB.courses = await apiFetch('/courses');
+    renderCoursesTable();
+    document.getElementById('badge-courses').textContent = DB.courses.length;
+    document.getElementById('stat-courses').textContent = DB.courses.filter(c=>c.isActive).length;
+    document.getElementById('stat-courses-sub').textContent = `${DB.courses.filter(c=>!c.isActive).length} inactivos`;
+    document.getElementById('courses-count-label').textContent = `(${DB.courses.length})`;
+  } catch(e) {
+    document.getElementById('courses-tbody').innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>No se pudo cargar</h3><p>Verifica la conexión al backend NestJS</p></div></td></tr>`;
+  }
+}
+
+function renderCoursesTable() {
+  const tbody = document.getElementById('courses-tbody');
+  if (!DB.courses.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">🎓</div><h3>Sin cursos</h3><p>Crea tu primer curso</p></div></td></tr>`; return; }
+  tbody.innerHTML = DB.courses.map(c => {
+    const thumbHTML = c.thumbImage
+      ? `<div class="course-thumb-mini"><img src="${c.thumbImage}" alt=""></div>`
+      : `<div class="course-thumb-mini" style="background:${c.gradient||'var(--surface3)'}"><span style="font-size:1rem;">${c.emoji||'📚'}</span></div>`;
+    const badgeMap = { 'badge-hot':'badge-hot','badge-pro':'badge-pro','badge-new':'badge-new','none':'badge-none' };
+    const badgeLabelMap = { 'badge-hot':'🔥 Hot','badge-pro':'PRO','badge-new':'Nuevo','none':'—' };
+    return `<tr data-category="${c.categoryKey||''}">
+      <td><div class="course-info">${thumbHTML}<span class="td-main">${c.title}</span></div></td>
+      <td>${c.category||'—'}</td>
+      <td>$${c.price}</td>
+      <td>${c.hoursNum}h</td>
+      <td>${c.rating}★</td>
+      <td><span class="badge ${badgeMap[c.badge]||'badge-none'}">${badgeLabelMap[c.badge]||'—'}</span></td>
+      <td><span class="badge ${c.isActive?'badge-active':'badge-inactive'}">${c.isActive?'✓ Activo':'Inactivo'}</span></td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="editCourse(${c.id})" title="Editar">✏️</button>
+        <button class="icon-btn" onclick="toggleCourseActive(${c.id})" title="${c.isActive?'Desactivar':'Activar'}">${c.isActive?'⏸':'▶'}</button>
+        <button class="icon-btn delete" onclick="deleteCourse(${c.id},'${c.title.replace(/'/g,"\\'")}')">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openCourseDrawer(course) {
+  document.getElementById('courseDrawerTitle').textContent = course ? '✏️ Editar Curso' : '➕ Nuevo Curso';
+  // Reset
+  document.getElementById('course-id').value = course ? course.id : '';
+  document.getElementById('course-title').value = course ? course.title : '';
+  document.getElementById('course-category-key').value = course ? course.categoryKey : 'marketing';
+  document.getElementById('course-category').value = course ? course.category : 'Marketing Digital';
+  document.getElementById('course-gradient').value = course ? course.gradient : '';
+  document.getElementById('course-badge').value = course ? (course.badge||'none') : 'none';
+  document.getElementById('course-instructor').value = course ? course.instructor : '';
+  document.getElementById('course-instructor-role').value = course ? course.instructorRole : '';
+  document.getElementById('course-avatar-initials').value = course ? course.avatarInitials : '';
+  document.getElementById('course-avatar-gradient').value = course ? course.avatarGradient : '';
+  document.getElementById('course-price').value = course ? course.price : '';
+  document.getElementById('course-price-old').value = course ? course.priceOld : '';
+  document.getElementById('course-rating').value = course ? course.rating : '0';
+  document.getElementById('course-hours').value = course ? course.hours : '';
+  document.getElementById('course-hours-num').value = course ? course.hoursNum : '';
+  document.getElementById('course-lessons').value = course ? course.lessons : '';
+  document.getElementById('course-difficulty').value = course ? course.difficulty : 2;
+  document.getElementById('course-diff-label').value = course ? course.diffLabel : '';
+  document.getElementById('course-diff-desc').value = course ? course.diffDesc : '';
+  document.getElementById('course-active').value = course ? String(course.isActive) : 'true';
+
+  // Difficulty buttons
+  const diffVal = course ? course.difficulty : 2;
+  document.querySelectorAll('#diff-selector .diff-option').forEach((o,i) => o.classList.toggle('active', i+1 === diffVal));
+
+  // Arrays
+  setArrayValues('learns-list', course ? course.learns : [], 'Punto de aprendizaje');
+  setArrayValues('requires-list', course ? course.requires : [], 'Requisito');
+
+  // Tags
+  courseTags = course ? (course.tags || []) : [];
+  renderTags(courseTags, 'tags-wrap', 'course-tags');
+
+  // Curriculum
+  clearCurriculum();
+  const curriculum = course ? (course.curriculum || []) : [];
+  if (curriculum.length) curriculum.sort((a,b)=>(a.sortOrder||0)-(b.sortOrder||0)).forEach(m => addCurriculumModule(m));
+  else addCurriculumModule();
+
+  // Images
+  resetImgBox('course-thumb-box', 'course-thumb-preview', 'course-thumb-file');
+  resetImgBox('course-banner-box', 'course-banner-preview', 'course-banner-file');
+  resetImgBox('course-instructor-img-box', 'course-instructor-img-preview', 'course-instructor-img-file');
+  if (course && course.thumbImage) previewImgFromUrl('course-thumb-box', 'course-thumb-preview', course.thumbImage);
+  if (course && course.bannerImage) previewImgFromUrl('course-banner-box', 'course-banner-preview', course.bannerImage);
+  if (course && course.instructorPhoto) previewImgFromUrl('course-instructor-img-box', 'course-instructor-img-preview', course.instructorPhoto);
+
+  openDrawer('courseDrawer');
+}
+
+function resetImgBox(boxId, previewId, fileId) {
+  const box = document.getElementById(boxId);
+  const prev = document.getElementById(previewId);
+  box.classList.remove('has-img');
+  prev.style.display = 'none'; prev.src = '';
+  const fileEl = document.getElementById(fileId);
+  if (fileEl) { fileEl.value = ''; delete fileEl._base64; }
+}
+function previewImgFromUrl(boxId, previewId, url) {
+  const box = document.getElementById(boxId);
+  const prev = document.getElementById(previewId);
+  prev.src = url; prev.style.display = 'block'; box.classList.add('has-img');
+}
+
+async function saveCourse() {
+  const title = document.getElementById('course-title').value.trim();
+  if (!title) { toast('El título es obligatorio', 'error'); return; }
+
+  const badgeVal = document.getElementById('course-badge').value;
+  const badgeLabelMap = { 'badge-hot': '🔥 Hot', 'badge-pro': 'PRO', 'badge-new': 'NUEVO', 'none': null };
+
+  const payload = {
+    title,
+    category: document.getElementById('course-category').value.trim(),
+    categoryKey: document.getElementById('course-category-key').value,
+    emoji: '📚',
+    thumbClass: 'thumb-' + document.getElementById('course-category-key').value,
+    gradient: document.getElementById('course-gradient').value.trim() || 'linear-gradient(135deg, #001a7a, #0057FF, #00aeff)',
+    badge: badgeVal,
+    badgeLabel: badgeLabelMap[badgeVal],
+    instructor: document.getElementById('course-instructor').value.trim(),
+    instructorRole: document.getElementById('course-instructor-role').value.trim(),
+    avatarInitials: document.getElementById('course-avatar-initials').value.trim(),
+    avatarGradient: document.getElementById('course-avatar-gradient').value.trim() || 'linear-gradient(135deg, #0057FF, #00D4FF)',
+    price: parseFloat(document.getElementById('course-price').value) || 0,
+    priceOld: document.getElementById('course-price-old').value.trim(),
+    rating: parseFloat(document.getElementById('course-rating').value) || 0,
+    ratingCount: `(0 valoraciones)`,
+    hours: document.getElementById('course-hours').value.trim(),
+    hoursNum: parseInt(document.getElementById('course-hours-num').value) || 1,
+    lessons: document.getElementById('course-lessons').value.trim(),
+    difficulty: parseInt(document.getElementById('course-difficulty').value) || 2,
+    diffLabel: document.getElementById('course-diff-label').value.trim(),
+    diffDesc: document.getElementById('course-diff-desc').value.trim(),
+    learns: getArrayValues('learns-list'),
+    requires: getArrayValues('requires-list'),
+    tags: JSON.parse(document.getElementById('course-tags').value || '[]'),
+    curriculum: getCurriculumData(),
+    isActive: document.getElementById('course-active').value === 'true',
+    // images (base64 — en producción usar FormData y endpoint upload separado)
+    thumbImage: getImgData('course-thumb-file') || (DB.courses.find(c=>c.id==document.getElementById('course-id').value)||{}).thumbImage || null,
+    bannerImage: getImgData('course-banner-file') || (DB.courses.find(c=>c.id==document.getElementById('course-id').value)||{}).bannerImage || null,
+    instructorPhoto: getImgData('course-instructor-img-file') || (DB.courses.find(c=>c.id==document.getElementById('course-id').value)||{}).instructorPhoto || null,
+  };
+
+  const id = document.getElementById('course-id').value;
+  try {
+    if (id) {
+      await apiFetch('/courses/' + id, 'PUT', payload);
+      toast('Curso actualizado ✅', 'success');
+    } else {
+      await apiFetch('/courses', 'POST', payload);
+      toast('Curso creado ✅', 'success');
+    }
+    closeDrawer('courseDrawer');
+    loadCourses();
+  } catch(e) {
+    toast('Error al guardar: ' + e.message, 'error');
+  }
+}
+
+async function editCourse(id) {
+  try {
+    const course = await apiFetch('/courses/' + id);
+    openCourseDrawer(course);
+  } catch(e) { toast('Error al cargar el curso', 'error'); }
+}
+
+async function toggleCourseActive(id) {
+  try {
+    await apiFetch('/courses/' + id + '/toggle-active', 'PATCH');
+    toast('Estado cambiado', 'info');
+    loadCourses();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+function deleteCourse(id, title) {
+  confirm('¿Eliminar curso?', `"${title}" será eliminado permanentemente.`, async () => {
+    try {
+      await apiFetch('/courses/' + id, 'DELETE');
+      toast('Curso eliminado', 'info');
+      loadCourses();
+    } catch(e) { toast('Error: ' + e.message, 'error'); }
+  });
+}
+
+// ════════════════════════════════════════════════════════
+//  INSTRUCTORS CRUD (localStorage)
+// ════════════════════════════════════════════════════════
+let instrTags = [];
+
+function loadInstructors() {
+  renderInstructorsGrid();
+  document.getElementById('badge-instructors').textContent = DB.instructors.length;
+  document.getElementById('stat-instructors').textContent = DB.instructors.length;
+  document.getElementById('stat-instructors-sub').textContent = 'Equipo docente activo';
+}
+
+function renderInstructorsGrid() {
+  const grid = document.getElementById('instructors-grid');
+  if (!DB.instructors.length) { grid.innerHTML = `<div class="empty-state"><div class="empty-state-icon">👤</div><h3>Sin instructores</h3></div>`; return; }
+  grid.innerHTML = DB.instructors.map(i => {
+    const bannerInner = i.photo
+      ? `<img src="${i.photo}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><span class="initials" style="opacity:0;">${i.initials}</span>`
+      : `<span class="initials">${i.initials}</span>`;
+    return `<div class="instructor-admin-card">
+      <div class="instructor-banner" style="background:${i.gradient}">${bannerInner}</div>
+      <div class="instructor-admin-body">
+        <h4>${i.name}</h4>
+        <div class="instructor-role-text">${i.role}</div>
+        <p class="instructor-bio-preview">${i.bio||'Sin biografía.'}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.75rem;">
+          ${(i.tags||[]).map(t=>`<span style="font-size:0.68rem;padding:0.15rem 0.5rem;background:rgba(0,87,255,0.1);border:1px solid rgba(0,87,255,0.2);border-radius:100px;color:var(--accent);">${t}</span>`).join('')}
+        </div>
+        <div class="instructor-admin-actions">
+          <button class="btn-sm btn-ghost-sm" style="flex:1;" onclick="editInstructor(${i.id})">✏️ Editar</button>
+          <button class="icon-btn delete" onclick="deleteInstructor(${i.id},'${i.name.replace(/'/g,"\\'")}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openInstructorDrawer(instr) {
+  document.getElementById('instructorDrawerTitle').textContent = instr ? '✏️ Editar Instructor' : '➕ Nuevo Instructor';
+  document.getElementById('instructor-id').value = instr ? instr.id : '';
+  document.getElementById('instr-name').value = instr ? instr.name : '';
+  document.getElementById('instr-role').value = instr ? instr.role : '';
+  document.getElementById('instr-initials').value = instr ? instr.initials : '';
+  document.getElementById('instr-gradient').value = instr ? instr.gradient : '';
+  document.getElementById('instr-bio').value = instr ? instr.bio : '';
+  document.getElementById('instr-courses-count').value = instr ? instr.coursesCount : '';
+  document.getElementById('instr-students').value = instr ? instr.students : '';
+  document.getElementById('instr-rating').value = instr ? instr.rating : '';
+  document.getElementById('instr-linkedin').value = instr ? (instr.linkedin||'') : '';
+  document.getElementById('instr-instagram').value = instr ? (instr.instagram||'') : '';
+  instrTags = instr ? (instr.tags || []) : [];
+  renderTagsFromArray(instrTags, 'instr-tags-wrap', 'instr-tags-input', 'instr-tags', instrTags);
+  resetImgBox('instr-photo-box', 'instr-photo-preview', 'instr-photo-file');
+  if (instr && instr.photo) previewImgFromUrl('instr-photo-box', 'instr-photo-preview', instr.photo);
+  openDrawer('instructorDrawer');
+}
+
+function editInstructor(id) {
+  const instr = DB.instructors.find(i => i.id === id);
+  if (instr) openInstructorDrawer(instr);
+}
+
+function saveInstructor() {
+  const name = document.getElementById('instr-name').value.trim();
+  if (!name) { toast('El nombre es obligatorio', 'error'); return; }
+  const id = document.getElementById('instructor-id').value;
+  const data = {
+    id: id ? parseInt(id) : Date.now(),
+    name,
+    role: document.getElementById('instr-role').value.trim(),
+    initials: document.getElementById('instr-initials').value.trim(),
+    gradient: document.getElementById('instr-gradient').value.trim() || 'linear-gradient(135deg,#001a7a,#0057FF)',
+    bio: document.getElementById('instr-bio').value.trim(),
+    coursesCount: parseInt(document.getElementById('instr-courses-count').value) || 0,
+    students: document.getElementById('instr-students').value.trim(),
+    rating: document.getElementById('instr-rating').value.trim(),
+    tags: JSON.parse(document.getElementById('instr-tags').value || '[]'),
+    linkedin: document.getElementById('instr-linkedin').value.trim(),
+    instagram: document.getElementById('instr-instagram').value.trim(),
+    photo: getImgData('instr-photo-file') || (id ? (DB.instructors.find(i=>i.id==id)||{}).photo : null),
+  };
+  if (id) { const idx = DB.instructors.findIndex(i=>i.id==id); if (idx>-1) DB.instructors[idx] = data; }
+  else DB.instructors.push(data);
+  saveLocal('instructors');
+  renderInstructorsGrid();
+  document.getElementById('badge-instructors').textContent = DB.instructors.length;
+  closeDrawer('instructorDrawer');
+  toast(id ? 'Instructor actualizado' : 'Instructor creado', 'success');
+}
+
+function deleteInstructor(id, name) {
+  confirm('¿Eliminar instructor?', `"${name}" será eliminado.`, () => {
+    DB.instructors = DB.instructors.filter(i => i.id !== id);
+    saveLocal('instructors');
+    renderInstructorsGrid();
+    document.getElementById('badge-instructors').textContent = DB.instructors.length;
+    toast('Instructor eliminado', 'info');
+  });
+}
+
+// ════════════════════════════════════════════════════════
+//  BLOG CRUD (localStorage)
+// ════════════════════════════════════════════════════════
+function loadPosts() {
+  renderPostsGrid();
+  document.getElementById('badge-blog').textContent = DB.posts.length;
+  document.getElementById('stat-blog').textContent = DB.posts.length;
+  document.getElementById('blog-count-label').textContent = `(${DB.posts.length})`;
+}
+
+function renderPostsGrid() {
+  const grid = document.getElementById('posts-grid');
+  if (!DB.posts.length) { grid.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📝</div><h3>Sin artículos</h3></div>`; return; }
+  grid.innerHTML = DB.posts.map(p => {
+    const bannerStyle = p.image ? `background:url('${p.image}') center/cover no-repeat` : `background:${p.gradient||'var(--surface3)'}`;
+    return `<div class="post-admin-card">
+      <div class="post-admin-banner" style="${bannerStyle}">
+        ${!p.image ? `<span>${p.emoji||'📝'}</span>` : ''}
+      </div>
+      <div class="post-admin-body">
+        <div class="post-admin-cat">${p.category}</div>
+        <div class="post-admin-title">${p.title}</div>
+        <div class="post-admin-meta">
+          <span>✍️ ${p.author}</span>
+          <span>⏱ ${p.readTime}</span>
+          <span>${p.date||''}</span>
+        </div>
+        <div class="post-admin-actions">
+          <button class="btn-sm btn-ghost-sm" style="flex:1;" onclick="editPost(${p.id})">✏️ Editar</button>
+          <button class="icon-btn delete" onclick="deletePost(${p.id},'${p.title.replace(/'/g,"\\'")}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openPostDrawer(post) {
+  document.getElementById('postDrawerTitle').textContent = post ? '✏️ Editar Artículo' : '📝 Nuevo Artículo';
+  document.getElementById('post-id').value = post ? post.id : '';
+  document.getElementById('post-title').value = post ? post.title : '';
+  document.getElementById('post-category').value = post ? post.category : 'Marketing';
+  document.getElementById('post-emoji').value = post ? (post.emoji||'') : '';
+  document.getElementById('post-author').value = post ? post.author : '';
+  document.getElementById('post-author-initials').value = post ? post.authorInitials : '';
+  document.getElementById('post-read-time').value = post ? post.readTime : '';
+  document.getElementById('post-date').value = post ? post.date : new Date().toISOString().slice(0,10);
+  document.getElementById('post-gradient').value = post ? (post.gradient||'') : '';
+  document.getElementById('post-content-editor').innerHTML = post ? (post.content||'') : '';
+  resetImgBox('post-img-box', 'post-img-preview', 'post-img-file');
+  if (post && post.image) previewImgFromUrl('post-img-box', 'post-img-preview', post.image);
+  openDrawer('postDrawer');
+}
+
+function editPost(id) {
+  const post = DB.posts.find(p => p.id === id);
+  if (post) openPostDrawer(post);
+}
+
+function savePost() {
+  const title = document.getElementById('post-title').value.trim();
+  if (!title) { toast('El título es obligatorio', 'error'); return; }
+  const id = document.getElementById('post-id').value;
+  const data = {
+    id: id ? parseInt(id) : Date.now(),
+    title,
+    category: document.getElementById('post-category').value,
+    emoji: document.getElementById('post-emoji').value.trim() || '📝',
+    gradient: document.getElementById('post-gradient').value.trim() || 'linear-gradient(135deg,#001a7a,#0057FF)',
+    author: document.getElementById('post-author').value.trim(),
+    authorInitials: document.getElementById('post-author-initials').value.trim(),
+    readTime: document.getElementById('post-read-time').value.trim(),
+    date: document.getElementById('post-date').value,
+    content: document.getElementById('post-content-editor').innerHTML,
+    image: getImgData('post-img-file') || (id ? (DB.posts.find(p=>p.id==id)||{}).image : null),
+  };
+  if (id) { const idx = DB.posts.findIndex(p=>p.id==id); if (idx>-1) DB.posts[idx] = data; }
+  else DB.posts.push(data);
+  saveLocal('posts');
+  renderPostsGrid();
+  document.getElementById('badge-blog').textContent = DB.posts.length;
+  document.getElementById('stat-blog').textContent = DB.posts.length;
+  document.getElementById('blog-count-label').textContent = `(${DB.posts.length})`;
+  closeDrawer('postDrawer');
+  toast(id ? 'Artículo actualizado' : 'Artículo publicado', 'success');
+}
+
+function deletePost(id, title) {
+  confirm('¿Eliminar artículo?', `"${title}" será eliminado permanentemente.`, () => {
+    DB.posts = DB.posts.filter(p => p.id !== id);
+    saveLocal('posts');
+    renderPostsGrid();
+    document.getElementById('badge-blog').textContent = DB.posts.length;
+    toast('Artículo eliminado', 'info');
+  });
+}
+
+// ── RICH TEXT EDITOR ──────────────────────────────────────
+function execCmd(cmd, val) { document.execCommand(cmd, false, val||null); document.getElementById('post-content-editor').focus(); }
+
+// ════════════════════════════════════════════════════════
+//  HOMEPAGE SETTINGS
+// ════════════════════════════════════════════════════════
+function loadHomepageForm() {
+  const hp = DB.homepage;
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.value = val||''; };
+  set('hp-hero-badge', hp.heroBadge); set('hp-hero-title', hp.heroTitle);
+  set('hp-hero-subtitle-em', hp.heroSubtitleEm); set('hp-hero-desc', hp.heroDesc);
+  set('hp-btn1', hp.heroBtn1); set('hp-btn2', hp.heroBtn2);
+  set('hp-stat1-val', hp.stat1Val); set('hp-stat1-label', hp.stat1Label); set('hp-stat1-icon', hp.stat1Icon);
+  set('hp-stat2-val', hp.stat2Val); set('hp-stat2-label', hp.stat2Label); set('hp-stat2-icon', hp.stat2Icon);
+  set('hp-stat3-val', hp.stat3Val); set('hp-stat3-label', hp.stat3Label); set('hp-stat3-icon', hp.stat3Icon);
+  set('hp-cta-title', hp.ctaTitle); set('hp-cta-desc', hp.ctaDesc);
+  set('hp-cta-btn1', hp.ctaBtn1); set('hp-cta-btn2', hp.ctaBtn2);
+  set('hp-footer-desc', hp.footerDesc); set('hp-copyright', hp.copyright);
+  set('hp-social-li', hp.socialLi); set('hp-social-ig', hp.socialIg);
+  set('hp-social-yt', hp.socialYt); set('hp-social-tw', hp.socialTw);
+}
+function saveHomepage() {
+  const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  DB.homepage = {
+    heroBadge: get('hp-hero-badge'), heroTitle: get('hp-hero-title'),
+    heroSubtitleEm: get('hp-hero-subtitle-em'), heroDesc: get('hp-hero-desc'),
+    heroBtn1: get('hp-btn1'), heroBtn2: get('hp-btn2'),
+    stat1Val: get('hp-stat1-val'), stat1Label: get('hp-stat1-label'), stat1Icon: get('hp-stat1-icon'),
+    stat2Val: get('hp-stat2-val'), stat2Label: get('hp-stat2-label'), stat2Icon: get('hp-stat2-icon'),
+    stat3Val: get('hp-stat3-val'), stat3Label: get('hp-stat3-label'), stat3Icon: get('hp-stat3-icon'),
+    ctaTitle: get('hp-cta-title'), ctaDesc: get('hp-cta-desc'),
+    ctaBtn1: get('hp-cta-btn1'), ctaBtn2: get('hp-cta-btn2'),
+    footerDesc: get('hp-footer-desc'), copyright: get('hp-copyright'),
+    socialLi: get('hp-social-li'), socialIg: get('hp-social-ig'),
+    socialYt: get('hp-social-yt'), socialTw: get('hp-social-tw'),
+    heroImage: getImgData('hp-hero-img-file') || DB.homepage.heroImage || null,
+  };
+  saveLocal('homepage');
+  toast('Página de inicio guardada ✅', 'success');
+}
+
+// ════════════════════════════════════════════════════════
+//  ABOUT SETTINGS
+// ════════════════════════════════════════════════════════
+function loadAboutForm() {
+  const ab = DB.about;
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.value = val||''; };
+  set('ab-title', ab.title); set('ab-desc', ab.desc);
+  set('ab-mission-text', ab.mission); set('ab-vision-text', ab.vision);
+  renderValuesForm(); renderWhyForm();
+}
+function renderValuesForm() {
+  const list = document.getElementById('values-list');
+  list.innerHTML = (DB.about.values||[]).map((v,i) => `
+    <div class="form-grid" style="background:var(--surface2);padding:0.75rem;border-radius:10px;border:1px solid var(--border);margin-bottom:0.5rem;" id="val-row-${i}">
+      <div class="form-group"><label class="form-label">Icono</label><input class="form-input" value="${v.icon||''}" onchange="DB.about.values[${i}].icon=this.value" placeholder="🎯"></div>
+      <div class="form-group"><label class="form-label">Título</label><input class="form-input" value="${v.title||''}" onchange="DB.about.values[${i}].title=this.value" placeholder="Excelencia"></div>
+      <div class="form-group full"><label class="form-label">Descripción</label><input class="form-input" value="${(v.desc||'').replace(/"/g,'&quot;')}" onchange="DB.about.values[${i}].desc=this.value" placeholder="Descripción breve..."><button class="remove-btn" onclick="DB.about.values.splice(${i},1);renderValuesForm();" style="margin-top:0.5rem;width:auto;padding:0 0.75rem;height:34px;">Eliminar</button></div>
+    </div>`).join('');
+}
+function addValueItem() { DB.about.values = DB.about.values || []; DB.about.values.push({icon:'✨',title:'',desc:''}); renderValuesForm(); }
+function renderWhyForm() {
+  const list = document.getElementById('why-list');
+  list.innerHTML = (DB.about.whyUs||[]).map((w,i) => `
+    <div class="form-grid" style="background:var(--surface2);padding:0.75rem;border-radius:10px;border:1px solid var(--border);margin-bottom:0.5rem;">
+      <div class="form-group"><label class="form-label">Icono</label><input class="form-input" value="${w.icon||''}" onchange="DB.about.whyUs[${i}].icon=this.value" placeholder="🎓"></div>
+      <div class="form-group"><label class="form-label">Título</label><input class="form-input" value="${w.title||''}" onchange="DB.about.whyUs[${i}].title=this.value" placeholder="Formación práctica"></div>
+      <div class="form-group full"><label class="form-label">Descripción</label><input class="form-input" value="${(w.desc||'').replace(/"/g,'&quot;')}" onchange="DB.about.whyUs[${i}].desc=this.value" placeholder="Descripción breve..."><button class="remove-btn" onclick="DB.about.whyUs.splice(${i},1);renderWhyForm();" style="margin-top:0.5rem;width:auto;padding:0 0.75rem;height:34px;">Eliminar</button></div>
+    </div>`).join('');
+}
+function addWhyItem() { DB.about.whyUs = DB.about.whyUs || []; DB.about.whyUs.push({icon:'✅',title:'',desc:''}); renderWhyForm(); }
+function saveAbout() {
+  DB.about.title = document.getElementById('ab-title').value.trim();
+  DB.about.desc = document.getElementById('ab-desc').value.trim();
+  DB.about.mission = document.getElementById('ab-mission-text').value.trim();
+  DB.about.vision = document.getElementById('ab-vision-text').value.trim();
+  DB.about.teamImage = getImgData('ab-img-file') || DB.about.teamImage || null;
+  saveLocal('about');
+  toast('Sobre nosotros guardado ✅', 'success');
+}
+
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
+async function loadAllData() {
+  await checkApiStatus();
+  await loadCourses();
+  loadInstructors();
+  loadPosts();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadAllData();
+  loadHomepageForm();
+});
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  NUCLERI ADMIN — REAL BACKEND INTEGRATION
+//  Overrides localStorage-only functions with live API calls
+// ═══════════════════════════════════════════════════════════════
+
+// ── AUTH GUARD: redirect if not admin ──────────────────────────
+(async () => {
+  try {
+    const me = await fetch('/api/auth/me', { credentials: 'include' }).then(r => r.ok ? r.json() : null);
+    if (!me || me.role !== 'admin') { window.location.href = '/'; return; }
+    // Populate sidebar user
+    const av = document.querySelector('.sidebar-user-avatar');
+    const nameEl = document.querySelector('.sidebar-user-info p');
+    const roleEl = document.querySelector('.sidebar-user-info span');
+    if (av) av.textContent = me.name.charAt(0).toUpperCase();
+    if (nameEl) nameEl.textContent = me.name;
+    if (roleEl) roleEl.textContent = me.role === 'admin' ? 'Administrador' : me.email;
+  } catch(e) { /* allow local dev without auth */ }
+})();
+
+// ── OVERRIDE: checkApiStatus → hits our real /api/admin/stats ──
+async function checkApiStatus() {
+  try {
+    const data = await apiFetch('/admin/stats');
+    if (!data) return false;
+    document.getElementById('apiDot')?.classList.remove('offline');
+    if (document.getElementById('apiStatus')) document.getElementById('apiStatus').textContent = 'API Conectada';
+    if (document.getElementById('stat-api')) document.getElementById('stat-api').innerHTML = '<span style="color:var(--green)">Online</span>';
+    if (document.getElementById('stat-api-sub')) document.getElementById('stat-api-sub').textContent = `${data.totalEnrollments || 0} inscripciones totales`;
+    // Real counts from DB
+    if (document.getElementById('stat-courses')) document.getElementById('stat-courses').textContent = data.totalCourses ?? '—';
+    if (document.getElementById('stat-courses-sub')) document.getElementById('stat-courses-sub').textContent = `${data.totalStudents || 0} estudiantes registrados`;
+    // recent enrollments table
+    const tbody = document.getElementById('recent-tbody');
+    if (tbody && data.recentEnrollments?.length) {
+      tbody.innerHTML = data.recentEnrollments.slice(0,8).map(e => `
+        <tr>
+          <td><div style="font-weight:600;color:var(--white)">${e.name}</div><div style="font-size:.75rem;color:var(--text-dim)">${e.email}</div></td>
+          <td><span class="badge badge-active">${e.course.length > 40 ? e.course.slice(0,40)+'…' : e.course}</span></td>
+          <td style="color:var(--text-muted);font-size:.8rem">${new Date(e.enrolled_at).toLocaleDateString('es')}</td>
+          <td><span style="color:var(--green);font-size:.8rem">Activo</span></td>
+        </tr>`).join('');
+    }
+    return true;
+  } catch(e) {
+    document.getElementById('apiDot')?.classList.add('offline');
+    if (document.getElementById('apiStatus')) document.getElementById('apiStatus').textContent = 'Sin conexión';
+    if (document.getElementById('stat-api')) document.getElementById('stat-api').innerHTML = '<span style="color:var(--red)">Offline</span>';
+    if (document.getElementById('stat-api-sub')) document.getElementById('stat-api-sub').textContent = 'Verifica que el servidor esté corriendo';
+    return false;
+  }
+}
+
+// ── OVERRIDE: loadCourses → /api/courses/admin/all ─────────────
+async function loadCourses() {
+  try {
+    const data = await apiFetch('/courses/admin/all');
+    if (!data) return;
+    DB.courses = data.map(c => ({
+      ...c,
+      isActive: c.published === 1,
+      instructorRole: c.instructor_role,
+      avatarInitials: c.avatar_initials,
+      priceOld: c.price_old ? '$' + c.price_old : '',
+      priceDisplay: '$' + c.price,
+      diffLabel: c.diff_label,
+      lessons: c.lessons_count + ' lecciones',
+      enrollments: c.enrollments || 0,
+    }));
+    renderCoursesTable();
+    const n = DB.courses.length;
+    const active = DB.courses.filter(c => c.isActive).length;
+    if (document.getElementById('badge-courses')) document.getElementById('badge-courses').textContent = n;
+    if (document.getElementById('stat-courses')) document.getElementById('stat-courses').textContent = active;
+    if (document.getElementById('stat-courses-sub')) document.getElementById('stat-courses-sub').textContent = `${n - active} inactivos · ${DB.courses.reduce((s,c)=>s+(c.enrollments||0),0)} inscripciones`;
+    if (document.getElementById('courses-count-label')) document.getElementById('courses-count-label').textContent = `(${n})`;
+  } catch(e) {
+    const tbody = document.getElementById('courses-tbody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>Error al cargar</h3><p>${e.message}</p></div></td></tr>`;
+    toast('Error cargando cursos: ' + e.message, 'error');
+  }
+}
+
+// ── OVERRIDE: saveCourse → POST/PUT /api/courses ───────────────
+async function saveCourse() {
+  const title = document.getElementById('course-title').value.trim();
+  if (!title) { toast('El título es obligatorio', 'error'); return; }
+  const id = document.getElementById('course-id').value;
+  const slug = (id ? (DB.courses.find(c=>c.id==id)||{}).slug : '') ||
+    title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + (id ? '' : '-' + Date.now().toString(36));
+
+  const payload = {
+    title, slug,
+    category: document.getElementById('course-category').value.trim(),
+    emoji: '📚',
+    gradient: document.getElementById('course-gradient').value.trim() || 'linear-gradient(135deg,#001020,#0041CC,#1A6FFF)',
+    instructor: document.getElementById('course-instructor').value.trim(),
+    instructor_role: document.getElementById('course-instructor-role').value.trim(),
+    avatar_initials: document.getElementById('course-avatar-initials').value.trim(),
+    price: parseFloat(document.getElementById('course-price').value) || 0,
+    price_old: parseFloat(document.getElementById('course-price-old').value) || null,
+    rating: parseFloat(document.getElementById('course-rating').value) || 0,
+    hours: document.getElementById('course-hours').value.trim(),
+    lessons_count: parseInt(document.getElementById('course-lessons').value) || 0,
+    difficulty: parseInt(document.getElementById('course-difficulty').value) || 2,
+    diff_label: document.getElementById('course-diff-label').value.trim(),
+    published: document.getElementById('course-active').value === 'true' ? 1 : 0,
+    description: document.getElementById('course-desc')?.value?.trim() || '',
+  };
+
+  try {
+    if (id) {
+      await apiFetch('/courses/' + id, 'PUT', payload);
+      toast('Curso actualizado ✅', 'success');
+    } else {
+      await apiFetch('/courses', 'POST', payload);
+      toast('Curso creado ✅', 'success');
+    }
+    closeDrawer('courseDrawer');
+    await loadCourses();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: editCourse → load from DB array ──────────────────
+async function editCourse(id) {
+  // First refresh from API to get latest data
+  try {
+    const course = await apiFetch('/courses/' + id);
+    if (!course) return;
+    openCourseDrawer({
+      ...course,
+      isActive: course.published === 1,
+      instructorRole: course.instructor_role,
+      avatarInitials: course.avatar_initials,
+      priceOld: course.price_old ? '$' + course.price_old : '',
+      diffLabel: course.diff_label,
+      lessons: course.lessons_count + ' lecciones',
+    });
+  } catch(e) { toast('Error cargando curso: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: toggleCourseActive ──────────────────────────────
+async function toggleCourseActive(id) {
+  const course = DB.courses.find(c => c.id === id);
+  const newPublished = (course && course.isActive) ? 0 : 1;
+  try {
+    await apiFetch('/courses/' + id, 'PUT', { published: newPublished });
+    toast(newPublished ? 'Curso activado ✅' : 'Curso desactivado', 'success');
+    await loadCourses();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: deleteCourse ─────────────────────────────────────
+function deleteCourse(id, title) {
+  confirm('¿Eliminar curso?', `"${title}" será eliminado permanentemente.`, async () => {
+    try {
+      await apiFetch('/courses/' + id, 'DELETE');
+      toast('Curso eliminado', 'info');
+      await loadCourses();
+    } catch(e) { toast('Error: ' + e.message, 'error'); }
+  });
+}
+
+// ── OVERRIDE: loadInstructors → /api/instructors ───────────────
+async function loadInstructors() {
+  try {
+    const data = await apiFetch('/instructors');
+    if (data) DB.instructors = data;
+  } catch(e) { /* use defaults */ }
+  renderInstructorsGrid();
+  if (document.getElementById('badge-instructors')) document.getElementById('badge-instructors').textContent = DB.instructors.length;
+  if (document.getElementById('stat-instructors')) document.getElementById('stat-instructors').textContent = DB.instructors.length;
+  if (document.getElementById('stat-instructors-sub')) document.getElementById('stat-instructors-sub').textContent = 'Equipo docente activo';
+}
+
+// ── OVERRIDE: saveInstructor → POST/PUT /api/instructors ───────
+async function saveInstructor() {
+  const name = document.getElementById('instr-name').value.trim();
+  if (!name) { toast('El nombre es obligatorio', 'error'); return; }
+  const id = document.getElementById('instructor-id').value;
+  const payload = {
+    name,
+    role: document.getElementById('instr-role').value.trim(),
+    initials: document.getElementById('instr-initials').value.trim(),
+    gradient: document.getElementById('instr-gradient').value.trim() || 'linear-gradient(135deg,#001a7a,#0057FF)',
+    bio: document.getElementById('instr-bio').value.trim(),
+    coursesCount: parseInt(document.getElementById('instr-courses-count').value) || 0,
+    students: document.getElementById('instr-students').value.trim(),
+    rating: document.getElementById('instr-rating').value.trim(),
+    tags: JSON.parse(document.getElementById('instr-tags').value || '[]'),
+    linkedin: document.getElementById('instr-linkedin').value.trim(),
+    instagram: document.getElementById('instr-instagram').value.trim(),
+    photo: getImgData('instr-photo-file') || (id ? (DB.instructors.find(i=>i.id==id)||{}).photo : null),
+  };
+  try {
+    if (id) {
+      await apiFetch('/instructors/' + id, 'PUT', payload);
+      toast('Instructor actualizado ✅', 'success');
+    } else {
+      await apiFetch('/instructors', 'POST', payload);
+      toast('Instructor creado ✅', 'success');
+    }
+    closeDrawer('instructorDrawer');
+    await loadInstructors();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: deleteInstructor ─────────────────────────────────
+function deleteInstructor(id, name) {
+  confirm('¿Eliminar instructor?', `"${name}" será eliminado permanentemente.`, async () => {
+    try {
+      await apiFetch('/instructors/' + id, 'DELETE');
+      toast('Instructor eliminado', 'info');
+      await loadInstructors();
+    } catch(e) { toast('Error: ' + e.message, 'error'); }
+  });
+}
+
+// ── OVERRIDE: loadPosts → /api/blog ───────────────────────────
+async function loadPosts() {
+  try {
+    const data = await apiFetch('/blog?limit=50');
+    if (data?.posts) {
+      DB.posts = data.posts.map(p => ({
+        ...p,
+        readTime: p.read_time,
+        authorInitials: p.author?.split(' ').map(w=>w[0]).join('').slice(0,2),
+        date: (p.created_at||'').slice(0,10),
+        emoji: p.emoji || {Inocuidad:'🛡️',Tendencias:'📈',Finanzas:'💰',Emprendimiento:'🚀',Marketing:'📊',Industrial:'🏭',Branding:'🎯',Estrategia:'📋'}[p.category] || '📝',
+        gradient: p.gradient || 'linear-gradient(135deg,#001020,#0041CC,#1A6FFF)',
+      }));
+    }
+  } catch(e) { /* use defaults */ }
+  renderPostsGrid();
+  if (document.getElementById('badge-blog')) document.getElementById('badge-blog').textContent = DB.posts.length;
+  if (document.getElementById('stat-blog')) document.getElementById('stat-blog').textContent = DB.posts.length;
+  if (document.getElementById('blog-count-label')) document.getElementById('blog-count-label').textContent = `(${DB.posts.length})`;
+}
+
+// ── OVERRIDE: savePost → POST /api/blog ───────────────────────
+async function savePost() {
+  const title = document.getElementById('post-title').value.trim();
+  if (!title) { toast('El título es obligatorio', 'error'); return; }
+  const id = document.getElementById('post-id').value;
+  const slug = title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '-' + Date.now().toString(36);
+  const payload = {
+    title,
+    slug: (id && DB.posts.find(p=>p.id==id)?.slug) || slug,
+    category: document.getElementById('post-category').value,
+    emoji: document.getElementById('post-emoji').value.trim() || '📝',
+    gradient: document.getElementById('post-gradient').value.trim() || 'linear-gradient(135deg,#001020,#0041CC,#1A6FFF)',
+    author: document.getElementById('post-author').value.trim(),
+    author_role: '',
+    read_time: document.getElementById('post-read-time').value.trim(),
+    excerpt: document.getElementById('post-content-editor').innerText.slice(0, 200),
+    content: document.getElementById('post-content-editor').innerHTML,
+    image: getImgData('post-img-file') || (id ? (DB.posts.find(p=>p.id==id)||{}).image : null),
+  };
+  try {
+    if (id) {
+      // Update: delete + recreate (simple approach for our JSON DB)
+      await apiFetch('/blog/' + id, 'DELETE');
+    }
+    await apiFetch('/blog', 'POST', payload);
+    toast(id ? 'Artículo actualizado ✅' : 'Artículo publicado ✅', 'success');
+    closeDrawer('postDrawer');
+    await loadPosts();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: deletePost ───────────────────────────────────────
+function deletePost(id, title) {
+  confirm('¿Eliminar artículo?', `"${title}" será eliminado permanentemente.`, async () => {
+    try {
+      await apiFetch('/blog/' + id, 'DELETE');
+      toast('Artículo eliminado', 'info');
+      await loadPosts();
+    } catch(e) { toast('Error: ' + e.message, 'error'); }
+  });
+}
+
+// ── OVERRIDE: saveHomepage → PUT /api/settings/homepage ────────
+async function saveHomepage() {
+  const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const data = {
+    heroBadge: get('hp-hero-badge'), heroTitle: get('hp-hero-title'),
+    heroSubtitleEm: get('hp-hero-subtitle-em'), heroDesc: get('hp-hero-desc'),
+    heroBtn1: get('hp-btn1'), heroBtn2: get('hp-btn2'),
+    stat1Val: get('hp-stat1-val'), stat1Label: get('hp-stat1-label'), stat1Icon: get('hp-stat1-icon'),
+    stat2Val: get('hp-stat2-val'), stat2Label: get('hp-stat2-label'), stat2Icon: get('hp-stat2-icon'),
+    stat3Val: get('hp-stat3-val'), stat3Label: get('hp-stat3-label'), stat3Icon: get('hp-stat3-icon'),
+    ctaTitle: get('hp-cta-title'), ctaDesc: get('hp-cta-desc'),
+    ctaBtn1: get('hp-cta-btn1'), ctaBtn2: get('hp-cta-btn2'),
+    footerDesc: get('hp-footer-desc'), copyright: get('hp-copyright'),
+    socialLi: get('hp-social-li'), socialIg: get('hp-social-ig'),
+    socialYt: get('hp-social-yt'), socialTw: get('hp-social-tw'),
+    heroImage: getImgData('hp-hero-img-file') || DB.homepage.heroImage || null,
+  };
+  try {
+    await apiFetch('/settings/homepage', 'PUT', data);
+    DB.homepage = data;
+    localStorage.setItem('nucleri_homepage', JSON.stringify(data));
+    toast('Página de inicio guardada ✅', 'success');
+  } catch(e) { toast('Error guardando: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: saveAbout → PUT /api/settings/about ──────────────
+async function saveAbout() {
+  DB.about.title = document.getElementById('ab-title').value.trim();
+  DB.about.desc = document.getElementById('ab-desc').value.trim();
+  DB.about.mission = document.getElementById('ab-mission-text').value.trim();
+  DB.about.vision = document.getElementById('ab-vision-text').value.trim();
+  DB.about.teamImage = getImgData('ab-img-file') || DB.about.teamImage || null;
+  try {
+    await apiFetch('/settings/about', 'PUT', DB.about);
+    localStorage.setItem('nucleri_about', JSON.stringify(DB.about));
+    toast('Sobre nosotros guardado ✅', 'success');
+  } catch(e) { toast('Error guardando: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: loadAllData → full API sync ──────────────────────
+async function loadAllData() {
+  await checkApiStatus();
+  await Promise.all([
+    loadCourses(),
+    loadInstructors(),
+    loadPosts(),
+  ]);
+  // Load remote settings
+  try {
+    const [hp, ab] = await Promise.all([
+      apiFetch('/settings/homepage'),
+      apiFetch('/settings/about'),
+    ]);
+    if (hp) { DB.homepage = { ...DB.homepage, ...hp }; localStorage.setItem('nucleri_homepage', JSON.stringify(DB.homepage)); }
+    if (ab) { DB.about = { ...DB.about, ...ab }; localStorage.setItem('nucleri_about', JSON.stringify(DB.about)); }
+    loadHomepageForm();
+    loadAboutForm();
+  } catch(e) { /* use local fallback */ }
+}
+
+// ── CONTACT MESSAGES panel (bonus) ────────────────────────────
+async function loadContacts() {
+  try {
+    const data = await apiFetch('/contacts');
+    if (!data) return;
+    const badge = document.getElementById('badge-contacts');
+    if (badge) badge.textContent = data.filter(c => c.status === 'new').length;
+    const tbody = document.getElementById('contacts-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = data.length ? data.map(c => `
+      <tr>
+        <td class="td-main">${c.name}</td>
+        <td>${c.email}</td>
+        <td>${c.service || '—'}</td>
+        <td>${c.message?.slice(0,60)}${c.message?.length > 60 ? '…' : ''}</td>
+        <td>${new Date(c.created_at).toLocaleDateString('es')}</td>
+        <td><span class="badge ${c.status === 'new' ? 'badge-new' : c.status === 'replied' ? 'badge-active' : 'badge-none'}">${c.status}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn" title="Marcar como leído" onclick="markContact(${c.id},'read')">👁</button>
+            <button class="icon-btn" title="Marcar como respondido" onclick="markContact(${c.id},'replied')">✓</button>
+          </div>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">📬</div><h3>Sin mensajes</h3></div></td></tr>';
+  } catch(e) {}
+}
+
+async function markContact(id, status) {
+  try {
+    await apiFetch('/contacts/' + id + '/status', 'PATCH', { status });
+    loadContacts();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ── OVERRIDE: testApiConnection ───────────────────────────────
+async function testApiConnection() {
+  const result = document.getElementById('api-test-result');
+  if (result) { result.textContent = '⏳ Probando...'; result.style.color = 'var(--text-dim)'; }
+  try {
+    const data = await apiFetch('/admin/stats');
+    if (result) { result.textContent = '✅ Conexión exitosa — ' + data.totalCourses + ' cursos, ' + data.totalStudents + ' estudiantes'; result.style.color = 'var(--green)'; }
+    toast('API conectada correctamente', 'success');
+  } catch (e) {
+    if (result) { result.textContent = '❌ Sin respuesta: ' + e.message; result.style.color = 'var(--red)'; }
+    toast('No se pudo conectar a la API', 'error');
+  }
+}
+
+// ── NEWSLETTER stats ───────────────────────────────────────────
+async function loadNewsletterStats() {
+  // Could add endpoint later; placeholder
+}
+
+// Re-run init with real API on DOM ready
+document.addEventListener('DOMContentLoaded', async () => {
+  // If page-contacts exists, load contacts on show
+  const origShowPage = window.showPage;
+  if (origShowPage) {
+    window.showPage = function(pageId, el) {
+      origShowPage(pageId, el);
+      if (pageId === 'contacts') loadContacts();
+    };
+  }
+  // Full sync
+  await loadAllData();
+  loadHomepageForm();
+  loadAboutForm();
+});
+</script>
+
+<script src="/assets/css/shared.css" onload=""></script>
+<link rel="stylesheet" href="/assets/css/shared.css">
+<script src="/assets/js/auth.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  NUCLERI ADMIN — FIXES v2
+//  Fix 3: Logout + back-to-site
+//  Fix 5: Sync admin ↔ web (real-time via API)
+//  Fix 7: WhatsApp config
+//  Fix 8: Full users CRUD
+// ═══════════════════════════════════════════════════════════════
+
+// ── FIX 3: Admin Logout ──────────────────────────────────────────
+function adminLogout() {
+  fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+    .finally(() => { window.location.href = '/'; });
+}
+
+// ── FIX 5: Real-time sync — override apiFetch with correct base ──
+window.API_BASE = '/api';
+
+// Override loadCourses so web page also updates via broadcast
+const _origLoadCourses = window.loadCourses;
+window.loadCourses = async function() {
+  if (_origLoadCourses) await _origLoadCourses();
+  // Broadcast to any open web tabs via localStorage
+  localStorage.setItem('nucleri_courses_updated', Date.now().toString());
+};
+
+const _origSaveCourse = window.saveCourse;
+window.saveCourse = async function() {
+  if (_origSaveCourse) {
+    await _origSaveCourse();
+    localStorage.setItem('nucleri_courses_updated', Date.now().toString());
+  }
+};
+
+const _origSavePost = window.savePost;
+window.savePost = async function() {
+  if (_origSavePost) {
+    await _origSavePost();
+    localStorage.setItem('nucleri_posts_updated', Date.now().toString());
+  }
+};
+
+// ── FIX 7: WhatsApp Config ───────────────────────────────────────
+async function loadWhatsAppConfig() {
+  try {
+    const data = await apiFetch('/whatsapp-config');
+    const numEl = document.getElementById('cfg-wa-number');
+    const msgEl = document.getElementById('cfg-wa-message');
+    const btnEl = document.getElementById('cfg-wa-btn-text');
+    if (numEl) numEl.value = data.number || '';
+    if (msgEl) msgEl.value = data.message || '';
+    if (btnEl) btnEl.value = data.btn_text || 'Adquirir vía WhatsApp';
+    updateWaPreview();
+    toast('Configuración cargada', 'success');
+  } catch(e) { toast('Error cargando configuración: ' + e.message, 'error'); }
+}
+
+async function saveWhatsAppConfig() {
+  const number = document.getElementById('cfg-wa-number')?.value?.trim() || '';
+  const message = document.getElementById('cfg-wa-message')?.value?.trim() || '';
+  const btn_text = document.getElementById('cfg-wa-btn-text')?.value?.trim() || 'Adquirir vía WhatsApp';
+  if (!number) { toast('El número de WhatsApp es requerido', 'error'); return; }
+  try {
+    await apiFetch('/whatsapp-config', 'PUT', { number, message, btn_text });
+    localStorage.setItem('nucleri_wa_config', JSON.stringify({ number, message, btn_text }));
+    updateWaPreview();
+    toast('Configuración WhatsApp guardada ✅', 'success');
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+function updateWaPreview() {
+  const number = document.getElementById('cfg-wa-number')?.value?.trim() || '51999999999';
+  const message = (document.getElementById('cfg-wa-message')?.value?.trim() || '').replace('{curso}', 'Nombre del Curso');
+  const btnText = document.getElementById('cfg-wa-btn-text')?.value?.trim() || 'Adquirir vía WhatsApp';
+  const encoded = encodeURIComponent(message);
+  const link = document.getElementById('wa-preview-link');
+  const text = document.getElementById('wa-preview-text');
+  if (link) link.href = `https://wa.me/${number}?text=${encoded}`;
+  if (text) text.textContent = btnText;
+}
+
+// ── FIX 8: USERS CRUD ────────────────────────────────────────────
+async function loadUsers() {
+  try {
+    const users = await apiFetch('/users');
+    const stats = await apiFetch('/admin/stats').catch(() => null);
+    
+    // Update badges & counts
+    const badge = document.getElementById('badge-users');
+    const label = document.getElementById('users-count-label');
+    if (badge) badge.textContent = users.length;
+    if (label) label.textContent = `(${users.length})`;
+    
+    // Update stats cards
+    if (document.getElementById('usr-stat-total')) document.getElementById('usr-stat-total').textContent = users.length;
+    if (document.getElementById('usr-stat-students')) document.getElementById('usr-stat-students').textContent = users.filter(u=>u.role==='student').length;
+    if (document.getElementById('usr-stat-admins')) document.getElementById('usr-stat-admins').textContent = users.filter(u=>u.role==='admin').length;
+    if (document.getElementById('usr-stat-enroll')) document.getElementById('usr-stat-enroll').textContent = stats?.totalEnrollments ?? '—';
+    
+    // Render table
+    const tbody = document.getElementById('users-tbody');
+    if (!tbody) return;
+    
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">👥</div><h3>Sin usuarios</h3></div></td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = users.map(u => `
+      <tr>
+        <td style="color:var(--text-dim)">#${u.id}</td>
+        <td class="td-main">${u.name}</td>
+        <td>${u.email}</td>
+        <td>${u.phone || '<span style="color:var(--text-dim)">—</span>'}</td>
+        <td><span class="badge ${u.role === 'admin' ? 'badge-hot' : 'badge-active'}">${u.role === 'admin' ? '🔑 Admin' : '🎓 Estudiante'}</span></td>
+        <td>${u.courses_count || 0}</td>
+        <td style="font-size:.78rem;color:var(--text-dim)">${(u.created_at || '').slice(0,10)}</td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn" title="Editar" onclick="editUser(${u.id})">✏️</button>
+            ${u.phone ? `<a class="icon-btn" title="WhatsApp" href="https://wa.me/${u.phone.replace(/\D/g,'')}" target="_blank" style="text-decoration:none;display:flex;align-items:center;justify-content:center">💬</a>` : ''}
+            <button class="icon-btn delete" title="Eliminar" onclick="deleteUser(${u.id},'${u.name.replace(/'/g,"\\'")}')">🗑️</button>
+          </div>
+        </td>
+      </tr>`).join('');
+  } catch(e) {
+    const tbody = document.getElementById('users-tbody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>Error al cargar</h3><p>${e.message}</p></div></td></tr>`;
+    toast('Error cargando usuarios: ' + e.message, 'error');
+  }
+}
+
+function filterUsersByRole(role) {
+  const rows = document.querySelectorAll('#users-tbody tr');
+  rows.forEach(row => {
+    if (!role) { row.style.display = ''; return; }
+    const roleCell = row.cells[4];
+    if (!roleCell) return;
+    row.style.display = roleCell.textContent.includes(role) ? '' : 'none';
+  });
+}
+
+function openUserDrawer(user) {
+  const isEdit = !!user;
+  document.getElementById('userDrawerTitle').textContent = isEdit ? '✏️ Editar Usuario' : '➕ Nuevo Usuario';
+  document.getElementById('user-id').value = user ? user.id : '';
+  document.getElementById('usr-name').value = user ? user.name : '';
+  document.getElementById('usr-email').value = user ? user.email : '';
+  document.getElementById('usr-phone').value = user ? (user.phone || '') : '';
+  document.getElementById('usr-role').value = user ? user.role : 'student';
+  document.getElementById('usr-pass').value = '';
+  const hint = document.getElementById('usr-pass-hint');
+  if (hint) hint.textContent = isEdit ? '(dejar en blanco para no cambiar)' : '(requerida)';
+  openDrawer('userDrawer');
+}
+
+async function editUser(id) {
+  try {
+    const data = await apiFetch('/users/' + id);
+    openUserDrawer(data);
+  } catch(e) { toast('Error cargando usuario: ' + e.message, 'error'); }
+}
+
+async function saveUser() {
+  const id = document.getElementById('user-id').value;
+  const name = document.getElementById('usr-name').value.trim();
+  const email = document.getElementById('usr-email').value.trim();
+  const phone = document.getElementById('usr-phone').value.trim();
+  const role = document.getElementById('usr-role').value;
+  const pass = document.getElementById('usr-pass').value;
+
+  if (!name || !email) { toast('Nombre y email son requeridos', 'error'); return; }
+  if (!id && !pass) { toast('La contraseña es requerida para nuevos usuarios', 'error'); return; }
+
+  const payload = { name, email, phone, role };
+  if (pass) payload.password = pass;
+
+  try {
+    if (id) {
+      await apiFetch('/users/' + id, 'PUT', payload);
+      toast('Usuario actualizado ✅', 'success');
+    } else {
+      await apiFetch('/users', 'POST', payload);
+      toast('Usuario creado ✅', 'success');
+    }
+    closeDrawer('userDrawer');
+    await loadUsers();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function deleteUser(id, name) {
+  confirm('¿Eliminar usuario?', `"${name}" será eliminado permanentemente.`, async () => {
+    try {
+      await apiFetch('/users/' + id, 'DELETE');
+      toast('Usuario eliminado', 'info');
+      await loadUsers();
+    } catch(e) { toast('Error: ' + e.message, 'error'); }
+  });
+}
+
+// ── Override showPage to load users when navigating to users ─────
+const _adminOrigShowPage = window.showPage;
+window.showPage = function(pageId, el) {
+  if (_adminOrigShowPage) _adminOrigShowPage(pageId, el);
+  if (pageId === 'users') loadUsers();
+  if (pageId === 'settings') {
+    setTimeout(() => {
+      loadWhatsAppConfig();
+      updateWaPreview();
+    }, 100);
+  }
+};
+
+// ── Override loadAllData to also load users ──────────────────────
+const _adminOrigLoadAllData = window.loadAllData;
+window.loadAllData = async function() {
+  if (_adminOrigLoadAllData) await _adminOrigLoadAllData();
+  await loadUsers();
+  await loadWhatsAppConfig().catch(() => {});
+};
+
+// ── Live update WA preview on input ──────────────────────────────
+document.addEventListener('input', function(e) {
+  if (['cfg-wa-number','cfg-wa-message','cfg-wa-btn-text'].includes(e.target.id)) {
+    updateWaPreview();
+  }
+});
+
+// ── Auth guard for admin ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const me = await fetch('/api/auth/me', { credentials: 'include' }).then(r => r.ok ? r.json() : null);
+    if (!me || me.role !== 'admin') {
+      window.location.href = '/?auth=required';
+      return;
+    }
+    // Update sidebar user display
+    const av = document.querySelector('.sidebar-user-avatar');
+    const nameEl = document.querySelector('.sidebar-user-info p');
+    const roleEl = document.querySelector('.sidebar-user-info span');
+    if (av) av.textContent = me.name.charAt(0).toUpperCase();
+    if (nameEl) nameEl.textContent = me.name;
+    if (roleEl) roleEl.textContent = me.email;
+  } catch(e) {
+    console.warn('Auth check failed (dev mode):', e.message);
+  }
+});
+</script>
+
+</body>
+</html>

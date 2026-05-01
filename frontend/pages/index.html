@@ -1,0 +1,3117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nucleri — Cursos, Consultoría & Industria Alimentaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/shared.css">
+<style>
+  :root {
+    --blue: #0057FF;
+    --blue-bright: #1A6FFF;
+    --blue-deep: #0041CC;
+    --blue-glow: #003BBA;
+    --blue-dark: #00277A;
+    --bg: #040A1A;
+    --bg2: #060D20;
+    --bg3: #071228;
+    --surface: #0A1530;
+    --surface2: #0D1C3C;
+    --surface3: #102247;
+    --border: rgba(0,87,255,0.18);
+    --border-bright: rgba(0,87,255,0.4);
+    --text: #E8EEFF;
+    --text-muted: #7A90C0;
+    --text-dim: #4A5E90;
+    --accent: #00D4FF;
+    --accent2: #FFB800;
+    --white: #FFFFFF;
+    --font-display: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ─────────────── NAV ─────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    height: 72px;
+    background: rgba(4,10,26,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-style: normal;
+    color: var(--white);
+    letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--blue); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .btn-ghost {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    color: var(--text);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { background: var(--surface); border-color: var(--blue); color: var(--white); }
+
+  .btn-primary {
+    padding: 0.55rem 1.4rem;
+    border-radius: 8px;
+    background: var(--blue);
+    border: none;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 0 20px rgba(0,87,255,0.35);
+  }
+  .btn-primary:hover { background: var(--blue-bright); box-shadow: 0 0 30px rgba(0,87,255,0.55); transform: translateY(-1px); }
+
+  /* ─────────────── HERO ─────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 100px 5% 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 50%, rgba(0,65,204,0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,87,255,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 50% at 80% 20%, rgba(0,212,255,0.07) 0%, transparent 60%);
+  }
+
+  /* Grid lines */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,87,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,87,255,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    background: rgba(0,87,255,0.12);
+    border: 1px solid rgba(0,87,255,0.3);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 540px;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+  }
+
+  .btn-large {
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .hero-stat h3 {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .hero-stat h3 span { color: var(--blue); }
+
+  .hero-stat p {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* Floating cards */
+  .hero-visual {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 420px;
+  }
+
+  .hero-card-main {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 60px rgba(0,87,255,0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(0.5deg); }
+    66% { transform: translateY(-6px) rotate(-0.5deg); }
+  }
+
+  .hero-card-img {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, var(--accent) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='25' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3Ccircle cx='30' cy='30' r='15' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/%3E%3C/svg%3E") center/60px;
+  }
+
+  .hero-card-body { padding: 1.25rem 1.5rem 1.5rem; }
+  .hero-card-tag {
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    background: rgba(0,87,255,0.15);
+    border: 1px solid rgba(0,87,255,0.25);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-card-body h4 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-card-price {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--white);
+  }
+
+  .hero-card-price span {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    font-family: var(--font-body);
+  }
+
+  .rating { color: var(--accent2); font-size: 0.85rem; }
+
+  .mini-card {
+    position: absolute;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.9rem 1.1rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  .mini-card.mc1 { bottom: -30px; left: -60px; animation: float2 5s ease-in-out infinite; }
+  .mini-card.mc2 { top: -20px; right: -30px; animation: float3 7s ease-in-out infinite; }
+
+  @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes float3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+  .mini-card-label { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 0.2rem; }
+  .mini-card-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--white); }
+  .mini-card-val span { color: var(--accent); }
+
+  /* ─────────────── SECTION COMMONS ─────────────── */
+  section { padding: 100px 5%; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--blue);
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .section-heading em {
+    font-style: normal;
+    color: var(--blue);
+  }
+
+  .section-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 560px;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  /* ─────────────── CATEGORIES ─────────────── */
+  .categories {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 50px 5%;
+  }
+
+  .cats-track {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .cat-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+
+  .cat-pill:hover, .cat-pill.active {
+    background: rgba(0,87,255,0.12);
+    border-color: var(--blue);
+    color: var(--white);
+    box-shadow: 0 0 20px rgba(0,87,255,0.2);
+  }
+
+  .cat-icon { font-size: 1.1rem; }
+
+  /* ─────────────── COURSES ─────────────── */
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .course-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .course-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-bright);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,87,255,0.12);
+  }
+
+  .course-thumb {
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+  }
+
+  .course-thumb .overlay {
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    opacity: 0.9;
+  }
+
+  .thumb-marketing { background: linear-gradient(135deg, #001a7a, #0057FF, #00aeff); }
+  .thumb-finance   { background: linear-gradient(135deg, #001440, #003BBA, #0057FF); }
+  .thumb-food      { background: linear-gradient(135deg, #001a2e, #004080, #0066cc); }
+  .thumb-yogurt    { background: linear-gradient(135deg, #001830, #0041CC, #1A6FFF); }
+  .thumb-brand     { background: linear-gradient(135deg, #001050, #0033a0, #0057FF); }
+  .thumb-strategy  { background: linear-gradient(135deg, #00102e, #002b80, #0047d4); }
+
+  .course-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    padding: 0.25rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge-new { background: var(--blue); color: white; }
+  .badge-hot { background: #ff4d00; color: white; }
+  .badge-pro { background: var(--accent2); color: #000; }
+
+  .course-body { padding: 1.25rem; }
+
+  .course-cat {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--blue-bright);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .course-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .course-instructor {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.8rem;
+  }
+
+  .course-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+
+  .course-progress {
+    height: 3px;
+    background: var(--surface3);
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .course-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    border-radius: 2px;
+  }
+
+  .course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .price {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--white);
+  }
+
+  .price-old {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-decoration: line-through;
+    margin-left: 0.4rem;
+    font-weight: 400;
+    font-family: var(--font-body);
+  }
+
+  .btn-enroll {
+    padding: 0.45rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+  }
+  .btn-enroll:hover { background: var(--blue); border-color: var(--blue); color: white; }
+
+  /* ─────────────── CONSULTING SECTION ─────────────── */
+  .consulting {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .consulting::before {
+    content: '';
+    position: absolute;
+    right: -200px;
+    top: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,87,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .consulting-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .consulting-text .section-sub { max-width: 460px; margin-bottom: 2rem; }
+
+  .consulting-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .consulting-features li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
+
+  .feat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(0,87,255,0.12);
+    border: 1px solid rgba(0,87,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .feat-text h4 {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0;
+  }
+
+  .feat-text p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .consulting-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .consult-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .consult-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .consult-card:hover { border-color: var(--border-bright); transform: translateY(-4px); }
+  .consult-card:hover::before { transform: scaleX(1); }
+
+  .consult-card.featured {
+    border-color: var(--blue);
+    background: rgba(0,87,255,0.06);
+    grid-column: span 2;
+  }
+
+  .consult-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .consult-card h3 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .consult-card p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; }
+
+  .consult-price {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  /* ─────────────── TESTIMONIALS ─────────────── */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .testi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .testi-card:hover { border-color: var(--border-bright); transform: translateY(-4px); }
+
+  .testi-quote {
+    font-size: 2.5rem;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+    font-family: Georgia, serif;
+    opacity: 0.5;
+  }
+
+  .testi-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .testi-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .av1 { background: linear-gradient(135deg, var(--blue), var(--accent)); }
+  .av2 { background: linear-gradient(135deg, #0041CC, #1A6FFF); }
+  .av3 { background: linear-gradient(135deg, #003BBA, #0057FF); }
+  .av4 { background: linear-gradient(135deg, #00D4FF, #0057FF); }
+
+  .testi-info h5 { font-size: 0.9rem; font-weight: 600; color: var(--white); }
+  .testi-info span { font-size: 0.78rem; color: var(--text-dim); }
+
+  /* ─────────────── INSTRUCTORS ─────────────── */
+  .instructors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .instructor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .instructor-card:hover { border-color: var(--border-bright); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+
+  .instructor-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    border: 3px solid var(--border-bright);
+  }
+
+  .instructor-card h4 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.01em;
+  }
+
+  .instructor-card .role {
+    font-size: 0.8rem;
+    color: var(--blue-bright);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .instructor-card .bio {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .instructor-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .istat { text-align: center; }
+  .istat strong { display: block; font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: var(--white); }
+  .istat span { font-size: 0.7rem; color: var(--text-dim); }
+
+  /* ─────────────── CTA BANNER ─────────────── */
+  .cta-banner {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 100px 5%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0,87,255,0.12) 0%, transparent 70%);
+  }
+
+  .cta-banner-content { position: relative; z-index: 1; max-width: 650px; margin: 0 auto; }
+
+  .cta-banner h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .cta-banner h2 em { font-style: normal; color: var(--blue); }
+
+  .cta-banner p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 0.85rem 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .cta-input:focus { border-color: var(--blue); }
+  .cta-input::placeholder { color: var(--text-dim); }
+
+  /* ─────────────── MARQUEE ─────────────── */
+  .marquee-section {
+    padding: 1px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--bg2);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .marquee-item::before {
+    content: '◆';
+    color: var(--blue);
+    font-size: 0.5rem;
+  }
+
+  /* ─────────────── FOOTER ─────────────── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 70px 5% 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin: 0.8rem 0 1.5rem;
+    max-width: 280px;
+    font-weight: 300;
+  }
+
+  .social-links { display: flex; gap: 0.75rem; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .social-btn:hover { background: var(--blue); border-color: var(--blue); color: white; }
+
+  .footer-col h5 {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-links a {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  /* ─────────────── SCROLL ANIMATIONS ─────────────── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─────────────── RESPONSIVE ─────────────── */
+  @media (max-width: 900px) {
+    .hero-visual { display: none; }
+    .consulting-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .consulting-cards { grid-template-columns: 1fr; }
+    .consult-card.featured { grid-column: auto; }
+    .cta-form { flex-direction: column; }
+  }
+
+  /* ─────────────── MODAL ─────────────── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 18, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border-bright);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8), 0 0 80px rgba(0,87,255,0.1);
+    transform: translateY(30px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  /* Modal header banner */
+  .modal-banner {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .modal-banner-bg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+  }
+
+  .modal-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6,13,32,0.95) 0%, rgba(6,13,32,0.5) 50%, rgba(6,13,32,0.2) 100%);
+  }
+
+  .modal-banner-content {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 2rem;
+    right: 6rem;
+  }
+
+  .modal-banner-content .modal-category {
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    background: rgba(0,87,255,0.25);
+    border: 1px solid rgba(0,87,255,0.4);
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .modal-banner-content h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(6,13,32,0.7);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+  .modal-close:hover { background: rgba(0,87,255,0.3); color: white; border-color: var(--blue); }
+
+  /* Modal body */
+  .modal-body {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .modal-main {
+    padding: 2rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--blue-dark) transparent;
+  }
+
+  .modal-main::-webkit-scrollbar { width: 4px; }
+  .modal-main::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 2px; }
+
+  .modal-sidebar {
+    background: var(--surface2);
+    border-left: 1px solid var(--border);
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* Instructor row */
+  .modal-instructor {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-instructor-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .modal-instructor-info h5 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .modal-instructor-info span {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .modal-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .modal-rating .stars { color: var(--accent2); }
+  .modal-rating .rating-val { font-weight: 700; color: var(--white); }
+  .modal-rating .rating-count { color: var(--text-dim); }
+
+  /* Modal sections */
+  .modal-section { margin-bottom: 1.75rem; }
+
+  .modal-section h3 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+
+  .modal-learns {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .modal-learns li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .modal-learns li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.25);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-requires {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .modal-requires li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .modal-requires li::before {
+    content: '→';
+    color: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* Curriculum */
+  .curriculum-module {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+  }
+
+  .curriculum-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    background: var(--surface3);
+    cursor: pointer;
+    transition: background 0.2s;
+    gap: 0.5rem;
+  }
+
+  .curriculum-header:hover { background: rgba(0,87,255,0.1); }
+
+  .curriculum-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .curriculum-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--blue);
+    background: rgba(0,87,255,0.12);
+    border: 1px solid rgba(0,87,255,0.2);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .curriculum-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .curriculum-meta {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .curriculum-chevron {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+
+  .curriculum-module.open .curriculum-chevron { transform: rotate(180deg); }
+
+  .curriculum-lessons {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .curriculum-module.open .curriculum-lessons { max-height: 500px; }
+
+  .curriculum-lesson {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem 0.6rem 2.8rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    transition: background 0.15s;
+  }
+
+  .curriculum-lesson:hover { background: rgba(0,87,255,0.05); color: var(--text); }
+
+  .lesson-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0,87,255,0.12);
+    border: 1px solid rgba(0,87,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    flex-shrink: 0;
+  }
+
+  .lesson-duration {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* Sidebar */
+  .modal-price-block {
+    text-align: center;
+    padding: 1.25rem;
+    background: rgba(0,87,255,0.06);
+    border: 1px solid rgba(0,87,255,0.2);
+    border-radius: 12px;
+  }
+
+  .modal-price-block .price-main {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .modal-price-block .price-old {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-decoration: line-through;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-price-block .price-note {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+  }
+
+  .btn-full {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    border: none;
+  }
+
+  .btn-enroll-full {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 6px 24px rgba(0,87,255,0.4);
+  }
+  .btn-enroll-full:hover { background: var(--blue-bright); box-shadow: 0 8px 30px rgba(0,87,255,0.55); transform: translateY(-1px); }
+
+  .btn-ghost-full {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border) !important;
+    margin-top: 0.5rem;
+  }
+  .btn-ghost-full:hover { border-color: var(--border-bright) !important; color: var(--white); }
+
+  .modal-meta-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .modal-meta-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .modal-meta-list li span:first-child {
+    font-size: 1rem;
+    width: 20px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .modal-meta-list li strong { color: var(--white); font-weight: 600; }
+
+  .modal-guarantee {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    text-align: center;
+    justify-content: center;
+  }
+
+  .modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+  }
+
+  .modal-tag {
+    padding: 0.25rem 0.65rem;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  .difficulty-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 0.3rem;
+  }
+
+  .diff-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+  }
+
+  .diff-dot.active { background: var(--blue); border-color: var(--blue); }
+
+  @media (max-width: 700px) {
+    .modal-body { grid-template-columns: 1fr; }
+    .modal-sidebar { border-left: none; border-top: 1px solid var(--border); }
+    .modal-banner { height: 180px; }
+    .modal-banner-content h2 { font-size: 1.2rem; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+  /* ─────────────── AUTH MODAL ─────────────── */
+  .auth-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2,6,18,0.88);
+    backdrop-filter: blur(14px);
+    z-index: 9500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  .auth-overlay.open { opacity: 1; visibility: visible; }
+
+  .auth-modal {
+    background: var(--bg2);
+    border: 1px solid var(--border-bright);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.85), 0 0 80px rgba(0,87,255,0.12);
+    transform: translateY(28px) scale(0.96);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .auth-overlay.open .auth-modal { transform: translateY(0) scale(1); }
+
+  .auth-header {
+    padding: 2rem 2rem 0;
+    text-align: center;
+    position: relative;
+  }
+
+  .auth-logo {
+    display: block;
+    height: 48px;
+    width: auto;
+    margin: 0 auto 1.5rem;
+  }
+
+  .auth-close {
+    position: absolute;
+    top: 1.2rem; right: 1.2rem;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .auth-close:hover { background: rgba(0,87,255,0.2); color: white; border-color: var(--blue); }
+
+  .auth-tabs {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin: 0 2rem 1.5rem;
+  }
+
+  .auth-tab {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: 9px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .auth-tab.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 4px 16px rgba(0,87,255,0.35);
+  }
+
+  .auth-form-wrap {
+    padding: 0 2rem 2rem;
+  }
+
+  .auth-panel { display: none; }
+  .auth-panel.active { display: block; }
+
+  /* Google button */
+  .btn-google {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 1.25rem;
+  }
+  .btn-google:hover { background: var(--surface3); border-color: var(--blue); box-shadow: 0 4px 20px rgba(0,87,255,0.2); }
+
+  .google-icon {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .auth-divider span { font-size: 0.75rem; color: var(--text-dim); white-space: nowrap; }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(0,87,255,0.15);
+  }
+  .form-input::placeholder { color: var(--text-dim); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+  .password-wrap { position: relative; }
+  .password-toggle {
+    position: absolute;
+    right: 0.85rem; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: var(--text-dim); cursor: pointer;
+    font-size: 0.95rem; padding: 0;
+    transition: color 0.2s;
+  }
+  .password-toggle:hover { color: var(--text); }
+
+  .form-terms {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+  .form-terms a { color: var(--blue); text-decoration: none; }
+  .form-terms a:hover { text-decoration: underline; }
+
+  .btn-auth {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 10px;
+    background: var(--blue);
+    border: none;
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 6px 24px rgba(0,87,255,0.35);
+  }
+  .btn-auth:hover { background: var(--blue-bright); box-shadow: 0 8px 30px rgba(0,87,255,0.5); transform: translateY(-1px); }
+  .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .auth-footer-link {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin-top: 1.25rem;
+  }
+  .auth-footer-link a { color: var(--blue); cursor: pointer; font-weight: 600; }
+  .auth-footer-link a:hover { text-decoration: underline; }
+
+  .forgot-link {
+    display: block;
+    text-align: right;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    margin-bottom: 1.25rem;
+    margin-top: -0.5rem;
+    transition: color 0.2s;
+  }
+  .forgot-link:hover { color: var(--blue); }
+
+  /* Alerts */
+  .auth-alert {
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-size: 0.83rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .auth-alert.error { background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.25); color: #ff6b6b; }
+  .auth-alert.success { background: rgba(0,212,100,0.1); border: 1px solid rgba(0,212,100,0.25); color: #00d464; }
+  .auth-alert.show { display: block; }
+
+  /* User avatar in nav (logged in) */
+  .nav-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--accent));
+    border: 2px solid var(--border-bright);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-avatar:hover { box-shadow: 0 0 16px rgba(0,87,255,0.5); }
+
+  .nav-user-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .nav-user-menu {
+    position: relative;
+  }
+
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    padding: 0.5rem;
+    min-width: 180px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: none;
+    z-index: 200;
+  }
+
+  .nav-dropdown.show { display: block; }
+
+  .nav-dropdown-item {
+    display: block;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-body);
+  }
+  .nav-dropdown-item:hover { background: var(--surface3); color: var(--white); }
+  .nav-dropdown-item.danger { color: #ff6b6b; }
+  .nav-dropdown-item.danger:hover { background: rgba(255,60,60,0.1); }
+
+  @media (max-width: 480px) {
+    .form-row { grid-template-columns: 1fr; }
+    .auth-modal { border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ───────── NAV ───────── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" style="height:46px;width:auto;display:block;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="#cursos">Cursos</a></li>
+    <li><a href="#consultoria">Consultoría</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/sobre-nosotros">Sobre Nosotros</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="openAuth('login')">Iniciar sesión</button>
+    <button class="btn-primary" onclick="openAuth('register')">Registrarse gratis</button>
+  </div>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Plataforma de formación empresarial #1</div>
+    <h1>
+      Impulsamos tu<br>
+      <em>negocio ahora</em>
+    </h1>
+    <p>Formación y consultoría en marketing digital, finanzas e industria alimentaria para impulsar el crecimiento real de tu empresa.</p>
+    <div class="hero-actions">
+      <a href="#cursos" class="btn-primary btn-large">Explorar cursos →</a>
+      <a href="#consultoria" class="btn-ghost btn-large">Ver consultoría</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <h3>12K<span>+</span></h3>
+        <p>Estudiantes activos</p>
+      </div>
+      <div class="hero-stat">
+        <h3>98<span>%</span></h3>
+        <p>Satisfacción</p>
+      </div>
+      <div class="hero-stat">
+        <h3>45<span>+</span></h3>
+        <p>Cursos disponibles</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating card -->
+  <div class="hero-visual">
+    <div style="position:relative;">
+      <div class="mini-card mc2">
+        <div class="mini-card-label">🎓 Nuevo inscrito</div>
+        <div class="mini-card-val"><span>+248</span> esta semana</div>
+      </div>
+      <div class="hero-card-main">
+        <div class="hero-card-img thumb-marketing">
+          📈
+        </div>
+        <div class="hero-card-body">
+          <div class="hero-card-tag">Marketing Digital</div>
+          <h4>Estrategias de Growth Marketing para negocios B2B</h4>
+          <div style="font-size:0.8rem;color:var(--text-dim);">Por Carlos Mendoza · 38 lecciones</div>
+          <div class="hero-card-meta">
+            <div>
+              <div class="hero-card-price">$79 <span>/pago único</span></div>
+              <div class="rating">★★★★★ <span style="color:var(--text-dim);">4.9</span></div>
+            </div>
+            <button class="btn-enroll" style="padding:0.6rem 1.2rem;">Inscribirse</button>
+          </div>
+        </div>
+      </div>
+      <div class="mini-card mc1">
+        <div class="mini-card-label">📊 Consultoría</div>
+        <div class="mini-card-val">+<span>320</span> negocios</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── MARQUEE ───────── -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Marketing Digital</div>
+    <div class="marquee-item">Estrategia de Marca</div>
+    <div class="marquee-item">Industria Láctea</div>
+    <div class="marquee-item">Finanzas Empresariales</div>
+    <div class="marquee-item">Productos de Yogurt</div>
+    <div class="marquee-item">Consultoría de Negocios</div>
+    <div class="marquee-item">Growth Marketing</div>
+    <div class="marquee-item">Industria Alimentaria</div>
+    <div class="marquee-item">Branding & Posicionamiento</div>
+    <div class="marquee-item">Ventas B2B</div>
+    <div class="marquee-item">Marketing Digital</div>
+    <div class="marquee-item">Estrategia de Marca</div>
+    <div class="marquee-item">Industria Láctea</div>
+    <div class="marquee-item">Finanzas Empresariales</div>
+    <div class="marquee-item">Productos de Yogurt</div>
+    <div class="marquee-item">Consultoría de Negocios</div>
+    <div class="marquee-item">Growth Marketing</div>
+    <div class="marquee-item">Industria Alimentaria</div>
+    <div class="marquee-item">Branding & Posicionamiento</div>
+    <div class="marquee-item">Ventas B2B</div>
+  </div>
+</div>
+
+<!-- ───────── CATEGORIES ───────── -->
+<div class="categories">
+  <div style="text-align:center;">
+    <div class="section-label" style="justify-content:center;">Explora por categoría</div>
+    <h2 class="section-heading">Aprende lo que tu negocio necesita</h2>
+  </div>
+  <div class="cats-track">
+    <a href="#" class="cat-pill active"><span class="cat-icon">📊</span> Todos</a>
+    <a href="#" class="cat-pill"><span class="cat-icon">📱</span> Marketing</a>
+    <a href="#" class="cat-pill"><span class="cat-icon">📈</span> Ventas</a>
+    <a href="#" class="cat-pill"><span class="cat-icon">🏷️</span> Branding</a>
+    <a href="#" class="cat-pill"><span class="cat-icon">💰</span> Finanzas</a>
+    <a href="#" class="cat-pill"><span class="cat-icon">🥛</span> Productos</a>
+    <a href="#" class="cat-pill"><span class="cat-icon">🎯</span> Negocios</a>
+  </div>
+</div>
+
+<!-- ───────── CURSOS ───────── -->
+<section id="cursos">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Cursos destacados</div>
+      <h2 class="section-heading">Los más <em>populares</em></h2>
+      <p class="section-sub">Formación práctica con expertos del sector empresarial y la industria alimentaria.</p>
+    </div>
+    <a href="#" class="btn-ghost">Ver todos los cursos →</a>
+  </div>
+
+  <div class="courses-grid">
+    <!-- Card 1 -->
+    <div class="course-card fade-up">
+      <div class="course-thumb thumb-marketing">
+        <span>📈</span>
+        <span class="course-badge badge-hot">🔥 Hot</span>
+      </div>
+      <div class="course-body">
+        <div class="course-cat">Marketing Digital</div>
+        <h3>Growth Marketing: Escala tu negocio con datos</h3>
+        <div class="course-instructor">👤 Carlos Mendoza · Especialista en Growth</div>
+        <div class="course-stats">
+          <span>⏱ 18h</span><span>📚 42 lecciones</span><span>⭐ 4.9</span>
+        </div>
+        <div class="course-progress"><div class="course-progress-bar" style="width:72%"></div></div>
+        <div class="course-footer">
+          <div class="price">$79 <span class="price-old">$120</span></div>
+          <button class="btn-enroll">Inscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="course-card fade-up">
+      <div class="course-thumb thumb-finance">
+        <span>💰</span>
+        <span class="course-badge badge-pro">PRO</span>
+      </div>
+      <div class="course-body">
+        <div class="course-cat">Finanzas</div>
+        <h3>Finanzas para emprendedores: Del flujo de caja al crecimiento</h3>
+        <div class="course-instructor">👤 Ana Torres · MBA, CFO</div>
+        <div class="course-stats">
+          <span>⏱ 14h</span><span>📚 35 lecciones</span><span>⭐ 4.8</span>
+        </div>
+        <div class="course-progress"><div class="course-progress-bar" style="width:55%"></div></div>
+        <div class="course-footer">
+          <div class="price">$89 <span class="price-old">$150</span></div>
+          <button class="btn-enroll">Inscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="course-card fade-up">
+      <div class="course-thumb thumb-yogurt">
+        <span>🥛</span>
+        <span class="course-badge badge-new">NUEVO</span>
+      </div>
+      <div class="course-body">
+        <div class="course-cat">Industria Láctea</div>
+        <h3>Elaboración y comercialización de yogurt artesanal e industrial</h3>
+        <div class="course-instructor">👤 Dr. Marco Salas · Ing. Alimentario</div>
+        <div class="course-stats">
+          <span>⏱ 22h</span><span>📚 56 lecciones</span><span>⭐ 4.9</span>
+        </div>
+        <div class="course-progress"><div class="course-progress-bar" style="width:40%"></div></div>
+        <div class="course-footer">
+          <div class="price">$99 <span class="price-old">$180</span></div>
+          <button class="btn-enroll">Inscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="course-card fade-up">
+      <div class="course-thumb thumb-food">
+        <span>🍃</span>
+      </div>
+      <div class="course-body">
+        <div class="course-cat">Alimentos Naturales</div>
+        <h3>Marketing para marcas de alimentos saludables y orgánicos</h3>
+        <div class="course-instructor">👤 Sofía Ríos · Brand Strategist</div>
+        <div class="course-stats">
+          <span>⏱ 12h</span><span>📚 30 lecciones</span><span>⭐ 4.7</span>
+        </div>
+        <div class="course-progress"><div class="course-progress-bar" style="width:60%"></div></div>
+        <div class="course-footer">
+          <div class="price">$69 <span class="price-old">$110</span></div>
+          <button class="btn-enroll">Inscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="course-card fade-up">
+      <div class="course-thumb thumb-brand">
+        <span>🎯</span>
+        <span class="course-badge badge-pro">PRO</span>
+      </div>
+      <div class="course-body">
+        <div class="course-cat">Branding</div>
+        <h3>Construye una marca poderosa para tu negocio alimentario</h3>
+        <div class="course-instructor">👤 Luis Guerrero · Director Creativo</div>
+        <div class="course-stats">
+          <span>⏱ 16h</span><span>📚 38 lecciones</span><span>⭐ 4.8</span>
+        </div>
+        <div class="course-progress"><div class="course-progress-bar" style="width:80%"></div></div>
+        <div class="course-footer">
+          <div class="price">$85 <span class="price-old">$140</span></div>
+          <button class="btn-enroll">Inscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="course-card fade-up">
+      <div class="course-thumb thumb-strategy">
+        <span>📊</span>
+        <span class="course-badge badge-new">NUEVO</span>
+      </div>
+      <div class="course-body">
+        <div class="course-cat">Estrategia</div>
+        <h3>Plan de negocios y modelo financiero para PYMES alimentarias</h3>
+        <div class="course-instructor">👤 Patricia Vega · Consultora Senior</div>
+        <div class="course-stats">
+          <span>⏱ 20h</span><span>📚 48 lecciones</span><span>⭐ 4.9</span>
+        </div>
+        <div class="course-progress"><div class="course-progress-bar" style="width:30%"></div></div>
+        <div class="course-footer">
+          <div class="price">$109 <span class="price-old">$200</span></div>
+          <button class="btn-enroll">Inscribirse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── CONSULTING ───────── -->
+<section class="consulting" id="consultoria">
+  <div class="consulting-grid">
+    <div class="consulting-text fade-up">
+      <div class="section-label">Servicios de consultoría</div>
+      <h2 class="section-heading">Impulsamos tu negocio con <em>estrategia experta</em></h2>
+      <p class="section-sub">Nuestros consultores trabajan contigo directamente para diagnosticar, planificar y ejecutar soluciones a medida para tu empresa.</p>
+      <ul class="consulting-features">
+        <li>
+          <div class="feat-icon">🎯</div>
+          <div class="feat-text">
+            <h4>Consultoría de Marketing 360°</h4>
+            <p>Estrategia digital, posicionamiento de marca, campañas y análisis de resultados.</p>
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">🏭</div>
+          <div class="feat-text">
+            <h4>Industria Alimentaria</h4>
+            <p>Asesoría en producción, calidad, normativas sanitarias y cadena de distribución.</p>
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">💡</div>
+          <div class="feat-text">
+            <h4>Desarrollo de Nuevos Productos</h4>
+            <p>Formulación, pruebas de mercado y lanzamiento de líneas alimentarias innovadoras.</p>
+          </div>
+        </li>
+      </ul>
+      <a href="#contacto" class="btn-primary btn-large">Solicitar consultoría →</a>
+    </div>
+
+    <div class="consulting-cards fade-up">
+      <div class="consult-card featured">
+        <div class="consult-icon">🚀</div>
+        <h3>Consultoría Estratégica Integral</h3>
+        <p>Diagnóstico completo de tu negocio + plan de acción de 90 días + acompañamiento personalizado con nuestros expertos en marketing e industria alimentaria.</p>
+      </div>
+      <div class="consult-card">
+        <div class="consult-icon">📱</div>
+        <h3>Marketing Digital</h3>
+        <p>Estrategia de contenidos, redes sociales, SEO y pauta digital para tu marca.</p>
+      </div>
+      <div class="consult-card">
+        <div class="consult-icon">🥛</div>
+        <h3>Industria Alimentaria</h3>
+        <p>Asesoría técnica en producción láctea, yogurt, fermentados y certificaciones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── INSTRUCTORES ───────── -->
+<section id="instructores">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Nuestros expertos</div>
+      <h2 class="section-heading">Aprende de los <em>mejores</em></h2>
+      <p class="section-sub">Profesionales con trayectoria real en sus industrias, no solo académicos.</p>
+    </div>
+  </div>
+  <div class="instructors-grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
+    <div class="instructor-card fade-up">
+      <div class="instructor-avatar av1">DM</div>
+      <h4>Daniel Marín</h4>
+      <div class="role">Growth Marketing Expert</div>
+      <div class="bio">Especialista en estrategias de crecimiento digital, posicionamiento de marca y marketing basado en datos para negocios en LATAM.</div>
+      <div class="instructor-stats">
+        <div class="istat"><strong>4</strong><span>Cursos</span></div>
+        <div class="istat"><strong>3.2K</strong><span>Alumnos</span></div>
+        <div class="istat"><strong>4.9★</strong><span>Rating</span></div>
+      </div>
+    </div>
+    <div class="instructor-card fade-up">
+      <div class="instructor-avatar av2">LP</div>
+      <h4>Luis Portilla</h4>
+      <div class="role">Ing. Alimentario</div>
+      <div class="bio">Más de 5 años de experiencia en el rubro alimentario, trabajando con grandes industrias en desarrollo de productos, calidad y normativas sanitarias.</div>
+      <div class="instructor-stats">
+        <div class="istat"><strong>5</strong><span>Cursos</span></div>
+        <div class="istat"><strong>4.1K</strong><span>Alumnos</span></div>
+        <div class="istat"><strong>4.9★</strong><span>Rating</span></div>
+      </div>
+    </div>
+    <div class="instructor-card fade-up">
+      <div class="instructor-avatar av3">FR</div>
+      <h4>Fabrizio Rodríguez</h4>
+      <div class="role">Ing. Industrial · Consultor</div>
+      <div class="bio">Más de 5 años de experiencia trabajando y brindando consultorías a industrias, optimizando procesos y estrategias de escalabilidad empresarial.</div>
+      <div class="instructor-stats">
+        <div class="istat"><strong>3</strong><span>Cursos</span></div>
+        <div class="istat"><strong>2.8K</strong><span>Alumnos</span></div>
+        <div class="istat"><strong>4.8★</strong><span>Rating</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── TESTIMONIALS ───────── -->
+<section style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Testimonios</div>
+      <h2 class="section-heading">Lo que dicen nuestros <em>estudiantes</em></h2>
+    </div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card fade-up">
+      <div class="testi-quote">"</div>
+      <p>Después de tomar el curso de marketing y la consultoría, triplicamos nuestras ventas en 6 meses. La combinación de formación práctica y acompañamiento personalizado es brutal.</p>
+      <div class="testi-author">
+        <div class="testi-avatar av1">JR</div>
+        <div class="testi-info">
+          <h5>Jorge Ramírez</h5>
+          <span>CEO, Lácteos Del Valle</span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="testi-quote">"</div>
+      <p>El curso de yogurt artesanal me dio todo el conocimiento técnico para lanzar mi negocio. El Dr. Salas explica de una manera que cualquiera puede aplicar desde el día uno.</p>
+      <div class="testi-author">
+        <div class="testi-avatar av2">ML</div>
+        <div class="testi-info">
+          <h5>María López</h5>
+          <span>Emprendedora, YogurtHouse</span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="testi-quote">"</div>
+      <p>La consultoría en industria alimentaria nos ayudó a obtener nuestra certificación sanitaria en tiempo récord. Inversión que se pagó sola en el primer mes.</p>
+      <div class="testi-author">
+        <div class="testi-avatar av3">AP</div>
+        <div class="testi-info">
+          <h5>Andrés Pinto</h5>
+          <span>Gerente, Alimentos Naturalia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── CTA ───────── -->
+<section class="cta-banner" id="contacto">
+  <div class="cta-banner-content fade-up">
+    <div class="hero-badge" style="display:inline-flex;margin:0 auto 1.5rem;">✉️ Únete a más de 12,000 profesionales</div>
+    <h2>¿Listo para <em>impulsar</em><br>tu negocio?</h2>
+    <p>Recibe acceso anticipado a nuevos cursos, descuentos exclusivos y contenido estratégico para hacer crecer tu empresa.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="Tu correo electrónico">
+      <button class="btn-primary" style="white-space:nowrap;padding:0.85rem 1.5rem;">Comenzar gratis</button>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:1rem;margin-bottom:0;">Sin tarjeta de crédito · Cancela cuando quieras</p>
+  </div>
+</section>
+
+
+<!-- ───────── FOOTER ───────── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">
+        <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" style="height:42px;width:auto;display:block;">
+      </a>
+      <p>Plataforma líder de formación empresarial y consultoría especializada en marketing, finanzas e industria alimentaria en LATAM.</p>
+      <div class="social-links">
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">𝕏</a>
+        <a href="#" class="social-btn">▶</a>
+        <a href="#" class="social-btn">📷</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Cursos</h5>
+      <ul class="footer-links">
+        <li><a href="#">Marketing Digital</a></li>
+        <li><a href="#">Finanzas y Contabilidad</a></li>
+        <li><a href="#">Industria Láctea</a></li>
+        <li><a href="#">Productos de Yogurt</a></li>
+        <li><a href="#">Branding & Estrategia</a></li>
+        <li><a href="#">Ventas y Distribución</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Consultoría</h5>
+      <ul class="footer-links">
+        <li><a href="#">Marketing 360°</a></li>
+        <li><a href="#">Industria Alimentaria</a></li>
+        <li><a href="#">Nuevos Productos</a></li>
+        <li><a href="#">Finanzas PYMES</a></li>
+        <li><a href="#">Certificaciones</a></li>
+        <li><a href="#">Casos de éxito</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Empresa</h5>
+      <ul class="footer-links">
+        <li><a href="/sobre-nosotros">Sobre nosotros</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="#">Instructores</a></li>
+        <li><a href="#">Afiliados</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 Nucleri. Todos los derechos reservados.</span>
+    <span>Hecho con ❤️ para emprendedores de LATAM</span>
+  </div>
+</footer>
+
+<!-- ───────── AUTH MODAL ───────── -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-modal" id="authModal">
+
+    <div class="auth-header">
+      <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" class="auth-logo">
+      <button class="auth-close" onclick="closeAuth()">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Iniciar sesión</button>
+      <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Crear cuenta</button>
+    </div>
+
+    <div class="auth-form-wrap">
+
+      <!-- ── LOGIN PANEL ── -->
+      <div class="auth-panel active" id="panel-login">
+        <div class="auth-alert" id="login-alert"></div>
+
+        <button class="btn-google" onclick="authWithGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continuar con Google
+        </button>
+
+        <div class="auth-divider"><span>o inicia sesión con tu cuenta</span></div>
+
+        <div class="form-group">
+          <label class="form-label">ID o correo electrónico</label>
+          <input type="text" class="form-input" id="login-email" placeholder="usuario@email.com o tu ID">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <div class="password-wrap">
+            <input type="password" class="form-input" id="login-password" placeholder="Tu contraseña" style="padding-right:2.8rem;">
+            <button class="password-toggle" onclick="togglePassword('login-password', this)" type="button">👁</button>
+          </div>
+          <a class="forgot-link" onclick="showForgot()">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button class="btn-auth" onclick="doLogin()">Iniciar sesión</button>
+
+        <div class="auth-footer-link">
+          ¿No tienes cuenta? <a onclick="switchTab('register')">Regístrate gratis</a>
+        </div>
+      </div>
+
+      <!-- ── REGISTER PANEL ── -->
+      <div class="auth-panel" id="panel-register">
+        <div class="auth-alert" id="register-alert"></div>
+
+        <button class="btn-google" onclick="authWithGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Registrarse con Google
+        </button>
+
+        <div class="auth-divider"><span>o crea tu cuenta</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-input" id="reg-name" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Apellido</label>
+            <input type="text" class="form-input" id="reg-lastname" placeholder="Tu apellido">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-input" id="reg-email" placeholder="correo@email.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ID de usuario</label>
+          <input type="text" class="form-input" id="reg-userid" placeholder="Ej: juan_123 (sin espacios)" oninput="sanitizeId(this)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <div class="password-wrap">
+            <input type="password" class="form-input" id="reg-password" placeholder="Mín. 8 caracteres" style="padding-right:2.8rem;">
+            <button class="password-toggle" onclick="togglePassword('reg-password', this)" type="button">👁</button>
+          </div>
+        </div>
+
+        <p class="form-terms">
+          Al registrarte aceptas nuestros <a href="#">Términos de uso</a> y <a href="#">Política de privacidad</a>.
+        </p>
+
+        <button class="btn-auth" onclick="doRegister()">Crear mi cuenta gratis</button>
+
+        <div class="auth-footer-link">
+          ¿Ya tienes cuenta? <a onclick="switchTab('login')">Inicia sesión</a>
+        </div>
+      </div>
+
+      <!-- ── FORGOT PANEL ── -->
+      <div class="auth-panel" id="panel-forgot">
+        <div class="auth-alert" id="forgot-alert"></div>
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6;">
+          Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-input" id="forgot-email" placeholder="correo@email.com">
+        </div>
+        <button class="btn-auth" onclick="doForgot()">Enviar enlace</button>
+        <div class="auth-footer-link">
+          <a onclick="switchTab('login')">← Volver al inicio de sesión</a>
+        </div>
+      </div>
+
+      <!-- ── SUCCESS PANEL ── -->
+      <div class="auth-panel" id="panel-success" style="text-align:center;padding:1rem 0;">
+        <div style="font-size:3.5rem;margin-bottom:1rem;">🎉</div>
+        <h3 id="success-title" style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--white);margin-bottom:0.6rem;letter-spacing:-0.02em;">¡Bienvenido a Nucleri!</h3>
+        <p id="success-msg" style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.5rem;"></p>
+        <button class="btn-auth" onclick="closeAuth()">Explorar cursos →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ───────── COURSE MODAL ───────── -->
+<div class="modal-overlay" id="courseModal">
+  <div class="modal">
+    <!-- Banner -->
+    <div class="modal-banner">
+      <div class="modal-banner-bg" id="modalBannerBg">
+        <span id="modalEmoji">📈</span>
+      </div>
+      <div class="modal-banner-overlay"></div>
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-banner-content">
+        <div class="modal-category" id="modalCategory">Marketing Digital</div>
+        <h2 id="modalTitle">Título del curso</h2>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Main content -->
+      <div class="modal-main">
+        <!-- Instructor -->
+        <div class="modal-instructor">
+          <div class="modal-instructor-avatar" id="modalAvatar">CM</div>
+          <div class="modal-instructor-info">
+            <h5 id="modalInstructorName">Carlos Mendoza</h5>
+            <span id="modalInstructorRole">Growth Marketing Expert</span>
+          </div>
+        </div>
+        <div class="modal-rating" style="margin-bottom:1.5rem;">
+          <span class="stars">★★★★★</span>
+          <span class="rating-val" id="modalRating">4.9</span>
+          <span class="rating-count" id="modalRatingCount">(2.3K valoraciones)</span>
+        </div>
+
+        <!-- What you'll learn -->
+        <div class="modal-section">
+          <h3>¿Qué aprenderás en este curso?</h3>
+          <ul class="modal-learns" id="modalLearns"></ul>
+        </div>
+
+        <!-- Requirements -->
+        <div class="modal-section">
+          <h3>¿Qué necesitas para empezar?</h3>
+          <ul class="modal-requires" id="modalRequires"></ul>
+        </div>
+
+        <!-- Curriculum -->
+        <div class="modal-section">
+          <h3>Temario del curso</h3>
+          <div id="modalCurriculum"></div>
+        </div>
+
+        <!-- Difficulty -->
+        <div class="modal-section">
+          <h3>Nivel del curso</h3>
+          <div style="display:flex;align-items:center;gap:1rem;">
+            <div class="difficulty-bar" id="modalDiffBar">
+              <div class="diff-dot active"></div>
+              <div class="diff-dot active"></div>
+              <div class="diff-dot"></div>
+              <div class="diff-dot"></div>
+              <div class="diff-dot"></div>
+            </div>
+            <span style="font-size:0.85rem;color:var(--text-muted);" id="modalDiffLabel">Intermedio</span>
+          </div>
+          <p style="font-size:0.84rem;color:var(--text-dim);margin-top:0.5rem;line-height:1.6;" id="modalDiffDesc">Este curso es ideal para profesionales que quieren llevar sus habilidades al siguiente nivel.</p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="modal-sidebar">
+        <div class="modal-price-block">
+          <div class="price-old" id="modalPriceOld">$120</div>
+          <div class="price-main" id="modalPrice">$79</div>
+          <div class="price-note">Pago único · Acceso de por vida</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:.6rem;width:100%">
+          <a class="btn-full btn-enroll-full" id="modal-wa-btn" href="#" target="_blank" 
+             style="display:flex;align-items:center;justify-content:center;gap:.6rem;background:#25D366;border:none;box-shadow:0 0 20px rgba(37,211,102,0.35);text-decoration:none;color:white">
+            <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.535 5.857L0 24l6.335-1.508A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 01-5.007-1.371l-.36-.213-3.731.889.932-3.617-.235-.372A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+            <span id="modal-wa-btn-text">Adquirir por WhatsApp</span>
+          </a>
+          <div style="text-align:center;font-size:0.75rem;color:var(--text-dim)">Te contactaremos para completar tu compra</div>
+        </div>
+        <button class="btn-full btn-ghost-full" style="border:1px solid var(--border)">Probar gratis 7 días</button>
+
+        <ul class="modal-meta-list" id="modalMeta">
+          <li><span>⏱</span><div><strong id="modalHours">18 horas</strong> de contenido</div></li>
+          <li><span>📚</span><div><strong id="modalLessons">42 lecciones</strong> en video</div></li>
+          <li><span>🏆</span><div><strong>Certificado</strong> al completar</div></li>
+          <li><span>📱</span><div>Acceso desde <strong>cualquier dispositivo</strong></div></li>
+          <li><span>♾️</span><div><strong>Acceso ilimitado</strong> de por vida</div></li>
+          <li><span>🌎</span><div>Comunidad de <strong>alumnos activa</strong></div></li>
+        </ul>
+
+        <div class="modal-tags" id="modalTags"></div>
+
+        <div class="modal-guarantee">
+          <span>🔒</span>
+          <span>Garantía de devolución de 30 días</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  //  AUTH SYSTEM (localStorage-based simulation)
+  // ─────────────────────────────────────────────
+  const authOverlay = document.getElementById('authOverlay');
+
+  // Helpers
+  function getUsers() {
+    try { return JSON.parse(localStorage.getItem('nucleri_users') || '[]'); } catch { return []; }
+  }
+  function saveUsers(u) { localStorage.setItem('nucleri_users', JSON.stringify(u)); }
+  function getSession() {
+    try { return JSON.parse(localStorage.getItem('nucleri_session') || 'null'); } catch { return null; }
+  }
+  function saveSession(u) { localStorage.setItem('nucleri_session', JSON.stringify(u)); }
+  function clearSession() { localStorage.removeItem('nucleri_session'); }
+
+  function generateId(name) {
+    return name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'') + '_' + Math.floor(Math.random()*9000+1000);
+  }
+
+  function showAlert(id, msg, type = 'error') {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'auth-alert ' + type + ' show';
+    setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  // Open/close
+  function openAuth(tab = 'login') {
+    authOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    switchTab(tab);
+  }
+
+  function closeAuth() {
+    authOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  authOverlay.addEventListener('click', e => { if (e.target === authOverlay) closeAuth(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && authOverlay.classList.contains('open')) closeAuth(); });
+
+  // Tabs
+  function switchTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab)?.classList.add('active');
+    document.getElementById('panel-' + tab)?.classList.add('active');
+  }
+
+  function showForgot() {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-forgot').classList.add('active');
+  }
+
+  // Password toggle
+  function togglePassword(id, btn) {
+    const inp = document.getElementById(id);
+    if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+    else { inp.type = 'password'; btn.textContent = '👁'; }
+  }
+
+  function sanitizeId(input) {
+    input.value = input.value.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  }
+
+  // Login
+  function doLogin() {
+    const identifier = document.getElementById('login-email').value.trim();
+    const password   = document.getElementById('login-password').value;
+
+    if (!identifier || !password) { showAlert('login-alert','Por favor completa todos los campos.'); return; }
+
+    const users = getUsers();
+    const user = users.find(u =>
+      u.email.toLowerCase() === identifier.toLowerCase() ||
+      u.userId.toLowerCase() === identifier.toLowerCase()
+    );
+
+    if (!user) { showAlert('login-alert','No encontramos una cuenta con ese ID o correo.'); return; }
+    if (user.password !== btoa(password)) { showAlert('login-alert','Contraseña incorrecta. Intenta de nuevo.'); return; }
+
+    saveSession(user);
+    updateNavForUser(user);
+    closeAuth();
+  }
+
+  // Register
+  function doRegister() {
+    const name     = document.getElementById('reg-name').value.trim();
+    const lastname = document.getElementById('reg-lastname').value.trim();
+    const email    = document.getElementById('reg-email').value.trim();
+    const userId   = document.getElementById('reg-userid').value.trim();
+    const password = document.getElementById('reg-password').value;
+
+    if (!name || !lastname || !email || !userId || !password) {
+      showAlert('register-alert','Por favor completa todos los campos.'); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showAlert('register-alert','Ingresa un correo electrónico válido.'); return;
+    }
+    if (userId.length < 4) {
+      showAlert('register-alert','El ID debe tener al menos 4 caracteres.'); return;
+    }
+    if (password.length < 8) {
+      showAlert('register-alert','La contraseña debe tener al menos 8 caracteres.'); return;
+    }
+
+    const users = getUsers();
+    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+      showAlert('register-alert','Ya existe una cuenta con ese correo electrónico.'); return;
+    }
+    if (users.find(u => u.userId.toLowerCase() === userId.toLowerCase())) {
+      showAlert('register-alert','Ese ID de usuario ya está en uso. Elige otro.'); return;
+    }
+
+    const newUser = {
+      id: Date.now(),
+      name, lastname, email,
+      userId,
+      password: btoa(password),
+      avatar: name[0].toUpperCase() + lastname[0].toUpperCase(),
+      createdAt: new Date().toISOString(),
+      provider: 'email'
+    };
+
+    users.push(newUser);
+    saveUsers(users);
+    saveSession(newUser);
+
+    // Show success
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('success-title').textContent = `¡Bienvenido/a, ${name}! 🎓`;
+    document.getElementById('success-msg').textContent = `Tu cuenta ha sido creada. Tu ID es: ${userId}. Ya puedes explorar todos los cursos.`;
+    document.getElementById('panel-success').classList.add('active');
+
+    updateNavForUser(newUser);
+  }
+
+  // Forgot
+  function doForgot() {
+    const email = document.getElementById('forgot-email').value.trim();
+    if (!email) { showAlert('forgot-alert','Ingresa tu correo.'); return; }
+    const users = getUsers();
+    const found = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!found) { showAlert('forgot-alert','No encontramos una cuenta con ese correo.'); return; }
+    showAlert('forgot-alert',`✓ Te enviamos un enlace a ${email}. Revisa tu bandeja.`, 'success');
+  }
+
+  // Google (simulated)
+  function authWithGoogle() {
+    const googleNames = [
+      {name:'María', lastname:'García'},
+      {name:'Carlos', lastname:'López'},
+      {name:'Ana', lastname:'Martínez'},
+      {name:'Luis', lastname:'Rodríguez'},
+      {name:'Sofía', lastname:'Pérez'},
+    ];
+    const pick = googleNames[Math.floor(Math.random() * googleNames.length)];
+    const fakeEmail = `${pick.name.toLowerCase()}.${pick.lastname.toLowerCase()}@gmail.com`;
+
+    const users = getUsers();
+    let user = users.find(u => u.email === fakeEmail);
+
+    if (!user) {
+      user = {
+        id: Date.now(),
+        name: pick.name,
+        lastname: pick.lastname,
+        email: fakeEmail,
+        userId: generateId(pick.name + '_' + pick.lastname),
+        password: '',
+        avatar: pick.name[0] + pick.lastname[0],
+        createdAt: new Date().toISOString(),
+        provider: 'google'
+      };
+      users.push(user);
+      saveUsers(users);
+    }
+
+    saveSession(user);
+
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('success-title').textContent = `¡Hola, ${user.name}! 👋`;
+    document.getElementById('success-msg').textContent = `Conectado con Google exitosamente. Tu ID es: ${user.userId}`;
+    document.getElementById('panel-success').classList.add('active');
+
+    updateNavForUser(user);
+  }
+
+  // Nav update when logged in
+  function updateNavForUser(user) {
+    const cta = document.querySelector('.nav-cta');
+    cta.innerHTML = `
+      <div class="nav-user-menu">
+        <div class="nav-user" onclick="toggleDropdown()">
+          <div class="nav-avatar">${user.avatar}</div>
+          <span class="nav-user-name">${user.name}</span>
+          <span style="color:var(--text-dim);font-size:0.7rem;">▼</span>
+        </div>
+        <div class="nav-dropdown" id="navDropdown">
+          <div style="padding:0.5rem 0.85rem 0.5rem;border-bottom:1px solid var(--border);margin-bottom:0.25rem;">
+            <div style="font-size:0.82rem;font-weight:700;color:var(--white);">${user.name} ${user.lastname}</div>
+            <div style="font-size:0.72rem;color:var(--text-dim);">ID: ${user.userId}</div>
+          </div>
+          <button class="nav-dropdown-item">📚 Mis cursos</button>
+          <button class="nav-dropdown-item">👤 Mi perfil</button>
+          <button class="nav-dropdown-item">🎓 Certificados</button>
+          <button class="nav-dropdown-item danger" onclick="doLogout()">Cerrar sesión</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function toggleDropdown() {
+    document.getElementById('navDropdown')?.classList.toggle('show');
+  }
+
+  document.addEventListener('click', e => {
+    const menu = document.querySelector('.nav-user-menu');
+    if (menu && !menu.contains(e.target)) {
+      document.getElementById('navDropdown')?.classList.remove('show');
+    }
+  });
+
+  function doLogout() {
+    clearSession();
+    const cta = document.querySelector('.nav-cta');
+    cta.innerHTML = `
+      <button class="btn-ghost" onclick="openAuth('login')">Iniciar sesión</button>
+      <button class="btn-primary" onclick="openAuth('register')">Registrarse gratis</button>
+    `;
+  }
+
+  // Check session on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const session = getSession();
+    if (session) updateNavForUser(session);
+  });
+
+  // ─────────────────────────────────────────────
+  //  COURSE MODAL
+  // ─────────────────────────────────────────────
+  const courses = [
+    {
+      id: 1, title: "Growth Marketing: Escala tu negocio con datos",
+      category: "Marketing Digital", emoji: "📈",
+      gradient: "linear-gradient(135deg, #001a7a, #0057FF, #00aeff)",
+      instructor: "Carlos Mendoza", instructorRole: "Growth Marketing Expert",
+      avatarInitials: "CM", avatarGradient: "linear-gradient(135deg, #0057FF, #00D4FF)",
+      rating: "4.9", ratingCount: "(2.3K valoraciones)",
+      price: "$79", priceOld: "$120", hours: "18 horas", lessons: "42 lecciones",
+      difficulty: 3, diffLabel: "Intermedio-Avanzado",
+      diffDesc: "Ideal para marketers con experiencia básica que desean dominar el crecimiento basado en datos.",
+      learns: ["Diseñarás experimentos de growth para identificar palancas de crecimiento.", "Aprenderás a construir embudos de conversión y optimizarlos con A/B testing.", "Dominarás herramientas de analytics como GA4, Mixpanel y Amplitude.", "Implementarás estrategias de retención y activación de usuarios.", "Crearás un dashboard de métricas norte para tu equipo."],
+      requires: ["Conocimientos básicos de marketing digital.", "Acceso a Google Analytics.", "Tener un negocio o proyecto digital activo (recomendado)."],
+      curriculum: [
+        { title: "Fundamentos del Growth", lessons: ["¿Qué es el Growth Marketing? — 4m 30s", "El North Star Metric — 5m 12s"] },
+        { title: "Experimentos y A/B Testing", lessons: ["Diseño de hipótesis — 6m 10s", "Tu primera prueba A/B — 7m 45s", "Análisis de resultados — 5m 55s"] },
+        { title: "Analítica y Datos", lessons: ["GA4 para Growth Marketers — 8m 20s", "Embudos y eventos — 6m 40s"] },
+        { title: "Retención y Activación", lessons: ["Estrategias de onboarding — 7m 15s", "Email marketing de ciclo de vida — 6m 30s"] }
+      ],
+      tags: ["Marketing Digital", "Analytics", "CRO", "Growth"]
+    },
+    {
+      id: 2, title: "Finanzas para emprendedores: Del flujo de caja al crecimiento",
+      category: "Finanzas", emoji: "💰",
+      gradient: "linear-gradient(135deg, #001440, #003BBA, #0057FF)",
+      instructor: "Ana Torres", instructorRole: "CFO & Consultora Financiera",
+      avatarInitials: "AT", avatarGradient: "linear-gradient(135deg, #0041CC, #1A6FFF)",
+      rating: "4.8", ratingCount: "(1.8K valoraciones)",
+      price: "$89", priceOld: "$150", hours: "14 horas", lessons: "35 lecciones",
+      difficulty: 2, diffLabel: "Intermedio",
+      diffDesc: "Para emprendedores sin formación financiera que quieren tomar decisiones basadas en números.",
+      learns: ["Construirás un estado de flujo de caja y aprenderás a interpretarlo.", "Diseñarás un modelo financiero para proyectar el crecimiento.", "Entenderás ROI, EBITDA, punto de equilibrio y margen bruto.", "Prepararás tu empresa para levantar inversión.", "Crearás un presupuesto anual y sistema de control."],
+      requires: ["Tener un negocio o emprendimiento (no indispensable).", "Conocimientos básicos de Excel.", "No se requiere formación financiera previa."],
+      curriculum: [
+        { title: "Conceptos financieros esenciales", lessons: ["Los 3 estados financieros — 5m 20s", "Utilidad vs flujo de caja — 4m 45s"] },
+        { title: "Flujo de caja y liquidez", lessons: ["Flujo de caja mensual — 8m 10s", "Señales de alerta — 5m 30s"] },
+        { title: "Proyecciones", lessons: ["Proyecciones a 12 y 24 meses — 9m 15s", "Escenarios financieros — 7m 40s"] },
+        { title: "Financiamiento", lessons: ["Pitch financiero — 6m 50s", "Crédito vs inversión ángel — 5m 15s"] }
+      ],
+      tags: ["Finanzas", "Excel", "Emprendimiento", "Inversión"]
+    },
+    {
+      id: 3, title: "Elaboración y comercialización de yogurt artesanal e industrial",
+      category: "Industria Láctea", emoji: "🥛",
+      gradient: "linear-gradient(135deg, #001830, #0041CC, #1A6FFF)",
+      instructor: "Dr. Marco Salas", instructorRole: "Ing. Alimentario Senior",
+      avatarInitials: "MS", avatarGradient: "linear-gradient(135deg, #003BBA, #0057FF)",
+      rating: "4.9", ratingCount: "(3.1K valoraciones)",
+      price: "$99", priceOld: "$180", hours: "22 horas", lessons: "56 lecciones",
+      difficulty: 2, diffLabel: "Básico-Intermedio",
+      diffDesc: "Apto para emprendedores de la industria láctea y personas que deseen iniciar una empresa de yogurt.",
+      learns: ["Dominarás los procesos de fermentación láctica.", "Aprenderás a formular yogurt natural, griego, frutado y bebible.", "Conocerás las normas sanitarias aplicables a derivados lácteos.", "Diseñarás etiquetas cumpliendo la normativa.", "Calcularás costos de producción y precio de venta."],
+      requires: ["Conocimientos básicos de biología o química.", "Acceso a una cocina o pequeño laboratorio.", "Interés en la industria alimentaria."],
+      curriculum: [
+        { title: "Ciencia de la fermentación", lessons: ["Microbiología básica — 6m 30s", "Cultivos iniciadores — 7m 10s"] },
+        { title: "Proceso de elaboración", lessons: ["Pasteurización — 8m 20s", "Inoculación e incubación — 7m 45s", "Batido y texturizado — 6m 15s"] },
+        { title: "Formulaciones", lessons: ["Yogurt griego — 8m 40s", "Adición de frutas — 5m 55s", "Yogurt bebible y probióticos — 7m 20s"] },
+        { title: "Comercialización", lessons: ["Etiquetado nutricional — 6m 10s", "Canales de distribución — 8m 30s", "Certificaciones HACCP — 9m 15s"] }
+      ],
+      tags: ["Yogurt", "Lácteos", "Fermentación", "HACCP"]
+    },
+    {
+      id: 4, title: "Marketing para marcas de alimentos saludables y orgánicos",
+      category: "Alimentos Naturales", emoji: "🍃",
+      gradient: "linear-gradient(135deg, #001a2e, #004080, #0066cc)",
+      instructor: "Sofía Ríos", instructorRole: "Brand Strategist",
+      avatarInitials: "SR", avatarGradient: "linear-gradient(135deg, #00D4FF, #0057FF)",
+      rating: "4.7", ratingCount: "(1.4K valoraciones)",
+      price: "$69", priceOld: "$110", hours: "12 horas", lessons: "30 lecciones",
+      difficulty: 2, diffLabel: "Básico-Intermedio",
+      diffDesc: "Para emprendedores de alimentos saludables que desean construir una marca sólida.",
+      learns: ["Definirás el posicionamiento de tu marca.", "Crearás contenido para Instagram, TikTok y Pinterest.", "Comunicarás los beneficios de tus productos de forma persuasiva.", "Diseñarás estrategia de influencer marketing.", "Implementarás campañas de lanzamiento con presupuesto limitado."],
+      requires: ["Tener o estar desarrollando una marca de alimentos.", "Perfil activo en al menos una red social.", "Ganas de aprender marketing digital."],
+      curriculum: [
+        { title: "Posicionamiento", lessons: ["Propuesta de valor única — 5m 40s", "Arquetipos de marca — 4m 55s"] },
+        { title: "Contenido y redes", lessons: ["Fotografía de alimentos — 7m 20s", "Storytelling — 6m 10s", "Calendarios de contenido — 5m 45s"] },
+        { title: "Estrategia digital", lessons: ["Email marketing — 6m 30s", "Meta Ads para food brands — 7m 50s"] }
+      ],
+      tags: ["Food Branding", "Instagram", "Orgánico", "E-commerce"]
+    },
+    {
+      id: 5, title: "Construye una marca poderosa para tu negocio alimentario",
+      category: "Branding", emoji: "🎯",
+      gradient: "linear-gradient(135deg, #001050, #0033a0, #0057FF)",
+      instructor: "Luis Guerrero", instructorRole: "Director Creativo",
+      avatarInitials: "LG", avatarGradient: "linear-gradient(135deg, #0057FF, #003BBA)",
+      rating: "4.8", ratingCount: "(2.0K valoraciones)",
+      price: "$85", priceOld: "$140", hours: "16 horas", lessons: "38 lecciones",
+      difficulty: 2, diffLabel: "Intermedio",
+      diffDesc: "Para emprendedores que quieren construir una identidad de marca distintiva y memorable.",
+      learns: ["Crearás un manual de identidad de marca completo.", "Desarrollarás el naming y la historia de origen.", "Diseñarás packaging que comunique los valores.", "Aprenderás a diferenciarte en el supermercado.", "Construirás lineamientos para todos los canales."],
+      requires: ["No se requieren conocimientos de diseño previos.", "Tener un negocio alimentario o idea definida.", "Acceso a Canva (gratuito)."],
+      curriculum: [
+        { title: "Fundamentos de branding", lessons: ["¿Qué hace memorable una marca? — 5m 30s", "Análisis de marcas exitosas — 6m 45s"] },
+        { title: "Identidad visual", lessons: ["Psicología del color — 7m 10s", "Tipografía y jerarquía — 5m 55s", "Logo y símbolo — 8m 40s"] },
+        { title: "Packaging", lessons: ["Diseño de empaque — 9m 20s", "Normativa de etiquetado — 6m 15s"] },
+        { title: "Lanzamiento", lessons: ["Estrategia de entrada — 7m 30s", "PR y medios — 5m 40s"] }
+      ],
+      tags: ["Branding", "Packaging", "Diseño", "Retail"]
+    },
+    {
+      id: 6, title: "Plan de negocios y modelo financiero para PYMES alimentarias",
+      category: "Estrategia", emoji: "📊",
+      gradient: "linear-gradient(135deg, #00102e, #002b80, #0047d4)",
+      instructor: "Patricia Vega", instructorRole: "Consultora Senior",
+      avatarInitials: "PV", avatarGradient: "linear-gradient(135deg, #003BBA, #00D4FF)",
+      rating: "4.9", ratingCount: "(1.6K valoraciones)",
+      price: "$109", priceOld: "$200", hours: "20 horas", lessons: "48 lecciones",
+      difficulty: 3, diffLabel: "Intermedio-Avanzado",
+      diffDesc: "Para gerentes y dueños de PYMES que necesitan herramientas para estructurar y escalar su negocio.",
+      learns: ["Elaborarás un plan de negocios completo.", "Construirás un modelo financiero con proyecciones a 3 años.", "Identificarás las fuentes de financiamiento adecuadas.", "Calcularás el TIR y VPN de tu inversión.", "Presentarás tu plan ante inversores."],
+      requires: ["Manejo básico de Excel.", "Tener un negocio en operación o planificación.", "Conocimientos básicos de administración."],
+      curriculum: [
+        { title: "Diagnóstico estratégico", lessons: ["Análisis FODA — 6m 20s", "Canvas de modelo de negocio — 7m 45s"] },
+        { title: "Plan de negocios", lessons: ["Estructura del plan — 5m 30s", "Estudio de mercado — 8m 10s", "Operaciones y producción — 7m 20s"] },
+        { title: "Modelo financiero", lessons: ["Proyecciones de ingresos — 9m 40s", "Flujo de caja — 8m 15s", "TIR, VPN y sensibilidad — 7m 30s"] },
+        { title: "Financiamiento", lessons: ["Fuentes de capital — 6m 40s", "Pitch deck — 8m 20s"] }
+      ],
+      tags: ["Plan de Negocios", "Finanzas", "PYMES", "Estrategia"]
+    }
+  ];
+
+  const courseOverlay = document.getElementById('courseModal');
+  const courseModalClose = document.getElementById('modalClose');
+
+  function openModal(courseId) {
+    const c = courses.find(x => x.id === courseId);
+    if (!c) return;
+    document.getElementById('modalBannerBg').style.background = c.gradient;
+    document.getElementById('modalEmoji').textContent = c.emoji;
+    document.getElementById('modalCategory').textContent = c.category;
+    document.getElementById('modalTitle').textContent = c.title;
+    const av = document.getElementById('modalAvatar');
+    av.textContent = c.avatarInitials;
+    av.style.background = c.avatarGradient;
+    document.getElementById('modalInstructorName').textContent = c.instructor;
+    document.getElementById('modalInstructorRole').textContent = c.instructorRole;
+    document.getElementById('modalRating').textContent = c.rating;
+    document.getElementById('modalRatingCount').textContent = c.ratingCount;
+    document.getElementById('modalLearns').innerHTML = c.learns.map(l => `<li>${l}</li>`).join('');
+    document.getElementById('modalRequires').innerHTML = c.requires.map(r => `<li>${r}</li>`).join('');
+    document.getElementById('modalCurriculum').innerHTML = c.curriculum.map((mod, i) => `
+      <div class="curriculum-module" id="mod-${courseId}-${i}">
+        <div class="curriculum-header" onclick="toggleModule('mod-${courseId}-${i}')">
+          <div class="curriculum-header-left">
+            <div class="curriculum-num">${i+1}</div>
+            <span class="curriculum-title">${mod.title}</span>
+          </div>
+          <span class="curriculum-meta">${mod.lessons.length} clases</span>
+          <span class="curriculum-chevron">▼</span>
+        </div>
+        <div class="curriculum-lessons">
+          ${mod.lessons.map(l => `
+            <div class="curriculum-lesson">
+              <div class="lesson-icon">▶</div>
+              <span>${l.replace(/ — (.+)$/, '')}</span>
+              <span class="lesson-duration">${l.match(/ — (.+)$/)?.[1] || ''}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+    document.querySelectorAll('#modalDiffBar .diff-dot').forEach((d,i) => d.classList.toggle('active', i < c.difficulty));
+    document.getElementById('modalDiffLabel').textContent = c.diffLabel;
+    document.getElementById('modalDiffDesc').textContent = c.diffDesc;
+    document.getElementById('modalPrice').textContent = c.price;
+    document.getElementById('modalPriceOld').textContent = c.priceOld;
+    // Set WhatsApp buy link
+    (function() {
+      var waBtn = document.getElementById('modal-wa-btn');
+      var waBtnTxt = document.getElementById('modal-wa-btn-text');
+      fetch('/api/whatsapp-config', {credentials:'include'}).then(r=>r.json()).then(cfg => {
+        var msg = (cfg.message||'Hola! Me interesa el curso: {curso}. ¿Me dan información?').replace('{curso}', c.title);
+        var url = 'https://wa.me/' + (cfg.number||'51999999999') + '?text=' + encodeURIComponent(msg);
+        if (waBtn) waBtn.href = url;
+        if (waBtnTxt) waBtnTxt.textContent = cfg.btn_text || 'Adquirir por WhatsApp';
+        localStorage.setItem('nucleri_wa_config', JSON.stringify(cfg));
+      }).catch(function() {
+        var cached = JSON.parse(localStorage.getItem('nucleri_wa_config') || '{}');
+        var msg = (cached.message||'Hola! Me interesa el curso: {curso}.').replace('{curso}', c.title);
+        var url = 'https://wa.me/' + (cached.number||'51999999999') + '?text=' + encodeURIComponent(msg);
+        if (waBtn) waBtn.href = url;
+      });
+    })();
+    document.getElementById('modalHours').textContent = c.hours;
+    document.getElementById('modalLessons').textContent = c.lessons;
+    document.getElementById('modalTags').innerHTML = c.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+    courseOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const firstMod = document.getElementById(`mod-${courseId}-0`);
+    if (firstMod) firstMod.classList.add('open');
+  }
+
+  function toggleModule(id) { document.getElementById(id).classList.toggle('open'); }
+
+  function closeModal() { courseOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+  courseModalClose.addEventListener('click', closeModal);
+  courseOverlay.addEventListener('click', e => { if (e.target === courseOverlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && courseOverlay.classList.contains('open')) closeModal(); });
+
+  document.querySelectorAll('.course-card').forEach((card, i) => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => openModal(i + 1));
+  });
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, idx) => {
+      if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), idx * 60);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── Category pills ──
+  document.querySelectorAll('.cat-pill').forEach(pill => {
+    pill.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+
+  // ── Nav shadow ──
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow = window.scrollY > 20 ? '0 4px 40px rgba(0,0,0,0.5)' : 'none';
+  });
+</script>
+<script src="/assets/js/nucleri.js"></script>
+<script src="/assets/js/auth.js"></script>
+
+<script>
+// ── FIX 5: Real-time sync from admin ─────────────────────────────
+window.addEventListener('storage', function(e) {
+  if (e.key === 'nucleri_courses_updated') {
+    // Reload course cards from API if visible
+    if (typeof renderCourses === 'function') renderCourses();
+    if (typeof loadCoursesFromAPI === 'function') loadCoursesFromAPI();
+  }
+  if (e.key === 'nucleri_posts_updated') {
+    if (typeof loadPostsFromAPI === 'function') loadPostsFromAPI();
+  }
+});
+
+// Load WA config on page load
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/api/whatsapp-config', {credentials:'include'}).then(r=>r.json()).then(cfg => {
+    localStorage.setItem('nucleri_wa_config', JSON.stringify(cfg));
+  }).catch(()=>{});
+  
+  // Override nav buttons to use NucleriAuth
+  document.querySelectorAll('[onclick*="openAuth"]').forEach(btn => {
+    var match = btn.getAttribute('onclick').match(/openAuth\('([^']+)'\)/);
+    if (match) {
+      btn.setAttribute('onclick', "NucleriAuth.open('" + match[1] + "')");
+    }
+  });
+});
+</script>
+</body>
+</html>

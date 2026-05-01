@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Nosotros — Nucleri Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/shared.css">
+<style>
+  :root {
+    --blue: #0057FF;
+    --blue-bright: #1A6FFF;
+    --blue-deep: #0041CC;
+    --blue-glow: #003BBA;
+    --blue-dark: #00277A;
+    --bg: #040A1A;
+    --bg2: #060D20;
+    --surface: #0A1530;
+    --surface2: #0D1C3C;
+    --surface3: #102247;
+    --border: rgba(0,87,255,0.18);
+    --border-bright: rgba(0,87,255,0.4);
+    --text: #E8EEFF;
+    --text-muted: #7A90C0;
+    --text-dim: #4A5E90;
+    --accent: #00D4FF;
+    --accent2: #FFB800;
+    --white: #FFFFFF;
+    --font-display: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; height: 72px;
+    background: rgba(4,10,26,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+  .nav-links a.active { color: var(--blue); font-weight: 600; }
+  .nav-cta { display: flex; gap: 0.75rem; }
+  .btn-ghost { padding: 0.5rem 1.2rem; border: 1px solid var(--border-bright); border-radius: 8px; color: var(--text); background: transparent; font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-ghost:hover { background: var(--surface); border-color: var(--blue); color: var(--white); }
+  .btn-primary { padding: 0.55rem 1.4rem; border-radius: 8px; background: var(--blue); border: none; color: var(--white); font-family: var(--font-body); font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 20px rgba(0,87,255,0.35); }
+  .btn-primary:hover { background: var(--blue-bright); box-shadow: 0 0 30px rgba(0,87,255,0.55); transform: translateY(-1px); }
+  @media (max-width: 900px) { .nav-links { display: none; } }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 140px 5% 80px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 50% 50%, rgba(0,65,204,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 40% at 20% 80%, rgba(0,87,255,0.1) 0%, transparent 60%);
+  }
+  .page-header-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,87,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,87,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 90% at 50% 50%, black 0%, transparent 100%);
+  }
+  .page-header-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+
+  /* BREADCRUMB */
+  .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1.25rem; justify-content: center; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--blue); }
+  .breadcrumb span { color: var(--text-muted); }
+
+  /* SECTION LABELS */
+  .section-label { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 600; color: var(--blue); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .section-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--blue); }
+
+  .section-heading { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; color: var(--white); margin-bottom: 1rem; }
+  .section-heading em { font-style: normal; color: var(--blue); }
+
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* CONTENT SECTIONS */
+  .content-section { padding: 80px 5%; }
+  .content-section.alt { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  /* MVV CARDS */
+  .mvv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .mvv-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .mvv-card:hover { border-color: var(--border-bright); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,87,255,0.08); }
+  .mvv-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .mvv-card.mision::before { background: linear-gradient(90deg, var(--blue), var(--accent)); }
+  .mvv-card.vision::before { background: linear-gradient(90deg, var(--accent), var(--blue)); }
+  .mvv-card.valores::before { background: linear-gradient(90deg, var(--blue-bright), var(--blue)); }
+  .mvv-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+  .mvv-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--white); margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .mvv-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+
+  /* STORY */
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .story-text h3 { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.025em; color: var(--white); margin-bottom: 1.25rem; }
+  .story-text p { font-size: 0.93rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
+  .story-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .story-stat strong { display: block; font-family: var(--font-display); font-size: 2rem; font-weight: 900; color: var(--white); line-height: 1; }
+  .story-stat strong span { color: var(--blue); }
+  .story-stat small { font-size: 0.78rem; color: var(--text-dim); }
+
+  .story-visual {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 60px rgba(0,87,255,0.08);
+    position: relative;
+  }
+  .story-visual::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,87,255,0.1), transparent 70%);
+    pointer-events: none;
+  }
+  .service-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem; background: var(--surface3);
+    border-radius: 12px; border: 1px solid var(--border);
+    margin-bottom: 0.75rem; transition: all 0.2s;
+  }
+  .service-row:hover { border-color: var(--border-bright); }
+  .service-row:last-child { margin-bottom: 0; }
+  .service-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .service-row h5 { font-size: 0.85rem; font-weight: 700; color: var(--white); }
+  .service-row span { font-size: 0.75rem; color: var(--text-dim); }
+  .service-rating { margin-left: auto; font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--blue); }
+
+  @media (max-width: 860px) {
+    .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  /* TEAM */
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .team-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .team-card:hover { border-color: var(--border-bright); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .team-banner { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 900; color: white; font-family: var(--font-display); letter-spacing: -0.03em; position: relative; }
+  .team-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,28,60,0.5), transparent); }
+  .team-body { padding: 1.5rem; }
+  .team-body h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--white); margin-bottom: 0.2rem; }
+  .team-role { font-size: 0.78rem; font-weight: 600; color: var(--blue-bright); margin-bottom: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .team-bio { font-size: 0.86rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.25rem; }
+  .team-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .team-tag { padding: 0.25rem 0.65rem; background: rgba(0,87,255,0.08); border: 1px solid rgba(0,87,255,0.18); border-radius: 100px; font-size: 0.7rem; color: var(--text-dim); }
+  .team-stats { display: flex; gap: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+  .tstat strong { display: block; font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: var(--white); }
+  .tstat span { font-size: 0.7rem; color: var(--text-dim); }
+
+  /* WHY US */
+  .why-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 3rem;
+  }
+  .why-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--accent), var(--blue)); }
+  .why-box::after { content: ''; position: absolute; right: -100px; top: -100px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(0,87,255,0.06), transparent 70%); pointer-events: none; }
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
+  .why-item { text-align: center; }
+  .why-icon { width: 56px; height: 56px; border-radius: 14px; background: rgba(0,87,255,0.1); border: 1px solid rgba(0,87,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem; }
+  .why-item h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+  .why-item p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
+
+  /* TIMELINE */
+  .timeline { position: relative; max-width: 700px; margin: 3rem auto 0; }
+  .timeline::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--blue), var(--accent)); }
+  .timeline-item { display: flex; gap: 2rem; margin-bottom: 2rem; position: relative; padding-left: 0; }
+  .timeline-dot { width: 42px; height: 42px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; z-index: 1; box-shadow: 0 0 20px rgba(0,87,255,0.3); }
+  .timeline-content { flex: 1; padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; transition: all 0.2s; }
+  .timeline-content:hover { border-color: var(--border-bright); }
+  .timeline-year { font-size: 0.72rem; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .timeline-content h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
+  .timeline-content p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* CTA BAND */
+  .cta-band { background: var(--bg2); border-top: 1px solid var(--border); padding: 80px 5%; text-align: center; position: relative; overflow: hidden; }
+  .cta-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,87,255,0.1) 0%, transparent 70%); }
+  .cta-band-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .cta-band h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.025em; color: var(--white); margin-bottom: 1rem; line-height: 1.1; }
+  .cta-band h2 em { font-style: normal; color: var(--blue); }
+  .cta-band p { font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-large { padding: 0.85rem 2rem; font-size: 1rem; border-radius: 10px; }
+
+  /* FOOTER */
+  footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 60px 5% 36px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+  .footer-brand p { font-size: 0.86rem; color: var(--text-dim); line-height: 1.7; margin: 0.8rem 0 1.5rem; max-width: 280px; }
+  .social-links { display: flex; gap: 0.75rem; }
+  .social-btn { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .social-btn:hover { background: var(--blue); border-color: var(--blue); color: white; }
+  .footer-col h5 { font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.1rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .footer-links a { font-size: 0.84rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom { padding-top: 1.75rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-dim); }
+  @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" style="height:46px;width:auto;display:block;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="index.html#cursos">Cursos</a></li>
+    <li><a href="index.html#consultoria">Consultoría</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/sobre-nosotros" class="active">Sobre Nosotros</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="/" class="btn-ghost">Iniciar sesión</a>
+    <a href="/" class="btn-primary">Registrarse gratis</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-grid"></div>
+  <div class="page-header-content">
+    <div class="breadcrumb">
+      <a href="/">Inicio</a>
+      <span>›</span>
+      <span style="color:var(--text-muted);">Sobre Nosotros</span>
+    </div>
+    <div class="section-label" style="justify-content:center;">Quiénes somos</div>
+    <h1 class="section-heading">Nacimos para <em>impulsar</em><br>tu negocio</h1>
+    <p style="font-size:1.05rem;color:var(--text-muted);line-height:1.8;max-width:580px;margin:0 auto;">
+      Nucleri Academy es una plataforma de formación y consultoría creada por profesionales del sector para ayudar a emprendedores y empresas a crecer con conocimiento real y acompañamiento experto.
+    </p>
+  </div>
+</div>
+
+<!-- MISIÓN VISIÓN VALORES -->
+<div class="content-section">
+  <div class="mvv-grid">
+    <div class="mvv-card mision fade-up">
+      <div class="mvv-icon">🎯</div>
+      <h3>Nuestra Misión</h3>
+      <p>Democratizar el acceso a formación de calidad y consultoría estratégica para que cualquier emprendedor o empresa pueda competir al más alto nivel, sin importar su punto de partida.</p>
+    </div>
+    <div class="mvv-card vision fade-up">
+      <div class="mvv-icon">🔭</div>
+      <h3>Nuestra Visión</h3>
+      <p>Ser la plataforma líder de formación empresarial en LATAM, reconocida por transformar negocios con conocimiento aplicado, expertos reales y resultados medibles y sostenibles.</p>
+    </div>
+    <div class="mvv-card valores fade-up">
+      <div class="mvv-icon">💡</div>
+      <h3>Nuestros Valores</h3>
+      <p>Conocimiento práctico, honestidad radical, resultados reales, comunidad genuina y un compromiso total con el éxito de cada persona que confía en nosotros.</p>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORIA -->
+<div class="content-section alt">
+  <div class="story-grid">
+    <div class="story-text fade-up">
+      <div class="section-label">Nuestra historia</div>
+      <h3>Creamos Nucleri porque vimos la <em style="color:var(--blue);font-style:normal;">necesidad real</em></h3>
+      <p>Nucleri nació de la experiencia directa de sus fundadores trabajando con industrias alimentarias, startups y negocios en crecimiento. Vimos de primera mano cómo muchas empresas tenían el producto y las ganas, pero carecían de las herramientas, el marketing y la guía estratégica para escalar.</p>
+      <p>Por eso creamos una plataforma donde el conocimiento viene de quienes han estado en el campo: ingenieros alimentarios, expertos en marketing y consultores industriales que han trabajado con grandes empresas del sector. No teoría — práctica real.</p>
+      <div class="story-stats">
+        <div class="story-stat">
+          <strong>2022</strong>
+          <small>Año de fundación</small>
+        </div>
+        <div class="story-stat">
+          <strong>12K<span>+</span></strong>
+          <small>Alumnos formados</small>
+        </div>
+        <div class="story-stat">
+          <strong>320<span>+</span></strong>
+          <small>Empresas asesoradas</small>
+        </div>
+        <div class="story-stat">
+          <strong>98<span>%</span></strong>
+          <small>Satisfacción</small>
+        </div>
+      </div>
+    </div>
+    <div class="story-visual fade-up">
+      <div class="service-row">
+        <div class="service-icon" style="background:linear-gradient(135deg,#001a7a,#0057FF);">📈</div>
+        <div>
+          <h5>Marketing Digital</h5>
+          <span>Cursos + Consultoría</span>
+        </div>
+        <div class="service-rating">4.9★</div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon" style="background:linear-gradient(135deg,#001830,#0041CC);">🥛</div>
+        <div>
+          <h5>Industria Alimentaria</h5>
+          <span>Cursos + Consultoría</span>
+        </div>
+        <div class="service-rating">4.9★</div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon" style="background:linear-gradient(135deg,#001440,#003BBA);">🏭</div>
+        <div>
+          <h5>Consultoría Industrial</h5>
+          <span>Acompañamiento 1:1</span>
+        </div>
+        <div class="service-rating">4.8★</div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon" style="background:linear-gradient(135deg,#001050,#0057FF);">🎯</div>
+        <div>
+          <h5>Branding & Estrategia</h5>
+          <span>Cursos + Workshops</span>
+        </div>
+        <div class="service-rating">4.8★</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="content-section">
+  <div style="text-align:center;max-width:600px;margin:0 auto;" class="fade-up">
+    <div class="section-label" style="justify-content:center;">Nuestro camino</div>
+    <h2 class="section-heading">Cómo llegamos <em>hasta aquí</em></h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot">🌱</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2022 — Fundación</div>
+        <h4>Nace Nucleri Academy</h4>
+        <p>Daniel, Luis y Fabrizio deciden crear una plataforma que combine formación práctica con consultoría real en marketing e industria alimentaria.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot">🚀</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2022 — Lanzamiento</div>
+        <h4>Primeros 500 alumnos</h4>
+        <p>Se lanzan los primeros 4 cursos de marketing digital e industria láctea. La respuesta supera todas las expectativas en los primeros 3 meses.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot">📈</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2023 — Crecimiento</div>
+        <h4>Expansión a consultoría empresarial</h4>
+        <p>Lanzamos el servicio de consultoría directa para empresas. Más de 100 negocios asesorados en el primer año. Cruzamos los 5,000 alumnos.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot">🏆</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2024 — Consolidación</div>
+        <h4>12,000 alumnos y 320 empresas</h4>
+        <p>Nos consolidamos como referencia en formación empresarial y consultoría en LATAM. Expandimos nuestro catálogo a más de 45 cursos especializados.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-up">
+      <div class="timeline-dot">⭐</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2025 — Presente</div>
+        <h4>Nucleri sigue creciendo</h4>
+        <p>Seguimos impulsando negocios con nuevos cursos, consultorías especializadas y una comunidad activa de más de 12,000 emprendedores y profesionales.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="content-section alt">
+  <div style="text-align:center;max-width:620px;margin:0 auto 0;" class="fade-up">
+    <div class="section-label" style="justify-content:center;">El equipo</div>
+    <h2 class="section-heading">Las personas detrás de <em>Nucleri</em></h2>
+    <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.75;margin-top:0.5rem;">Profesionales con trayectoria real en sus industrias, no solo académicos.</p>
+  </div>
+  <div class="team-grid">
+
+    <div class="team-card fade-up">
+      <div class="team-banner" style="background:linear-gradient(135deg,#001a7a,#0057FF,#00aeff);">DM</div>
+      <div class="team-body">
+        <h4>Daniel Marín</h4>
+        <div class="team-role">Growth Marketing Expert</div>
+        <p class="team-bio">Especialista en estrategias de crecimiento digital, posicionamiento de marca y marketing basado en datos. Ha trabajado con empresas en diversos sectores, ayudándolas a escalar sus negocios con resultados comprobados en LATAM. Apasionado por convertir datos en decisiones que generan crecimiento real.</p>
+        <div class="team-tags">
+          <span class="team-tag">Growth Marketing</span>
+          <span class="team-tag">Analytics</span>
+          <span class="team-tag">Branding</span>
+          <span class="team-tag">SEO / SEM</span>
+        </div>
+        <div class="team-stats">
+          <div class="tstat"><strong>4</strong><span>Cursos</span></div>
+          <div class="tstat"><strong>3.2K</strong><span>Alumnos</span></div>
+          <div class="tstat"><strong>4.9★</strong><span>Rating</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-banner" style="background:linear-gradient(135deg,#001830,#0041CC,#1A6FFF);">LP</div>
+      <div class="team-body">
+        <h4>Luis Portilla</h4>
+        <div class="team-role">Ing. Alimentario</div>
+        <p class="team-bio">Con más de 5 años de experiencia en el rubro alimentario, ha trabajado con grandes industrias en desarrollo de productos, control de calidad, normativas sanitarias y optimización de procesos de producción a escala industrial. Referente en la industria láctea y de fermentados en LATAM.</p>
+        <div class="team-tags">
+          <span class="team-tag">Industria Láctea</span>
+          <span class="team-tag">HACCP</span>
+          <span class="team-tag">Calidad</span>
+          <span class="team-tag">Fermentación</span>
+        </div>
+        <div class="team-stats">
+          <div class="tstat"><strong>5</strong><span>Cursos</span></div>
+          <div class="tstat"><strong>4.1K</strong><span>Alumnos</span></div>
+          <div class="tstat"><strong>4.9★</strong><span>Rating</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-banner" style="background:linear-gradient(135deg,#001440,#003BBA,#0057FF);">FR</div>
+      <div class="team-body">
+        <h4>Fabrizio Rodríguez</h4>
+        <div class="team-role">Ing. Industrial · Consultor</div>
+        <p class="team-bio">Más de 5 años de experiencia trabajando y brindando consultorías a industrias. Especialista en optimización de procesos, eficiencia operativa y estrategias de escalabilidad para empresas del sector industrial y alimentario. Ha transformado la operación de decenas de empresas en la región.</p>
+        <div class="team-tags">
+          <span class="team-tag">Consultoría</span>
+          <span class="team-tag">Ing. Industrial</span>
+          <span class="team-tag">Procesos</span>
+          <span class="team-tag">Lean</span>
+        </div>
+        <div class="team-stats">
+          <div class="tstat"><strong>3</strong><span>Cursos</span></div>
+          <div class="tstat"><strong>2.8K</strong><span>Alumnos</span></div>
+          <div class="tstat"><strong>4.8★</strong><span>Rating</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WHY US -->
+<div class="content-section">
+  <div style="text-align:center;" class="fade-up">
+    <div class="section-label" style="justify-content:center;">¿Por qué Nucleri?</div>
+    <h2 class="section-heading">Lo que nos hace <em>diferentes</em></h2>
+  </div>
+  <div class="why-box fade-up">
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon">🎓</div>
+        <h4>Formación práctica</h4>
+        <p>Contenido aplicable desde el primer día, sin teoría vacía ni relleno académico.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🏭</div>
+        <h4>Expertos del sector</h4>
+        <p>Instructores con experiencia real en industrias líderes, no solo docentes.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🤝</div>
+        <h4>Acompañamiento real</h4>
+        <p>Consultoría directa con los expertos, no chatbots ni respuestas genéricas.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🌎</div>
+        <h4>Comunidad LATAM</h4>
+        <p>Red de más de 12,000 emprendedores y profesionales activos en la región.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📊</div>
+        <h4>Resultados medibles</h4>
+        <p>El 98% de nuestros alumnos aplican lo aprendido al primer mes de culminar.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-content fade-up">
+    <div style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 1rem;background:rgba(0,87,255,0.12);border:1px solid rgba(0,87,255,0.3);border-radius:100px;font-size:0.8rem;font-weight:500;color:var(--accent);margin-bottom:1.5rem;">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);"></span>
+      Únete a más de 12,000 profesionales
+    </div>
+    <h2>¿Listo para <em>impulsar</em><br>tu negocio con nosotros?</h2>
+    <p>Explora nuestros cursos, solicita una consultoría o contáctanos directamente. Estamos aquí para ayudarte a crecer.</p>
+    <div class="cta-actions">
+      <a href="index.html#cursos" class="btn-primary btn-large">Ver cursos →</a>
+      <a href="index.html#consultoria" class="btn-ghost btn-large">Solicitar consultoría</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo">
+        <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" style="height:42px;width:auto;display:block;">
+      </a>
+      <p>Plataforma líder de formación empresarial y consultoría especializada en marketing, finanzas e industria alimentaria en LATAM.</p>
+      <div class="social-links">
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">𝕏</a>
+        <a href="#" class="social-btn">▶</a>
+        <a href="#" class="social-btn">📷</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Cursos</h5>
+      <ul class="footer-links">
+        <li><a href="index.html#cursos">Marketing Digital</a></li>
+        <li><a href="index.html#cursos">Finanzas</a></li>
+        <li><a href="index.html#cursos">Industria Láctea</a></li>
+        <li><a href="index.html#cursos">Branding</a></li>
+        <li><a href="index.html#cursos">Ventas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Consultoría</h5>
+      <ul class="footer-links">
+        <li><a href="index.html#consultoria">Marketing 360°</a></li>
+        <li><a href="index.html#consultoria">Industria Alimentaria</a></li>
+        <li><a href="index.html#consultoria">Nuevos Productos</a></li>
+        <li><a href="index.html#consultoria">Consultoría Integral</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Empresa</h5>
+      <ul class="footer-links">
+        <li><a href="/sobre-nosotros">Sobre nosotros</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="index.html#instructores">Instructores</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Nucleri. Todos los derechos reservados.</span>
+    <span>Hecho con ❤️ para emprendedores de LATAM</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Nav shadow
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow = window.scrollY > 20 ? '0 4px 40px rgba(0,0,0,0.5)' : 'none';
+  });
+</script>
+<script src="/assets/js/nucleri.js"></script>
+<script src="/assets/js/auth.js"></script>
+</body>
+</html>

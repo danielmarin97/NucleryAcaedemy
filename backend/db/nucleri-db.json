@@ -1,0 +1,1098 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin Nucleri",
+      "email": "admin@nucleri.com",
+      "password": "$2a$10$F7Ayx5z3gj0M06IL..HPAeZjO3FNDy8eSlZnyz.MB.qCKk19vvCY.",
+      "role": "admin",
+      "created_at": "2026-04-13 14:36:02",
+      "phone": ""
+    },
+    {
+      "id": 2,
+      "name": "María García",
+      "email": "maria@email.com",
+      "password": "$2a$10$3r7d0SAkwLrVvZxQJF4Cn.IFK/fOXVCjsDNedomAomTWCayxsa3qi",
+      "role": "student",
+      "created_at": "2026-04-13 14:36:02",
+      "phone": ""
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "title": "BPM & HACCP: Sistemas de inocuidad alimentaria desde cero",
+      "slug": "bpm-haccp-inocuidad-alimentaria",
+      "category": "Inocuidad Alimentaria",
+      "emoji": "🛡️",
+      "description": "Domina BPM y HACCP desde la teoría hasta la implementación real en planta.",
+      "instructor": "Ing. Ana Morales",
+      "instructor_role": "Especialista en Inocuidad",
+      "avatar_initials": "AM",
+      "price": 89,
+      "price_old": 150,
+      "hours": "18 horas",
+      "lessons_count": 42,
+      "difficulty": 2,
+      "diff_label": "Intermedio",
+      "rating": 4.9,
+      "rating_count": 2847,
+      "gradient": "linear-gradient(135deg, #001020, #0041CC, #1A6FFF)",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 2,
+      "title": "Finanzas para emprendedores de la industria alimentaria",
+      "slug": "finanzas-emprendedores-alimentaria",
+      "category": "Finanzas",
+      "emoji": "💰",
+      "description": "Controla los números de tu negocio alimentario sin necesitar ser contador.",
+      "instructor": "Carlos Mendoza",
+      "instructor_role": "MBA & Consultor Financiero",
+      "avatar_initials": "CM",
+      "price": 79,
+      "price_old": 130,
+      "hours": "15 horas",
+      "lessons_count": 35,
+      "difficulty": 2,
+      "diff_label": "Básico-Intermedio",
+      "rating": 4.8,
+      "rating_count": 1923,
+      "gradient": "linear-gradient(135deg, #001830, #003080, #0057FF)",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 3,
+      "title": "Elaboración y comercialización de yogurt artesanal e industrial",
+      "slug": "yogurt-artesanal-industrial",
+      "category": "Industria Láctea",
+      "emoji": "🥛",
+      "description": "Desde la fermentación láctica hasta los canales de venta.",
+      "instructor": "Dr. Marco Salas",
+      "instructor_role": "Ing. Alimentario Senior",
+      "avatar_initials": "MS",
+      "price": 99,
+      "price_old": 180,
+      "hours": "22 horas",
+      "lessons_count": 56,
+      "difficulty": 2,
+      "diff_label": "Básico-Intermedio",
+      "rating": 4.9,
+      "rating_count": 3100,
+      "gradient": "linear-gradient(135deg, #001830, #0041CC, #1A6FFF)",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 4,
+      "title": "Marketing para marcas de alimentos saludables y orgánicos",
+      "slug": "marketing-alimentos-saludables",
+      "category": "Alimentos Naturales",
+      "emoji": "🍃",
+      "description": "Construye una presencia digital poderosa para tu marca de alimentos saludables.",
+      "instructor": "Sofía Ríos",
+      "instructor_role": "Brand Strategist",
+      "avatar_initials": "SR",
+      "price": 69,
+      "price_old": 110,
+      "hours": "12 horas",
+      "lessons_count": 30,
+      "difficulty": 2,
+      "diff_label": "Básico-Intermedio",
+      "rating": 4.7,
+      "rating_count": 1400,
+      "gradient": "linear-gradient(135deg, #001a2e, #004080, #0066cc)",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 5,
+      "title": "Construye una marca poderosa para tu negocio alimentario",
+      "slug": "marca-negocio-alimentario",
+      "category": "Branding",
+      "emoji": "🎯",
+      "description": "De la identidad visual al packaging: diferénciate en el supermercado.",
+      "instructor": "Luis Guerrero",
+      "instructor_role": "Director Creativo",
+      "avatar_initials": "LG",
+      "price": 85,
+      "price_old": 140,
+      "hours": "16 horas",
+      "lessons_count": 38,
+      "difficulty": 2,
+      "diff_label": "Intermedio",
+      "rating": 4.8,
+      "rating_count": 2000,
+      "gradient": "linear-gradient(135deg, #001050, #0033a0, #0057FF)",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 6,
+      "title": "Plan de negocios y modelo financiero para PYMES alimentarias",
+      "slug": "plan-negocios-pymes-alimentarias",
+      "category": "Estrategia",
+      "emoji": "📊",
+      "description": "Estructura, proyecta y financia tu empresa alimentaria.",
+      "instructor": "Patricia Vega",
+      "instructor_role": "Consultora Senior",
+      "avatar_initials": "PV",
+      "price": 109,
+      "price_old": 200,
+      "hours": "20 horas",
+      "lessons_count": 48,
+      "difficulty": 3,
+      "diff_label": "Intermedio-Avanzado",
+      "rating": 4.9,
+      "rating_count": 1600,
+      "gradient": "linear-gradient(135deg, #00102e, #002b80, #0047d4)",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    }
+  ],
+  "course_learns": [
+    {
+      "id": 1,
+      "course_id": 1,
+      "item": "Implementarás un plan HACCP completo desde cero.",
+      "sort": 0
+    },
+    {
+      "id": 2,
+      "course_id": 1,
+      "item": "Diseñarás y auditarás programas de BPM.",
+      "sort": 1
+    },
+    {
+      "id": 3,
+      "course_id": 1,
+      "item": "Identificarás puntos críticos de control en líneas de producción.",
+      "sort": 2
+    },
+    {
+      "id": 4,
+      "course_id": 1,
+      "item": "Elaborarás documentación técnica exigida por reguladores.",
+      "sort": 3
+    },
+    {
+      "id": 5,
+      "course_id": 1,
+      "item": "Prepararás tu planta para auditorías externas.",
+      "sort": 4
+    },
+    {
+      "id": 6,
+      "course_id": 2,
+      "item": "Calcularás costos de producción con precisión.",
+      "sort": 0
+    },
+    {
+      "id": 7,
+      "course_id": 2,
+      "item": "Definirás precios rentables y competitivos.",
+      "sort": 1
+    },
+    {
+      "id": 8,
+      "course_id": 2,
+      "item": "Leerás estados financieros básicos.",
+      "sort": 2
+    },
+    {
+      "id": 9,
+      "course_id": 2,
+      "item": "Controlarás el flujo de caja mensual.",
+      "sort": 3
+    },
+    {
+      "id": 10,
+      "course_id": 2,
+      "item": "Identificarás indicadores clave de tu negocio.",
+      "sort": 4
+    },
+    {
+      "id": 11,
+      "course_id": 3,
+      "item": "Dominarás los procesos de fermentación láctica.",
+      "sort": 0
+    },
+    {
+      "id": 12,
+      "course_id": 3,
+      "item": "Formularás yogurt natural, griego, frutado y bebible.",
+      "sort": 1
+    },
+    {
+      "id": 13,
+      "course_id": 3,
+      "item": "Conocerás normas sanitarias para derivados lácteos.",
+      "sort": 2
+    },
+    {
+      "id": 14,
+      "course_id": 3,
+      "item": "Diseñarás etiquetas cumpliendo la normativa.",
+      "sort": 3
+    },
+    {
+      "id": 15,
+      "course_id": 3,
+      "item": "Calcularás costos de producción y precio de venta.",
+      "sort": 4
+    },
+    {
+      "id": 16,
+      "course_id": 4,
+      "item": "Definirás el posicionamiento de tu marca.",
+      "sort": 0
+    },
+    {
+      "id": 17,
+      "course_id": 4,
+      "item": "Crearás contenido para Instagram, TikTok y Pinterest.",
+      "sort": 1
+    },
+    {
+      "id": 18,
+      "course_id": 4,
+      "item": "Comunicarás los beneficios de tus productos persuasivamente.",
+      "sort": 2
+    },
+    {
+      "id": 19,
+      "course_id": 4,
+      "item": "Diseñarás estrategia de influencer marketing.",
+      "sort": 3
+    },
+    {
+      "id": 20,
+      "course_id": 4,
+      "item": "Implementarás campañas con presupuesto limitado.",
+      "sort": 4
+    },
+    {
+      "id": 21,
+      "course_id": 5,
+      "item": "Crearás un manual de identidad de marca completo.",
+      "sort": 0
+    },
+    {
+      "id": 22,
+      "course_id": 5,
+      "item": "Desarrollarás el naming y la historia de origen.",
+      "sort": 1
+    },
+    {
+      "id": 23,
+      "course_id": 5,
+      "item": "Diseñarás packaging que comunique los valores.",
+      "sort": 2
+    },
+    {
+      "id": 24,
+      "course_id": 5,
+      "item": "Aprenderás a diferenciarte en el supermercado.",
+      "sort": 3
+    },
+    {
+      "id": 25,
+      "course_id": 5,
+      "item": "Construirás lineamientos para todos los canales.",
+      "sort": 4
+    },
+    {
+      "id": 26,
+      "course_id": 6,
+      "item": "Elaborarás un plan de negocios completo.",
+      "sort": 0
+    },
+    {
+      "id": 27,
+      "course_id": 6,
+      "item": "Construirás un modelo financiero con proyecciones a 3 años.",
+      "sort": 1
+    },
+    {
+      "id": 28,
+      "course_id": 6,
+      "item": "Identificarás las fuentes de financiamiento adecuadas.",
+      "sort": 2
+    },
+    {
+      "id": 29,
+      "course_id": 6,
+      "item": "Calcularás el TIR y VPN de tu inversión.",
+      "sort": 3
+    },
+    {
+      "id": 30,
+      "course_id": 6,
+      "item": "Presentarás tu plan ante inversores.",
+      "sort": 4
+    }
+  ],
+  "course_requires": [
+    {
+      "id": 1,
+      "course_id": 1,
+      "item": "Conocimientos básicos de microbiología.",
+      "sort": 0
+    },
+    {
+      "id": 2,
+      "course_id": 1,
+      "item": "Acceso a planta o empresa alimentaria (recomendado).",
+      "sort": 1
+    },
+    {
+      "id": 3,
+      "course_id": 1,
+      "item": "Interés en gestión de calidad.",
+      "sort": 2
+    },
+    {
+      "id": 4,
+      "course_id": 2,
+      "item": "No se requieren conocimientos contables previos.",
+      "sort": 0
+    },
+    {
+      "id": 5,
+      "course_id": 2,
+      "item": "Manejo básico de Excel.",
+      "sort": 1
+    },
+    {
+      "id": 6,
+      "course_id": 2,
+      "item": "Tener un negocio o idea de emprendimiento.",
+      "sort": 2
+    },
+    {
+      "id": 7,
+      "course_id": 3,
+      "item": "Conocimientos básicos de biología o química.",
+      "sort": 0
+    },
+    {
+      "id": 8,
+      "course_id": 3,
+      "item": "Acceso a cocina o pequeño laboratorio.",
+      "sort": 1
+    },
+    {
+      "id": 9,
+      "course_id": 3,
+      "item": "Interés en industria alimentaria.",
+      "sort": 2
+    },
+    {
+      "id": 10,
+      "course_id": 4,
+      "item": "Tener o estar desarrollando una marca de alimentos.",
+      "sort": 0
+    },
+    {
+      "id": 11,
+      "course_id": 4,
+      "item": "Perfil activo en al menos una red social.",
+      "sort": 1
+    },
+    {
+      "id": 12,
+      "course_id": 4,
+      "item": "Ganas de aprender marketing digital.",
+      "sort": 2
+    },
+    {
+      "id": 13,
+      "course_id": 5,
+      "item": "No se requieren conocimientos de diseño previos.",
+      "sort": 0
+    },
+    {
+      "id": 14,
+      "course_id": 5,
+      "item": "Tener un negocio alimentario o idea definida.",
+      "sort": 1
+    },
+    {
+      "id": 15,
+      "course_id": 5,
+      "item": "Acceso a Canva (gratuito).",
+      "sort": 2
+    },
+    {
+      "id": 16,
+      "course_id": 6,
+      "item": "Manejo básico de Excel.",
+      "sort": 0
+    },
+    {
+      "id": 17,
+      "course_id": 6,
+      "item": "Tener un negocio en operación o planificación.",
+      "sort": 1
+    },
+    {
+      "id": 18,
+      "course_id": 6,
+      "item": "Conocimientos básicos de administración.",
+      "sort": 2
+    }
+  ],
+  "course_modules": [
+    {
+      "id": 1,
+      "course_id": 1,
+      "title": "Fundamentos de inocuidad",
+      "sort": 0
+    },
+    {
+      "id": 2,
+      "course_id": 1,
+      "title": "Buenas Prácticas de Manufactura",
+      "sort": 1
+    },
+    {
+      "id": 3,
+      "course_id": 1,
+      "title": "Sistema HACCP",
+      "sort": 2
+    },
+    {
+      "id": 4,
+      "course_id": 1,
+      "title": "Documentación y auditorías",
+      "sort": 3
+    },
+    {
+      "id": 5,
+      "course_id": 2,
+      "title": "Costos y precios",
+      "sort": 0
+    },
+    {
+      "id": 6,
+      "course_id": 2,
+      "title": "Estados financieros",
+      "sort": 1
+    },
+    {
+      "id": 7,
+      "course_id": 2,
+      "title": "Flujo de caja",
+      "sort": 2
+    },
+    {
+      "id": 8,
+      "course_id": 3,
+      "title": "Ciencia de la fermentación",
+      "sort": 0
+    },
+    {
+      "id": 9,
+      "course_id": 3,
+      "title": "Proceso de elaboración",
+      "sort": 1
+    },
+    {
+      "id": 10,
+      "course_id": 3,
+      "title": "Formulaciones",
+      "sort": 2
+    },
+    {
+      "id": 11,
+      "course_id": 3,
+      "title": "Comercialización",
+      "sort": 3
+    },
+    {
+      "id": 12,
+      "course_id": 4,
+      "title": "Posicionamiento",
+      "sort": 0
+    },
+    {
+      "id": 13,
+      "course_id": 4,
+      "title": "Contenido y redes",
+      "sort": 1
+    },
+    {
+      "id": 14,
+      "course_id": 4,
+      "title": "Estrategia digital",
+      "sort": 2
+    },
+    {
+      "id": 15,
+      "course_id": 5,
+      "title": "Fundamentos de branding",
+      "sort": 0
+    },
+    {
+      "id": 16,
+      "course_id": 5,
+      "title": "Identidad visual",
+      "sort": 1
+    },
+    {
+      "id": 17,
+      "course_id": 5,
+      "title": "Packaging",
+      "sort": 2
+    },
+    {
+      "id": 18,
+      "course_id": 5,
+      "title": "Lanzamiento",
+      "sort": 3
+    },
+    {
+      "id": 19,
+      "course_id": 6,
+      "title": "Diagnóstico estratégico",
+      "sort": 0
+    },
+    {
+      "id": 20,
+      "course_id": 6,
+      "title": "Plan de negocios",
+      "sort": 1
+    },
+    {
+      "id": 21,
+      "course_id": 6,
+      "title": "Modelo financiero",
+      "sort": 2
+    },
+    {
+      "id": 22,
+      "course_id": 6,
+      "title": "Financiamiento",
+      "sort": 3
+    }
+  ],
+  "module_lessons": [
+    {
+      "id": 1,
+      "module_id": 1,
+      "title": "Introducción a BPM",
+      "duration": "5m 20s",
+      "sort": 0
+    },
+    {
+      "id": 2,
+      "module_id": 1,
+      "title": "Marco regulatorio",
+      "duration": "6m 10s",
+      "sort": 1
+    },
+    {
+      "id": 3,
+      "module_id": 2,
+      "title": "Instalaciones y equipos",
+      "duration": "8m 30s",
+      "sort": 0
+    },
+    {
+      "id": 4,
+      "module_id": 2,
+      "title": "Higiene del personal",
+      "duration": "7m 45s",
+      "sort": 1
+    },
+    {
+      "id": 5,
+      "module_id": 2,
+      "title": "Control de plagas",
+      "duration": "6m 15s",
+      "sort": 2
+    },
+    {
+      "id": 6,
+      "module_id": 3,
+      "title": "Los 7 principios HACCP",
+      "duration": "9m 40s",
+      "sort": 0
+    },
+    {
+      "id": 7,
+      "module_id": 3,
+      "title": "Análisis de peligros",
+      "duration": "8m 20s",
+      "sort": 1
+    },
+    {
+      "id": 8,
+      "module_id": 3,
+      "title": "Determinación de PCC",
+      "duration": "7m 55s",
+      "sort": 2
+    },
+    {
+      "id": 9,
+      "module_id": 4,
+      "title": "Registros obligatorios",
+      "duration": "6m 10s",
+      "sort": 0
+    },
+    {
+      "id": 10,
+      "module_id": 4,
+      "title": "Simulacro de auditoría",
+      "duration": "10m 30s",
+      "sort": 1
+    },
+    {
+      "id": 11,
+      "module_id": 5,
+      "title": "Estructura de costos",
+      "duration": "6m 40s",
+      "sort": 0
+    },
+    {
+      "id": 12,
+      "module_id": 5,
+      "title": "Margen de contribución",
+      "duration": "5m 55s",
+      "sort": 1
+    },
+    {
+      "id": 13,
+      "module_id": 6,
+      "title": "Estado de resultados",
+      "duration": "7m 20s",
+      "sort": 0
+    },
+    {
+      "id": 14,
+      "module_id": 6,
+      "title": "Balance general simplificado",
+      "duration": "6m 10s",
+      "sort": 1
+    },
+    {
+      "id": 15,
+      "module_id": 7,
+      "title": "Proyección mensual",
+      "duration": "8m 30s",
+      "sort": 0
+    },
+    {
+      "id": 16,
+      "module_id": 7,
+      "title": "Gestión de cartera",
+      "duration": "5m 45s",
+      "sort": 1
+    },
+    {
+      "id": 17,
+      "module_id": 8,
+      "title": "Microbiología básica",
+      "duration": "6m 30s",
+      "sort": 0
+    },
+    {
+      "id": 18,
+      "module_id": 8,
+      "title": "Cultivos iniciadores",
+      "duration": "7m 10s",
+      "sort": 1
+    },
+    {
+      "id": 19,
+      "module_id": 9,
+      "title": "Pasteurización",
+      "duration": "8m 20s",
+      "sort": 0
+    },
+    {
+      "id": 20,
+      "module_id": 9,
+      "title": "Inoculación e incubación",
+      "duration": "7m 45s",
+      "sort": 1
+    },
+    {
+      "id": 21,
+      "module_id": 9,
+      "title": "Batido y texturizado",
+      "duration": "6m 15s",
+      "sort": 2
+    },
+    {
+      "id": 22,
+      "module_id": 10,
+      "title": "Yogurt griego",
+      "duration": "8m 40s",
+      "sort": 0
+    },
+    {
+      "id": 23,
+      "module_id": 10,
+      "title": "Adición de frutas",
+      "duration": "5m 55s",
+      "sort": 1
+    },
+    {
+      "id": 24,
+      "module_id": 10,
+      "title": "Yogurt bebible y probióticos",
+      "duration": "7m 20s",
+      "sort": 2
+    },
+    {
+      "id": 25,
+      "module_id": 11,
+      "title": "Etiquetado nutricional",
+      "duration": "6m 10s",
+      "sort": 0
+    },
+    {
+      "id": 26,
+      "module_id": 11,
+      "title": "Canales de distribución",
+      "duration": "8m 30s",
+      "sort": 1
+    },
+    {
+      "id": 27,
+      "module_id": 11,
+      "title": "Certificaciones HACCP",
+      "duration": "9m 15s",
+      "sort": 2
+    },
+    {
+      "id": 28,
+      "module_id": 12,
+      "title": "Propuesta de valor única",
+      "duration": "5m 40s",
+      "sort": 0
+    },
+    {
+      "id": 29,
+      "module_id": 12,
+      "title": "Arquetipos de marca",
+      "duration": "4m 55s",
+      "sort": 1
+    },
+    {
+      "id": 30,
+      "module_id": 13,
+      "title": "Fotografía de alimentos",
+      "duration": "7m 20s",
+      "sort": 0
+    },
+    {
+      "id": 31,
+      "module_id": 13,
+      "title": "Storytelling",
+      "duration": "6m 10s",
+      "sort": 1
+    },
+    {
+      "id": 32,
+      "module_id": 13,
+      "title": "Calendarios de contenido",
+      "duration": "5m 45s",
+      "sort": 2
+    },
+    {
+      "id": 33,
+      "module_id": 14,
+      "title": "Email marketing",
+      "duration": "6m 30s",
+      "sort": 0
+    },
+    {
+      "id": 34,
+      "module_id": 14,
+      "title": "Meta Ads para food brands",
+      "duration": "7m 50s",
+      "sort": 1
+    },
+    {
+      "id": 35,
+      "module_id": 15,
+      "title": "¿Qué hace memorable una marca?",
+      "duration": "5m 30s",
+      "sort": 0
+    },
+    {
+      "id": 36,
+      "module_id": 15,
+      "title": "Análisis de marcas exitosas",
+      "duration": "6m 45s",
+      "sort": 1
+    },
+    {
+      "id": 37,
+      "module_id": 16,
+      "title": "Psicología del color",
+      "duration": "7m 10s",
+      "sort": 0
+    },
+    {
+      "id": 38,
+      "module_id": 16,
+      "title": "Tipografía y jerarquía",
+      "duration": "5m 55s",
+      "sort": 1
+    },
+    {
+      "id": 39,
+      "module_id": 16,
+      "title": "Logo y símbolo",
+      "duration": "8m 40s",
+      "sort": 2
+    },
+    {
+      "id": 40,
+      "module_id": 17,
+      "title": "Diseño de empaque",
+      "duration": "9m 20s",
+      "sort": 0
+    },
+    {
+      "id": 41,
+      "module_id": 17,
+      "title": "Normativa de etiquetado",
+      "duration": "6m 15s",
+      "sort": 1
+    },
+    {
+      "id": 42,
+      "module_id": 18,
+      "title": "Estrategia de entrada",
+      "duration": "7m 30s",
+      "sort": 0
+    },
+    {
+      "id": 43,
+      "module_id": 18,
+      "title": "PR y medios",
+      "duration": "5m 40s",
+      "sort": 1
+    },
+    {
+      "id": 44,
+      "module_id": 19,
+      "title": "Análisis FODA",
+      "duration": "6m 20s",
+      "sort": 0
+    },
+    {
+      "id": 45,
+      "module_id": 19,
+      "title": "Canvas de modelo de negocio",
+      "duration": "7m 45s",
+      "sort": 1
+    },
+    {
+      "id": 46,
+      "module_id": 20,
+      "title": "Estructura del plan",
+      "duration": "5m 30s",
+      "sort": 0
+    },
+    {
+      "id": 47,
+      "module_id": 20,
+      "title": "Estudio de mercado",
+      "duration": "8m 10s",
+      "sort": 1
+    },
+    {
+      "id": 48,
+      "module_id": 20,
+      "title": "Operaciones y producción",
+      "duration": "7m 20s",
+      "sort": 2
+    },
+    {
+      "id": 49,
+      "module_id": 21,
+      "title": "Proyecciones de ingresos",
+      "duration": "9m 40s",
+      "sort": 0
+    },
+    {
+      "id": 50,
+      "module_id": 21,
+      "title": "Flujo de caja",
+      "duration": "8m 15s",
+      "sort": 1
+    },
+    {
+      "id": 51,
+      "module_id": 21,
+      "title": "TIR, VPN y sensibilidad",
+      "duration": "7m 30s",
+      "sort": 2
+    },
+    {
+      "id": 52,
+      "module_id": 22,
+      "title": "Fuentes de capital",
+      "duration": "6m 40s",
+      "sort": 0
+    },
+    {
+      "id": 53,
+      "module_id": 22,
+      "title": "Pitch deck",
+      "duration": "8m 20s",
+      "sort": 1
+    }
+  ],
+  "enrollments": [],
+  "blog_posts": [
+    {
+      "id": 1,
+      "title": "Los 5 errores más costosos en inocuidad alimentaria",
+      "slug": "errores-inocuidad-alimentaria",
+      "excerpt": "Las fallas en inocuidad no solo generan retiros de producto; pueden destruir una marca en horas.",
+      "content": "",
+      "category": "Inocuidad",
+      "author": "Ing. Ana Morales",
+      "author_role": "Especialista en Inocuidad",
+      "read_time": "8 min lectura",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 2,
+      "title": "Tendencias 2025: el futuro de los alimentos funcionales en América Latina",
+      "slug": "tendencias-alimentos-funcionales-2025",
+      "excerpt": "Probióticos, adaptógenos y proteínas alternativas lideran el mercado en la región.",
+      "content": "",
+      "category": "Tendencias",
+      "author": "Dr. Marco Salas",
+      "author_role": "Ing. Alimentario Senior",
+      "read_time": "6 min lectura",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 3,
+      "title": "Cómo calcular el precio justo para tu producto alimentario",
+      "slug": "calcular-precio-producto-alimentario",
+      "excerpt": "El precio no es solo un número: es el reflejo de tu propuesta de valor.",
+      "content": "",
+      "category": "Finanzas",
+      "author": "Carlos Mendoza",
+      "author_role": "MBA & Consultor Financiero",
+      "read_time": "10 min lectura",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    },
+    {
+      "id": 4,
+      "title": "De cocina a supermercado: formaliza tu emprendimiento",
+      "slug": "cocina-a-supermercado-formalizar",
+      "excerpt": "Registros sanitarios, etiquetado, código de barras y distribución.",
+      "content": "",
+      "category": "Emprendimiento",
+      "author": "Patricia Vega",
+      "author_role": "Consultora Senior",
+      "read_time": "12 min lectura",
+      "published": 1,
+      "created_at": "2026-04-13 14:36:02"
+    }
+  ],
+  "contacts": [],
+  "newsletter": [],
+  "_counters": {
+    "users": 2,
+    "courses": 6,
+    "course_learns": 30,
+    "course_requires": 18,
+    "course_modules": 22,
+    "module_lessons": 53,
+    "blog_posts": 4,
+    "instructors": 3,
+    "site_settings": 0
+  },
+  "instructors": [
+    {
+      "id": 1,
+      "name": "Daniel Marín",
+      "role": "Growth Marketing Expert",
+      "initials": "DM",
+      "gradient": "linear-gradient(135deg,#001a7a,#0057FF,#00aeff)",
+      "bio": "Especialista en estrategias de crecimiento digital, posicionamiento de marca y marketing basado en datos.",
+      "coursesCount": 4,
+      "students": "3.2K",
+      "rating": "4.9★",
+      "tags": [
+        "Growth Marketing",
+        "Analytics",
+        "Branding",
+        "SEO / SEM"
+      ],
+      "linkedin": "",
+      "instagram": "",
+      "photo": null,
+      "created_at": "2026-04-13 21:22:11"
+    },
+    {
+      "id": 2,
+      "name": "Luis Portilla",
+      "role": "Ing. Alimentario",
+      "initials": "LP",
+      "gradient": "linear-gradient(135deg,#001830,#0041CC,#1A6FFF)",
+      "bio": "Con más de 5 años de experiencia en el rubro alimentario. Referente en la industria láctea y fermentados.",
+      "coursesCount": 5,
+      "students": "4.1K",
+      "rating": "4.9★",
+      "tags": [
+        "Industria Láctea",
+        "HACCP",
+        "Calidad",
+        "Fermentación"
+      ],
+      "linkedin": "",
+      "instagram": "",
+      "photo": null,
+      "created_at": "2026-04-13 21:22:11"
+    },
+    {
+      "id": 3,
+      "name": "Fabrizio Rodríguez",
+      "role": "Ing. Industrial · Consultor",
+      "initials": "FR",
+      "gradient": "linear-gradient(135deg,#001440,#003BBA,#0057FF)",
+      "bio": "Más de 5 años de experiencia en consultoría industrial. Especialista en eficiencia operativa.",
+      "coursesCount": 3,
+      "students": "2.8K",
+      "rating": "4.8★",
+      "tags": [
+        "Consultoría",
+        "Ing. Industrial",
+        "Procesos",
+        "Lean"
+      ],
+      "linkedin": "",
+      "instagram": "",
+      "photo": null,
+      "created_at": "2026-04-13 21:22:11"
+    }
+  ],
+  "site_settings": [
+    {
+      "key": "whatsapp_config",
+      "value": {
+        "number": "51999999999",
+        "message": "Hola! Me interesa el curso: {curso}. ¿Me pueden dar más información y el precio?"
+      },
+      "updated_at": "2026-04-22T15:34:35.383Z"
+    }
+  ]
+}

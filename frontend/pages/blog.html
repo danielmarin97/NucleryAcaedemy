@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Nucleri Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/shared.css">
+<style>
+  :root {
+    --blue: #0057FF;
+    --blue-bright: #1A6FFF;
+    --blue-deep: #0041CC;
+    --blue-glow: #003BBA;
+    --blue-dark: #00277A;
+    --bg: #040A1A;
+    --bg2: #060D20;
+    --surface: #0A1530;
+    --surface2: #0D1C3C;
+    --surface3: #102247;
+    --border: rgba(0,87,255,0.18);
+    --border-bright: rgba(0,87,255,0.4);
+    --text: #E8EEFF;
+    --text-muted: #7A90C0;
+    --text-dim: #4A5E90;
+    --accent: #00D4FF;
+    --accent2: #FFB800;
+    --white: #FFFFFF;
+    --font-display: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 72px; background: rgba(4,10,26,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .nav-logo { text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a.active { color: var(--blue); font-weight: 600; }
+  .nav-cta { display: flex; gap: 0.75rem; }
+  .btn-ghost { padding: 0.5rem 1.2rem; border: 1px solid var(--border-bright); border-radius: 8px; color: var(--text); background: transparent; font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-ghost:hover { background: var(--surface); border-color: var(--blue); color: var(--white); }
+  .btn-primary { padding: 0.55rem 1.4rem; border-radius: 8px; background: var(--blue); border: none; color: var(--white); font-family: var(--font-body); font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 20px rgba(0,87,255,0.35); }
+  .btn-primary:hover { background: var(--blue-bright); transform: translateY(-1px); }
+  @media (max-width: 900px) { .nav-links { display: none; } }
+
+  /* PAGE HEADER */
+  .page-header { padding: 140px 5% 80px; position: relative; overflow: hidden; text-align: center; }
+  .page-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(0,65,204,0.18) 0%, transparent 70%), radial-gradient(ellipse 30% 40% at 80% 80%, rgba(0,87,255,0.08) 0%, transparent 60%); }
+  .page-header-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,87,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,87,255,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 70% 90% at 50% 50%, black 0%, transparent 100%); }
+  .page-header-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+
+  .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1.25rem; justify-content: center; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--blue); }
+
+  .section-label { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 600; color: var(--blue); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .section-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--blue); }
+  .section-heading { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; color: var(--white); margin-bottom: 1rem; }
+  .section-heading em { font-style: normal; color: var(--blue); }
+
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* SEARCH BAR */
+  .blog-search-wrap { max-width: 520px; margin: 2rem auto 0; position: relative; }
+  .blog-search { width: 100%; padding: 0.85rem 1.25rem 0.85rem 3rem; background: var(--surface2); border: 1px solid var(--border-bright); border-radius: 12px; color: var(--text); font-family: var(--font-body); font-size: 0.9rem; outline: none; transition: all 0.2s; }
+  .blog-search:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,87,255,0.12); }
+  .blog-search::placeholder { color: var(--text-dim); }
+  .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 1rem; }
+
+  /* MAIN LAYOUT */
+  .blog-layout { display: grid; grid-template-columns: 1fr 320px; gap: 2.5rem; padding: 60px 5% 100px; max-width: 1300px; margin: 0 auto; }
+  @media (max-width: 1000px) { .blog-layout { grid-template-columns: 1fr; } .blog-sidebar { order: -1; } }
+
+  /* FILTER TABS */
+  .blog-filters { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .filter-pill { padding: 0.45rem 1.1rem; border-radius: 100px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .filter-pill:hover, .filter-pill.active { background: rgba(0,87,255,0.12); border-color: var(--blue); color: var(--white); }
+
+  /* FEATURED POST */
+  .featured-post {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-radius: 20px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    margin-bottom: 2rem;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .featured-post:hover { border-color: var(--blue); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,87,255,0.1); transform: translateY(-4px); }
+  .featured-thumb { min-height: 280px; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
+  .featured-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(13,28,60,0.6)); }
+  .featured-badge { position: absolute; top: 1rem; left: 1rem; padding: 0.3rem 0.8rem; background: var(--blue); border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: white; letter-spacing: 0.05em; text-transform: uppercase; z-index: 1; }
+  .featured-body { padding: 2rem; display: flex; flex-direction: column; justify-content: center; }
+  .post-category { font-size: 0.72rem; font-weight: 700; color: var(--blue-bright); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+  .featured-body h2 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--white); line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .featured-body p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.25rem; }
+  .post-meta { display: flex; align-items: center; gap: 1rem; font-size: 0.78rem; color: var(--text-dim); flex-wrap: wrap; }
+  .post-author { display: flex; align-items: center; gap: 0.5rem; }
+  .author-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; color: white; flex-shrink: 0; }
+  .read-more { margin-top: 1.25rem; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 600; color: var(--blue); cursor: pointer; transition: gap 0.2s; }
+  .read-more:hover { gap: 0.7rem; }
+  @media (max-width: 700px) { .featured-post { grid-template-columns: 1fr; } .featured-thumb { min-height: 180px; } }
+
+  /* POST GRID */
+  .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .post-card:hover { border-color: var(--border-bright); transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+  .post-thumb { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; overflow: hidden; }
+  .post-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,21,48,0.7) 0%, transparent 60%); }
+  .post-thumb .post-cat-badge { position: absolute; bottom: 0.75rem; left: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; color: white; letter-spacing: 0.04em; text-transform: uppercase; z-index: 1; }
+  .post-body { padding: 1.25rem; }
+  .post-body h3 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--white); line-height: 1.35; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .post-body p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1rem; }
+  .post-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.85rem; border-top: 1px solid var(--border); }
+  .post-date { font-size: 0.75rem; color: var(--text-dim); }
+  .post-read-time { font-size: 0.72rem; color: var(--text-dim); }
+  .post-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .post-tag { padding: 0.18rem 0.55rem; background: rgba(0,87,255,0.08); border: 1px solid rgba(0,87,255,0.15); border-radius: 100px; font-size: 0.68rem; color: var(--text-dim); }
+
+  /* SIDEBAR */
+  .blog-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+  .sidebar-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+  .sidebar-card h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: var(--white); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
+
+  /* Popular posts */
+  .popular-post { display: flex; gap: 0.85rem; align-items: flex-start; padding: 0.75rem 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+  .popular-post:last-child { border-bottom: none; padding-bottom: 0; }
+  .popular-post:hover .popular-title { color: var(--blue); }
+  .popular-num { font-family: var(--font-display); font-size: 1.5rem; font-weight: 900; color: var(--surface3); min-width: 28px; line-height: 1; }
+  .popular-title { font-size: 0.83rem; font-weight: 600; color: var(--text-muted); line-height: 1.45; transition: color 0.2s; margin-bottom: 0.25rem; }
+  .popular-meta { font-size: 0.72rem; color: var(--text-dim); }
+
+  /* Tags cloud */
+  .tags-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .cloud-tag { padding: 0.3rem 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; font-size: 0.78rem; color: var(--text-dim); cursor: pointer; transition: all 0.2s; }
+  .cloud-tag:hover { background: rgba(0,87,255,0.12); border-color: var(--blue); color: var(--white); }
+
+  /* Newsletter card */
+  .newsletter-card { background: linear-gradient(135deg, rgba(0,41,122,0.5), rgba(0,87,255,0.15)); border: 1px solid var(--border-bright) !important; position: relative; overflow: hidden; }
+  .newsletter-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at top right, rgba(0,212,255,0.08), transparent 60%); }
+  .newsletter-card > * { position: relative; z-index: 1; }
+  .newsletter-card p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+  .nl-input { width: 100%; padding: 0.7rem 1rem; background: rgba(10,21,48,0.6); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font-body); font-size: 0.85rem; outline: none; margin-bottom: 0.6rem; transition: border-color 0.2s; }
+  .nl-input:focus { border-color: var(--blue); }
+  .nl-input::placeholder { color: var(--text-dim); }
+  .nl-btn { width: 100%; padding: 0.7rem; background: var(--blue); border: none; border-radius: 8px; color: white; font-family: var(--font-body); font-size: 0.87rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .nl-btn:hover { background: var(--blue-bright); transform: translateY(-1px); }
+
+  /* Authors sidebar */
+  .author-row { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
+  .author-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .author-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 800; color: white; flex-shrink: 0; }
+  .author-name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+  .author-role { font-size: 0.73rem; color: var(--text-dim); }
+  .author-count { margin-left: auto; font-size: 0.75rem; color: var(--text-dim); }
+
+  /* PAGINATION */
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 3rem; }
+  .page-btn { width: 38px; height: 38px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-family: var(--font-body); }
+  .page-btn:hover, .page-btn.active { background: var(--blue); border-color: var(--blue); color: white; }
+
+  /* POST MODAL */
+  .post-overlay { position: fixed; inset: 0; background: rgba(2,6,18,0.9); backdrop-filter: blur(14px); z-index: 9000; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1.5rem; overflow-y: auto; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+  .post-overlay.open { opacity: 1; visibility: visible; }
+  .post-modal { background: var(--bg2); border: 1px solid var(--border-bright); border-radius: 24px; width: 100%; max-width: 760px; overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.8); transform: translateY(30px); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); margin: auto; }
+  .post-overlay.open .post-modal { transform: translateY(0); }
+  .post-modal-header { position: relative; }
+  .post-modal-banner { height: 260px; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
+  .post-modal-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,13,32,1) 0%, rgba(6,13,32,0.5) 50%, transparent 100%); }
+  .post-modal-close { position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px; border-radius: 50%; background: rgba(6,13,32,0.7); border: 1px solid var(--border); color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 10; backdrop-filter: blur(6px); }
+  .post-modal-close:hover { background: rgba(0,87,255,0.3); color: white; border-color: var(--blue); }
+  .post-modal-body { padding: 0 2.5rem 2.5rem; position: relative; z-index: 1; margin-top: -2rem; }
+  .post-modal-cat { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: white; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem; }
+  .post-modal-title { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--white); line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 1rem; }
+  .post-modal-meta { display: flex; align-items: center; gap: 1.25rem; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .post-modal-content h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--white); margin: 1.75rem 0 0.75rem; }
+  .post-modal-content p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
+  .post-modal-content ul { list-style: none; margin-bottom: 1rem; }
+  .post-modal-content ul li { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; padding: 0.25rem 0 0.25rem 1.5rem; position: relative; }
+  .post-modal-content ul li::before { content: '→'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+  .post-modal-content blockquote { border-left: 3px solid var(--blue); padding: 1rem 1.25rem; background: rgba(0,87,255,0.05); border-radius: 0 10px 10px 0; margin: 1.25rem 0; font-size: 0.92rem; color: var(--text); font-style: italic; line-height: 1.7; }
+
+  /* FOOTER */
+  footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 60px 5% 36px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+  .footer-brand p { font-size: 0.86rem; color: var(--text-dim); line-height: 1.7; margin: 0.8rem 0 1.5rem; max-width: 280px; }
+  .social-links { display: flex; gap: 0.75rem; }
+  .social-btn { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .social-btn:hover { background: var(--blue); border-color: var(--blue); color: white; }
+  .footer-col h5 { font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.1rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .footer-links a { font-size: 0.84rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom { padding-top: 1.75rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-dim); }
+  @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" style="height:46px;width:auto;display:block;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="index.html#cursos">Cursos</a></li>
+    <li><a href="index.html#consultoria">Consultoría</a></li>
+    <li><a href="/blog" class="active">Blog</a></li>
+    <li><a href="/sobre-nosotros">Sobre Nosotros</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="/" class="btn-ghost">Iniciar sesión</a>
+    <a href="/" class="btn-primary">Registrarse gratis</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-grid"></div>
+  <div class="page-header-content">
+    <div class="breadcrumb">
+      <a href="/">Inicio</a>
+      <span>›</span>
+      <span style="color:var(--text-muted);">Blog</span>
+    </div>
+    <div class="section-label" style="justify-content:center;">Recursos & Conocimiento</div>
+    <h1 class="section-heading">Aprende con nuestro <em>Blog</em></h1>
+    <p style="font-size:1rem;color:var(--text-muted);line-height:1.75;max-width:520px;margin:0 auto 0;">
+      Artículos prácticos sobre marketing digital, industria alimentaria, estrategia empresarial y más. Escritos por los expertos de Nucleri.
+    </p>
+    <div class="blog-search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="blog-search" placeholder="Buscar artículos, temas, autores...">
+    </div>
+  </div>
+</div>
+
+<!-- BLOG CONTENT -->
+<div class="blog-layout">
+
+  <!-- MAIN -->
+  <main>
+    <!-- Filter tabs -->
+    <div class="blog-filters fade-up">
+      <button class="filter-pill active" onclick="filterPosts('todos', this)">Todos</button>
+      <button class="filter-pill" onclick="filterPosts('marketing', this)">Marketing</button>
+      <button class="filter-pill" onclick="filterPosts('alimentaria', this)">Industria Alimentaria</button>
+      <button class="filter-pill" onclick="filterPosts('negocios', this)">Negocios</button>
+      <button class="filter-pill" onclick="filterPosts('branding', this)">Branding</button>
+      <button class="filter-pill" onclick="filterPosts('finanzas', this)">Finanzas</button>
+    </div>
+
+    <!-- Featured post -->
+    <div class="featured-post fade-up" onclick="openPost(0)">
+      <div class="featured-thumb" style="background:linear-gradient(135deg,#001a7a,#0057FF,#00aeff);">
+        <span style="position:relative;z-index:1;">📈</span>
+        <span class="featured-badge">⭐ Destacado</span>
+      </div>
+      <div class="featured-body">
+        <div class="post-category">Marketing Digital</div>
+        <h2>Las 7 estrategias de Growth Marketing que todo emprendedor debe conocer en 2025</h2>
+        <p>Descubre cómo las empresas más exitosas están usando datos y experimentación para crecer 3x más rápido que sus competidores. Guía práctica con ejemplos reales.</p>
+        <div class="post-meta">
+          <div class="post-author">
+            <div class="author-dot" style="background:linear-gradient(135deg,#0057FF,#00D4FF);">DM</div>
+            <span>Daniel Marín</span>
+          </div>
+          <span>·</span>
+          <span>12 Jun 2025</span>
+          <span>·</span>
+          <span>⏱ 8 min lectura</span>
+        </div>
+        <div class="read-more">Leer artículo <span>→</span></div>
+      </div>
+    </div>
+
+    <!-- Posts grid -->
+    <div class="posts-grid" id="postsGrid">
+
+      <div class="post-card fade-up" data-category="alimentaria" onclick="openPost(1)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001830,#0041CC,#1A6FFF);">
+          🥛
+          <span class="post-cat-badge" style="background:#0041CC;">Alimentaria</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Yogurt</span><span class="post-tag">HACCP</span><span class="post-tag">Calidad</span></div>
+          <h3>Cómo certificar tu empresa de yogurt con HACCP sin morir en el intento</h3>
+          <p>Guía paso a paso para obtener la certificación HACCP en tu planta de producción láctea, con los errores más comunes y cómo evitarlos.</p>
+          <div class="post-footer">
+            <span class="post-date">3 Jun 2025</span>
+            <span class="post-read-time">⏱ 6 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="negocios" onclick="openPost(2)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#00102e,#002b80,#0047d4);">
+          📊
+          <span class="post-cat-badge" style="background:#0041CC;">Negocios</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Plan de Negocios</span><span class="post-tag">PYMES</span></div>
+          <h3>Plan de negocios en 1 página: la plantilla que usan nuestros consultores</h3>
+          <p>Olvídate del plan de 80 páginas que nadie lee. Te mostramos el Business Model Canvas adaptado para empresas latinoamericanas.</p>
+          <div class="post-footer">
+            <span class="post-date">28 May 2025</span>
+            <span class="post-read-time">⏱ 5 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="branding" onclick="openPost(3)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001050,#0033a0,#0057FF);">
+          🎯
+          <span class="post-cat-badge" style="background:#0057FF;">Branding</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Branding</span><span class="post-tag">Packaging</span></div>
+          <h3>Por qué tu empaque de alimentos está perdiendo ventas (y cómo arreglarlo)</h3>
+          <p>El packaging es el vendedor silencioso. Analizamos 10 errores fatales en el diseño de empaques de alimentos que alejan a los consumidores en el punto de venta.</p>
+          <div class="post-footer">
+            <span class="post-date">20 May 2025</span>
+            <span class="post-read-time">⏱ 7 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="marketing" onclick="openPost(4)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001a2e,#004080,#0066cc);">
+          📱
+          <span class="post-cat-badge" style="background:#0057FF;">Marketing</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Instagram</span><span class="post-tag">TikTok</span><span class="post-tag">Food</span></div>
+          <h3>Cómo hacer crecer tu marca de alimentos en redes sociales desde cero</h3>
+          <p>Estrategia de 90 días para pasar de 0 a 10,000 seguidores reales en Instagram y TikTok con contenido de alimentos que convierte.</p>
+          <div class="post-footer">
+            <span class="post-date">14 May 2025</span>
+            <span class="post-read-time">⏱ 9 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="alimentaria" onclick="openPost(5)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001a7a,#0041CC,#1A6FFF);">
+          🍦
+          <span class="post-cat-badge" style="background:#003BBA;">Alimentaria</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Yogurt</span><span class="post-tag">Fermentación</span></div>
+          <h3>5 errores que arruinan la textura de tu yogurt griego (y cómo corregirlos)</h3>
+          <p>Luis Portilla comparte los problemas técnicos más comunes en la producción de yogurt griego y las soluciones que aplican las grandes industrias.</p>
+          <div class="post-footer">
+            <span class="post-date">8 May 2025</span>
+            <span class="post-read-time">⏱ 6 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="finanzas" onclick="openPost(6)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001440,#003BBA,#0057FF);">
+          💰
+          <span class="post-cat-badge" style="background:#0041CC;">Finanzas</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Flujo de Caja</span><span class="post-tag">PYMES</span></div>
+          <h3>Flujo de caja: la métrica que más ignoran los emprendedores (y que más importa)</h3>
+          <p>Aprende a construir y leer tu flujo de caja mensual en menos de 30 minutos. La herramienta financiera más importante para cualquier negocio.</p>
+          <div class="post-footer">
+            <span class="post-date">1 May 2025</span>
+            <span class="post-read-time">⏱ 5 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="negocios" onclick="openPost(7)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001a7a,#003BBA,#0057FF);">
+          🏭
+          <span class="post-cat-badge" style="background:#0057FF;">Industrial</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">Consultoría</span><span class="post-tag">Lean</span></div>
+          <h3>Lean Manufacturing para PYMES alimentarias: guía de implementación en 6 semanas</h3>
+          <p>Fabrizio Rodríguez explica cómo aplicar los principios Lean en pequeñas y medianas empresas de alimentos para reducir desperdicios y aumentar la productividad.</p>
+          <div class="post-footer">
+            <span class="post-date">24 Abr 2025</span>
+            <span class="post-read-time">⏱ 10 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card fade-up" data-category="marketing" onclick="openPost(8)">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001050,#0041CC,#1A6FFF);">
+          🔍
+          <span class="post-cat-badge" style="background:#0057FF;">Marketing</span>
+        </div>
+        <div class="post-body">
+          <div class="post-tags"><span class="post-tag">SEO</span><span class="post-tag">E-commerce</span></div>
+          <h3>SEO para tiendas de alimentos online: posicionamiento en Google sin pagar por ads</h3>
+          <p>Estrategia SEO específica para e-commerce de alimentos. Cómo aparecer en las primeras posiciones de Google cuando alguien busca tus productos.</p>
+          <div class="post-footer">
+            <span class="post-date">17 Abr 2025</span>
+            <span class="post-read-time">⏱ 8 min</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination fade-up">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">→</button>
+    </div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="blog-sidebar">
+
+    <!-- Newsletter -->
+    <div class="sidebar-card newsletter-card fade-up">
+      <h4>📬 Recibe el newsletter</h4>
+      <p>Artículos semanales sobre marketing, industria alimentaria y estrategia directamente en tu correo.</p>
+      <input type="email" class="nl-input" placeholder="Tu correo electrónico">
+      <button class="nl-btn">Suscribirme gratis</button>
+    </div>
+
+    <!-- Popular posts -->
+    <div class="sidebar-card fade-up">
+      <h4>🔥 Más leídos</h4>
+      <div class="popular-post" onclick="openPost(0)">
+        <span class="popular-num">01</span>
+        <div>
+          <div class="popular-title">Las 7 estrategias de Growth Marketing para 2025</div>
+          <div class="popular-meta">8 min · Daniel Marín</div>
+        </div>
+      </div>
+      <div class="popular-post" onclick="openPost(3)">
+        <span class="popular-num">02</span>
+        <div>
+          <div class="popular-title">Por qué tu empaque está perdiendo ventas</div>
+          <div class="popular-meta">7 min · Daniel Marín</div>
+        </div>
+      </div>
+      <div class="popular-post" onclick="openPost(7)">
+        <span class="popular-num">03</span>
+        <div>
+          <div class="popular-title">Lean Manufacturing para PYMES alimentarias</div>
+          <div class="popular-meta">10 min · Fabrizio Rodríguez</div>
+        </div>
+      </div>
+      <div class="popular-post" onclick="openPost(4)">
+        <span class="popular-num">04</span>
+        <div>
+          <div class="popular-title">Cómo crecer en redes sociales desde cero</div>
+          <div class="popular-meta">9 min · Daniel Marín</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Authors -->
+    <div class="sidebar-card fade-up">
+      <h4>✍️ Nuestros autores</h4>
+      <div class="author-row">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#0057FF,#00D4FF);">DM</div>
+        <div>
+          <div class="author-name">Daniel Marín</div>
+          <div class="author-role">Growth Marketing Expert</div>
+        </div>
+        <span class="author-count">5 artículos</span>
+      </div>
+      <div class="author-row">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#003BBA,#1A6FFF);">LP</div>
+        <div>
+          <div class="author-name">Luis Portilla</div>
+          <div class="author-role">Ing. Alimentario</div>
+        </div>
+        <span class="author-count">2 artículos</span>
+      </div>
+      <div class="author-row">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#001440,#0057FF);">FR</div>
+        <div>
+          <div class="author-name">Fabrizio Rodríguez</div>
+          <div class="author-role">Ing. Industrial · Consultor</div>
+        </div>
+        <span class="author-count">2 artículos</span>
+      </div>
+    </div>
+
+    <!-- Tags cloud -->
+    <div class="sidebar-card fade-up">
+      <h4>🏷️ Temas populares</h4>
+      <div class="tags-cloud">
+        <span class="cloud-tag">Growth Marketing</span>
+        <span class="cloud-tag">Yogurt</span>
+        <span class="cloud-tag">HACCP</span>
+        <span class="cloud-tag">Branding</span>
+        <span class="cloud-tag">Packaging</span>
+        <span class="cloud-tag">SEO</span>
+        <span class="cloud-tag">Flujo de Caja</span>
+        <span class="cloud-tag">Instagram</span>
+        <span class="cloud-tag">TikTok</span>
+        <span class="cloud-tag">Lean</span>
+        <span class="cloud-tag">PYMES</span>
+        <span class="cloud-tag">E-commerce</span>
+        <span class="cloud-tag">Fermentación</span>
+        <span class="cloud-tag">Analytics</span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- POST MODAL -->
+<div class="post-overlay" id="postOverlay">
+  <div class="post-modal">
+    <div class="post-modal-header">
+      <div class="post-modal-banner" id="postBanner"></div>
+      <button class="post-modal-close" onclick="closePost()">✕</button>
+    </div>
+    <div class="post-modal-body">
+      <div class="post-modal-cat" id="postCat"></div>
+      <h1 class="post-modal-title" id="postTitle"></h1>
+      <div class="post-modal-meta" id="postMeta"></div>
+      <div class="post-modal-content" id="postContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/">
+        <img src="/mnt/user-data/uploads/logo_academy.png" alt="Nucleri Academy" style="height:42px;width:auto;display:block;">
+      </a>
+      <p>Plataforma líder de formación empresarial y consultoría especializada en marketing, finanzas e industria alimentaria en LATAM.</p>
+      <div class="social-links">
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">𝕏</a>
+        <a href="#" class="social-btn">▶</a>
+        <a href="#" class="social-btn">📷</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Cursos</h5>
+      <ul class="footer-links">
+        <li><a href="index.html#cursos">Marketing Digital</a></li>
+        <li><a href="index.html#cursos">Finanzas</a></li>
+        <li><a href="index.html#cursos">Industria Láctea</a></li>
+        <li><a href="index.html#cursos">Branding</a></li>
+        <li><a href="index.html#cursos">Ventas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Empresa</h5>
+      <ul class="footer-links">
+        <li><a href="/sobre-nosotros">Sobre nosotros</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="index.html#instructores">Instructores</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <ul class="footer-links">
+        <li><a href="#"><span class="__cf_email__" data-cfemail="21494e4d40614f54424d4453480f424e4c">[email&#160;protected]</span></a></li>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Nucleri. Todos los derechos reservados.</span>
+    <span>Hecho con ❤️ para emprendedores de LATAM</span>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── POST DATA ──
+const posts = [
+  {
+    title: "Las 7 estrategias de Growth Marketing que todo emprendedor debe conocer en 2025",
+    category: "Marketing Digital", catColor: "#0057FF",
+    emoji: "📈", gradient: "linear-gradient(135deg,#001a7a,#0057FF,#00aeff)",
+    author: "Daniel Marín", authorInitials: "DM", authorGradient: "linear-gradient(135deg,#0057FF,#00D4FF)",
+    date: "12 Jun 2025", readTime: "8 min",
+    content: `
+      <p>El Growth Marketing ha dejado de ser un lujo para startups de Silicon Valley. En 2025, es la diferencia entre crecer y estancarse. Aquí te presentamos las 7 estrategias que están usando las empresas más exitosas de LATAM.</p>
+      <h3>1. El North Star Metric como brújula</h3>
+      <p>Antes de cualquier experimento, necesitas definir una métrica que capture el valor real que entregas a tus clientes. Para Netflix es minutos vistos; para un e-commerce de alimentos podría ser "pedidos recurrentes por mes".</p>
+      <blockquote>El crecimiento sin dirección es solo movimiento. Necesitas saber exactamente qué estás midiendo y por qué esa métrica importa para tu negocio.</blockquote>
+      <h3>2. Experimentación continua (A/B Testing)</h3>
+      <p>Las empresas que crecen más rápido no son las que tienen las mejores ideas — son las que prueban más hipótesis. Un buen programa de A/B testing puede aumentar tus conversiones entre un 20% y 40% en 6 meses.</p>
+      <h3>3. Retención antes que adquisición</h3>
+      <p>Adquirir un cliente nuevo cuesta 5-7 veces más que retener uno existente. El Growth Marketing moderno pone tanto énfasis en el onboarding y la activación como en las campañas de adquisición.</p>
+      <ul>
+        <li>Optimiza tu flujo de onboarding para que el usuario llegue al "aha moment" lo antes posible</li>
+        <li>Diseña secuencias de email para los primeros 30 días</li>
+        <li>Mide tu Net Promoter Score mensualmente</li>
+        <li>Implementa programas de lealtad para clientes recurrentes</li>
+      </ul>
+      <h3>4. Analytics avanzado con GA4</h3>
+      <p>Google Analytics 4 cambió radicalmente la forma en que medimos el comportamiento de usuarios. Aprender a configurar eventos personalizados y embudos de conversión es una habilidad no negociable en 2025.</p>
+      <h3>5. Content Marketing basado en datos</h3>
+      <p>El contenido que genera más tráfico orgánico y conversiones no es el más bonito — es el que responde exactamente lo que tu cliente ideal está buscando. Usa herramientas como Ahrefs o Semrush para descubrir esas oportunidades.</p>
+      <h3>6. Marketing de producto integrado</h3>
+      <p>Los mejores canales de crecimiento están dentro del propio producto: referidos, notificaciones push, emails transaccionales y upsells inteligentes. Esto es lo que separa a las empresas que crecen exponencialmente de las que crecen linealmente.</p>
+      <h3>7. Comunidad como motor de crecimiento</h3>
+      <p>Construir una comunidad alrededor de tu marca genera crecimiento orgánico sostenible. En el sector de alimentos, esto puede ser un grupo de recetas, tutoriales o incluso un programa de embajadores de marca.</p>
+    `
+  },
+  {
+    title: "Cómo certificar tu empresa de yogurt con HACCP sin morir en el intento",
+    category: "Industria Alimentaria", catColor: "#0041CC",
+    emoji: "🥛", gradient: "linear-gradient(135deg,#001830,#0041CC,#1A6FFF)",
+    author: "Luis Portilla", authorInitials: "LP", authorGradient: "linear-gradient(135deg,#003BBA,#1A6FFF)",
+    date: "3 Jun 2025", readTime: "6 min",
+    content: `
+      <p>La certificación HACCP (Hazard Analysis and Critical Control Points) es obligatoria para muchas empresas del sector alimentario y un requisito para acceder a grandes cadenas de supermercados. Aquí te guiamos paso a paso.</p>
+      <h3>¿Qué es HACCP y por qué importa?</h3>
+      <p>HACCP es un sistema preventivo de control de inocuidad alimentaria que identifica, evalúa y controla los peligros significativos para la seguridad del alimento. No es un proceso de un día, pero tampoco es imposible para una PYME.</p>
+      <h3>Los 7 principios fundamentales</h3>
+      <ul>
+        <li>Realizar un análisis de peligros en cada etapa del proceso</li>
+        <li>Identificar los Puntos Críticos de Control (PCC)</li>
+        <li>Establecer límites críticos para cada PCC</li>
+        <li>Establecer un sistema de monitoreo para cada PCC</li>
+        <li>Establecer las acciones correctivas cuando un PCC no está bajo control</li>
+        <li>Establecer procedimientos de verificación</li>
+        <li>Establecer un sistema de documentación y registros</li>
+      </ul>
+      <h3>Los errores más comunes que retrasan la certificación</h3>
+      <p>En nuestra experiencia trabajando con plantas de yogurt, los errores más frecuentes son: documentación incompleta, falta de capacitación del personal, sistemas de monitoreo de temperatura inadecuados y ausencia de procedimientos de limpieza y sanitización documentados.</p>
+      <blockquote>La clave es no ver HACCP como un trámite, sino como un sistema que protege tu negocio, a tus clientes y que abre puertas a mercados más exigentes y rentables.</blockquote>
+      <h3>Cronograma realista para una PYME</h3>
+      <p>Una empresa mediana bien organizada puede obtener su certificación HACCP en 4 a 6 meses. Con acompañamiento especializado, muchos de nuestros clientes lo logran en 3 meses.</p>
+    `
+  },
+  {
+    title: "Plan de negocios en 1 página: la plantilla que usan nuestros consultores",
+    category: "Negocios", catColor: "#002b80",
+    emoji: "📊", gradient: "linear-gradient(135deg,#00102e,#002b80,#0047d4)",
+    author: "Fabrizio Rodríguez", authorInitials: "FR", authorGradient: "linear-gradient(135deg,#001440,#0057FF)",
+    date: "28 May 2025", readTime: "5 min",
+    content: `
+      <p>El plan de negocios tradicional de 80 páginas está muerto. Las empresas modernas necesitan herramientas ágiles que puedan actualizarse en horas, no en semanas. Te presentamos la plantilla de 1 página que usamos con todos nuestros clientes.</p>
+      <h3>El Business Model Canvas adaptado para LATAM</h3>
+      <p>El Business Model Canvas de Alexander Osterwalder sigue siendo la mejor herramienta para mapear un modelo de negocio, pero necesita adaptaciones para la realidad latinoamericana: acceso a capital limitado, mercados informales y consumidores price-sensitive.</p>
+      <h3>Los 9 bloques que necesitas definir hoy</h3>
+      <ul>
+        <li><strong>Propuesta de valor:</strong> ¿Qué problema resuelves y por qué eres mejor que las alternativas?</li>
+        <li><strong>Segmentos de clientes:</strong> ¿A quién le vendes exactamente? Sé específico.</li>
+        <li><strong>Canales:</strong> ¿Cómo llegas a tus clientes?</li>
+        <li><strong>Relaciones con clientes:</strong> ¿Cómo los retienes?</li>
+        <li><strong>Fuentes de ingresos:</strong> ¿Por qué pagan y cuánto?</li>
+        <li><strong>Recursos clave:</strong> ¿Qué necesitas para operar?</li>
+        <li><strong>Actividades clave:</strong> ¿Qué debes hacer mejor que nadie?</li>
+        <li><strong>Socios clave:</strong> ¿Quiénes te ayudan a entregar valor?</li>
+        <li><strong>Estructura de costos:</strong> ¿Cuánto cuesta todo esto?</li>
+      </ul>
+      <blockquote>Un plan de negocios no sirve para predecir el futuro. Sirve para forzarte a pensar en todas las dimensiones de tu negocio y encontrar los supuestos más riesgosos que necesitas validar.</blockquote>
+    `
+  },
+  {
+    title: "Por qué tu empaque de alimentos está perdiendo ventas (y cómo arreglarlo)",
+    category: "Branding", catColor: "#0057FF",
+    emoji: "🎯", gradient: "linear-gradient(135deg,#001050,#0033a0,#0057FF)",
+    author: "Daniel Marín", authorInitials: "DM", authorGradient: "linear-gradient(135deg,#0057FF,#00D4FF)",
+    date: "20 May 2025", readTime: "7 min",
+    content: `
+      <p>Tienes 3 segundos para captar la atención de un consumidor en el supermercado. Tres segundos. Si tu empaque no gana ese momento, pierdes la venta antes de que te den una oportunidad.</p>
+      <h3>Los 10 errores más comunes en empaques de alimentos</h3>
+      <ul>
+        <li>Texto demasiado pequeño o ilegible a 60 cm de distancia</li>
+        <li>No comunicar el beneficio principal en 1 segundo</li>
+        <li>Colores que no representan la categoría de alimento</li>
+        <li>Ausencia de elementos de confianza (sellos, certificaciones)</li>
+        <li>Materiales que no comunican el posicionamiento (premium vs. accesible)</li>
+        <li>Ignorar los requisitos legales de etiquetado octagonal</li>
+        <li>No diferenciar entre SKUs de la misma línea</li>
+        <li>Fotografías de producto de baja calidad</li>
+        <li>No considerar cómo se ve el producto en un estante real</li>
+        <li>Copiar el diseño de la marca líder sin diferenciarse</li>
+      </ul>
+      <h3>La psicología del color en alimentos</h3>
+      <p>El azul raramente se usa en empaques de alimentos naturales porque inconscientemente asociamos el azul con lo artificial. El verde comunica frescura y salud. El rojo estimula el apetito. El amarillo comunica accesibilidad y alegría.</p>
+      <blockquote>Tu empaque es tu vendedor más trabajador: está en el punto de venta 24/7, sin descanso y sin comisión. Inviértele como se merece.</blockquote>
+      <h3>Checklist antes de aprobar un diseño de empaque</h3>
+      <p>Antes de imprimir miles de unidades, prueba tu diseño con al menos 10 personas de tu público objetivo. Pregúntales qué creen que contiene el producto, cuánto creen que cuesta y si lo comprarían.</p>
+    `
+  },
+  {
+    title: "5 errores que arruinan la textura de tu yogurt griego (y cómo corregirlos)",
+    category: "Industria Alimentaria", catColor: "#003BBA",
+    emoji: "🍦", gradient: "linear-gradient(135deg,#001a7a,#0041CC,#1A6FFF)",
+    author: "Luis Portilla", authorInitials: "LP", authorGradient: "linear-gradient(135deg,#003BBA,#1A6FFF)",
+    date: "8 May 2025", readTime: "6 min",
+    content: `
+      <p>El yogurt griego tiene una textura característica densa y cremosa que lo diferencia del yogurt tradicional. Conseguirla de forma consistente a escala industrial es todo un arte. Estos son los 5 errores más comunes que veo en las plantas que asesoro.</p>
+      <h3>Error 1: Temperatura de incubación incorrecta</h3>
+      <p>La temperatura ideal de incubación para los cultivos de yogurt griego está entre 40°C y 45°C. Variaciones de apenas 2-3°C pueden cambiar completamente la actividad bacteriana y resultar en una textura granulosa o demasiado líquida.</p>
+      <h3>Error 2: Tiempo de centrifugado insuficiente</h3>
+      <p>El yogurt griego obtiene su densidad característica por el proceso de centrifugado o filtrado que elimina el suero. La mayoría de las plantas pequeñas no tienen el equipamiento adecuado o no respetan los tiempos recomendados.</p>
+      <h3>Error 3: Selección incorrecta de cultivos iniciadores</h3>
+      <ul>
+        <li>No todos los starters producen la misma textura</li>
+        <li>La proporción entre Streptococcus thermophilus y Lactobacillus bulgaricus afecta directamente la viscosidad</li>
+        <li>La dosis de inoculación debe ser precisa (1.5-2% del volumen)</li>
+        <li>Los cultivos vencidos o mal almacenados dan resultados inconsistentes</li>
+      </ul>
+      <h3>Error 4: Tratamiento térmico deficiente</h3>
+      <p>La pasteurización y el posterior calentamiento de la leche afectan la desnaturalización de las proteínas, que es fundamental para obtener la textura gel del yogurt. La temperatura y el tiempo deben ser precisos.</p>
+      <blockquote>La consistencia en yogurt griego no es suerte — es protocolo. Cada paso del proceso debe estar documentado y monitoreado con la misma rigurosidad.</blockquote>
+      <h3>Error 5: Agitación excesiva post-fermentación</h3>
+      <p>Una vez terminada la fermentación, el gel formado es delicado. Agitar demasiado antes o durante el centrifugado rompe la estructura y resulta en un producto aguado con textura granulosa.</p>
+    `
+  },
+  {
+    title: "Flujo de caja: la métrica que más ignoran los emprendedores",
+    category: "Finanzas", catColor: "#003BBA",
+    emoji: "💰", gradient: "linear-gradient(135deg,#001440,#003BBA,#0057FF)",
+    author: "Fabrizio Rodríguez", authorInitials: "FR", authorGradient: "linear-gradient(135deg,#001440,#0057FF)",
+    date: "1 May 2025", readTime: "5 min",
+    content: `
+      <p>La mayoría de los negocios no quiebran por falta de clientes — quiebran por falta de liquidez. Puedes tener un negocio rentable en papel y quedarte sin dinero en la cuenta bancaria el día 15 del mes. Eso es un problema de flujo de caja.</p>
+      <h3>¿Qué es el flujo de caja y por qué importa tanto?</h3>
+      <p>El flujo de caja (o cash flow) registra el movimiento real de dinero que entra y sale de tu negocio en un período determinado. A diferencia del estado de resultados, el flujo de caja no cuenta promesas ni facturas pendientes — solo dinero real.</p>
+      <blockquote>La utilidad es opinión. El efectivo es un hecho. Tu contador puede darte muchas buenas noticias sobre tu rentabilidad, pero si no hay dinero en la cuenta, esas noticias no pagan el sueldo de tus empleados.</blockquote>
+      <h3>Cómo construir tu flujo de caja en 30 minutos</h3>
+      <ul>
+        <li>Abre una hoja de cálculo con los 12 meses del año como columnas</li>
+        <li>Fila 1: Saldo inicial (lo que tienes en el banco al inicio del mes)</li>
+        <li>Fila 2-10: Todas tus entradas de dinero (ventas cobradas, no facturadas)</li>
+        <li>Fila 11-25: Todas tus salidas de dinero (pagos, salarios, proveedores)</li>
+        <li>Fila 26: Saldo final = Saldo inicial + Entradas - Salidas</li>
+      </ul>
+      <h3>Las señales de alerta que debes monitorear</h3>
+      <p>Si tu flujo de caja proyectado muestra saldo negativo en algún mes futuro, tienes 3 opciones: aumentar ingresos, reducir gastos o conseguir financiamiento. Cuanto antes lo detectes, más tiempo tienes para actuar.</p>
+    `
+  },
+  {
+    title: "Lean Manufacturing para PYMES alimentarias: guía de implementación en 6 semanas",
+    category: "Industrial", catColor: "#0047d4",
+    emoji: "🏭", gradient: "linear-gradient(135deg,#001a7a,#003BBA,#0057FF)",
+    author: "Fabrizio Rodríguez", authorInitials: "FR", authorGradient: "linear-gradient(135deg,#001440,#0057FF)",
+    date: "24 Abr 2025", readTime: "10 min",
+    content: `
+      <p>Lean Manufacturing no es solo para Toyota o Amazon. Las empresas de alimentos de cualquier tamaño pueden reducir desperdicios, mejorar tiempos de producción y aumentar la rentabilidad aplicando los principios Lean. Aquí te explicamos cómo hacerlo en 6 semanas.</p>
+      <h3>¿Qué es Lean y qué no es?</h3>
+      <p>Lean es una filosofía de mejora continua enfocada en eliminar todo lo que no agrega valor al cliente. NO es recortar personal, NO es apretar a los trabajadores para que produzcan más. Es rediseñar los procesos para que fluyan mejor.</p>
+      <h3>Los 8 desperdicios del sector alimentario</h3>
+      <ul>
+        <li>Sobreproducción: fabricar más de lo que el mercado demanda</li>
+        <li>Inventario excesivo: materia prima o producto terminado parado</li>
+        <li>Transporte innecesario: movimientos de materiales sin valor</li>
+        <li>Movimientos innecesarios: operarios caminando más de lo necesario</li>
+        <li>Esperas: tiempo muerto entre etapas del proceso</li>
+        <li>Sobreprocesamiento: pasos que el cliente no valora</li>
+        <li>Defectos y reprocesos: producción que no cumple estándares</li>
+        <li>Talento desaprovechado: no usar las ideas de tu equipo</li>
+      </ul>
+      <h3>Semana 1-2: Mapeo de flujo de valor (VSM)</h3>
+      <p>El Value Stream Mapping es una herramienta visual que muestra todos los pasos de tu proceso productivo, incluyendo los tiempos de espera y los desperdicios. Es el punto de partida de cualquier implementación Lean.</p>
+      <blockquote>No puedes mejorar lo que no puedes ver. El VSM te da la radiografía completa de tu proceso y deja en evidencia dónde se está perdiendo tiempo y dinero.</blockquote>
+      <h3>Semana 3-4: Las 5S en tu planta de alimentos</h3>
+      <p>Seiri (Clasificar), Seiton (Ordenar), Seiso (Limpiar), Seiketsu (Estandarizar) y Shitsuke (Sostener). Las 5S son el cimiento de cualquier implementación Lean y tienen un impacto inmediato en la productividad y la inocuidad alimentaria.</p>
+      <h3>Semana 5-6: Kanban y flujo pull</h3>
+      <p>Un sistema Kanban básico te permite producir solo lo que necesitas, cuando lo necesitas. Para una planta de yogurt, esto puede reducir el inventario de materia prima entre un 30% y 50%, liberando capital de trabajo.</p>
+    `
+  },
+  {
+    title: "SEO para tiendas de alimentos online: posicionamiento en Google sin pagar por ads",
+    category: "Marketing", catColor: "#0057FF",
+    emoji: "🔍", gradient: "linear-gradient(135deg,#001050,#0041CC,#1A6FFF)",
+    author: "Daniel Marín", authorInitials: "DM", authorGradient: "linear-gradient(135deg,#0057FF,#00D4FF)",
+    date: "17 Abr 2025", readTime: "8 min",
+    content: `
+      <p>Google es el buscador más usado en LATAM y el tráfico orgánico sigue siendo el canal con mejor ROI a largo plazo. Aquí te enseñamos cómo posicionar tu tienda de alimentos online sin depender de la pauta pagada.</p>
+      <h3>Por qué el SEO es especialmente poderoso en el sector alimentario</h3>
+      <p>Las búsquedas de alimentos tienen una intención de compra alta y competencia relativamente baja comparada con otros sectores. "Comprar yogurt griego artesanal online" tiene muchísimo menos competencia que "comprar zapatillas online".</p>
+      <h3>Investigación de palabras clave para alimentos</h3>
+      <ul>
+        <li>Usa Google Search Console para ver por qué términos ya apareces</li>
+        <li>Busca en Google y analiza el "People Also Ask" y las búsquedas relacionadas</li>
+        <li>Analiza las palabras clave de tus competidores con Ubersuggest (versión gratuita)</li>
+        <li>Prioriza las palabras con intención transaccional: "comprar", "precio", "delivery"</li>
+        <li>No ignores las búsquedas locales: "yogurt artesanal Lima", "delivery alimentos orgánicos Miraflores"</li>
+      </ul>
+      <h3>SEO técnico básico para tu tienda online</h3>
+      <p>Velocidad de carga, optimización para móviles, estructura de URLs limpia y Schema Markup para productos. Estos 4 elementos técnicos tienen más impacto que cualquier cantidad de contenido si tu sitio los está ignorando.</p>
+      <blockquote>El SEO es como plantar árboles: el mejor momento para empezar fue hace 5 años, el segundo mejor momento es hoy. Cada semana que pasa sin optimizar es tráfico y ventas que le regalas a tu competencia.</blockquote>
+      <h3>Estrategia de contenidos para e-commerce de alimentos</h3>
+      <p>Un blog con recetas que usen tus productos, guías de compra, artículos sobre beneficios nutricionales y comparativas de productos son los formatos que más tráfico orgánico generan para tiendas de alimentos. Cada artículo bien posicionado puede traer cientos de visitas mensuales durante años.</p>
+    `
+  }
+];
+
+// Open post modal
+function openPost(index) {
+  const p = posts[index];
+  if (!p) return;
+
+  document.getElementById('postBanner').style.background = p.gradient;
+  document.getElementById('postBanner').innerHTML = `<span style="position:relative;z-index:1;font-size:5rem;">${p.emoji}</span>`;
+  document.getElementById('postCat').textContent = p.category;
+  document.getElementById('postCat').style.background = p.catColor;
+  document.getElementById('postTitle').textContent = p.title;
+  document.getElementById('postMeta').innerHTML = `
+    <span style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="width:26px;height:26px;border-radius:50%;background:${p.authorGradient};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:white;">${p.authorInitials}</span>
+      ${p.author}
+    </span>
+    <span>·</span><span>${p.date}</span><span>·</span><span>⏱ ${p.readTime} lectura</span>
+  `;
+  document.getElementById('postContent').innerHTML = p.content;
+
+  const overlay = document.getElementById('postOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  overlay.scrollTop = 0;
+}
+
+function closePost() {
+  document.getElementById('postOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('postOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('postOverlay')) closePost();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePost();
+});
+
+// Filter posts
+function filterPosts(cat, btn) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+
+  const cards = document.querySelectorAll('#postsGrid .post-card');
+  cards.forEach(card => {
+    if (cat === 'todos' || card.dataset.category === cat) {
+      card.style.display = '';
+      setTimeout(() => card.style.opacity = '1', 50);
+    } else {
+      card.style.opacity = '0';
+      setTimeout(() => card.style.display = 'none', 250);
+    }
+  });
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 70);
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── API INTEGRATION ──
+async function loadPostsFromAPI() {
+  try {
+    const data = await fetch('/api/blog?limit=12').then(r => r.json());
+    if (!data.posts || !data.posts.length) return;
+
+    const grid = document.getElementById('postsGrid');
+    if (!grid) return;
+
+    const categoryColors = {
+      'Inocuidad': '#0057FF', 'Tendencias': '#00D4FF', 'Finanzas': '#FFB800',
+      'Emprendimiento': '#00C968', 'default': '#0057FF'
+    };
+
+    const apiHTML = data.posts.map((p, i) => `
+      <article class="post-card fade-up" data-category="${(p.category||'').toLowerCase()}" style="cursor:pointer" onclick="window.location='/blog/${p.slug}'">
+        <div class="post-thumb" style="background:linear-gradient(135deg,#001020,#0041CC,#1A6FFF);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+          ${ {Inocuidad:'🛡️',Tendencias:'📈',Finanzas:'💰',Emprendimiento:'🚀'}[p.category] || '📝' }
+        </div>
+        <div class="post-body">
+          <span class="post-cat" style="background:rgba(0,87,255,.12);color:${categoryColors[p.category]||categoryColors.default}">${p.category || 'Blog'}</span>
+          <h3 class="post-title">${p.title}</h3>
+          <p class="post-excerpt">${p.excerpt || ''}</p>
+          <div class="post-meta">
+            <div class="post-author">
+              <div class="author-av">${p.author.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+              <div><div class="author-name">${p.author}</div><div class="author-role">${p.author_role || ''}</div></div>
+            </div>
+            <span class="post-time">⏱ ${p.read_time || '5 min'}</span>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    // Merge API posts with static ones (API takes priority)
+    grid.insertAdjacentHTML('afterbegin', apiHTML);
+
+    // Re-observe new elements
+    document.querySelectorAll('.post-card.fade-up:not(.visible)').forEach(el => observer.observe(el));
+  } catch(e) {
+    console.warn('Blog API not available:', e.message);
+  }
+}
+
+// ── NEWSLETTER FORM ──
+async function submitNewsletter(e) {
+  if (e) e.preventDefault();
+  const input = document.querySelector('input[type="email"][placeholder*="correo"], .newsletter-input, #nlEmail');
+  if (!input) return;
+  try {
+    await fetch('/api/newsletter', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email: input.value })
+    });
+    input.value = '';
+    input.placeholder = '✓ ¡Suscrito!';
+  } catch {}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadPostsFromAPI();
+  // Wire newsletter forms
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', submitNewsletter);
+  });
+});
+</script>
+<script src="/assets/js/nucleri.js"></script>
+<script src="/assets/js/auth.js"></script>
+</body>
+</html>
